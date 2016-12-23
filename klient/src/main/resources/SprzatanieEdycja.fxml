@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.KontrolerEdycjaSprzatanie">
+   <children>
+      <ComboBox fx:id="czynnosc" layoutX="14.0" layoutY="68.0" onAction="#akcja_czynnosc" prefHeight="31.0" prefWidth="477.0" promptText="Czynność" />
+       <Button fx:id="powrot" layoutX="10.0" layoutY="545.0" onAction="#akcja_powrot" prefHeight="25.0" prefWidth="100.0" text="Powrót" />
+      <Label layoutX="10.0" layoutY="4.0" text="dom&gt;&gt;sprzatanie&gt;&gt;edycja">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="dodaj_czynnosc" layoutX="502.0" layoutY="306.0" onAction="#akcja_dodaj_czynnosc" prefHeight="31.0" prefWidth="151.0" text="Dodaj czynność" />
+      <Label layoutX="384.0" layoutY="209.0" text="Nazwa nowej czynności" />
+      <TextField fx:id="nazwa_czynnosci" layoutX="384.0" layoutY="230.0" prefHeight="31.0" prefWidth="269.0" />
+      <Label layoutX="14.0" layoutY="47.0" text="Wybierz czynność" />
+      <Button fx:id="usun_czynnosc" layoutX="560.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_usun_czynnosc" prefHeight="31.0" prefWidth="100.0" text="Usuń" />
+      <Button fx:id="zmien_nazwe_czynnosci" layoutX="264.0" layoutY="337.0" mnemonicParsing="false" onAction="#akcja_zmien_nazwe_czynnosci" prefHeight="31.0" prefWidth="120.0" text="Zmień nazwę" />
+      <TextField fx:id="nazwa_czynnosci_do_zmiany" layoutX="18.0" layoutY="337.0" prefHeight="31.0" prefWidth="237.0" />
+      <TextField fx:id="czestotliwosc" layoutX="18.0" layoutY="395.0" prefHeight="31.0" prefWidth="43.0" />
+      <Button fx:id="zmien_czestotliwosc" layoutX="83.0" layoutY="395.0" mnemonicParsing="false" onAction="#akcja_zmien_czestotliwosc" prefHeight="31.0" prefWidth="168.0" text="Zmień częstotliwość" />
+      <Label layoutX="384.0" layoutY="274.0" text="Ustal częstotliwość" />
+      <TextField fx:id="czestotliwosc_nowa" layoutX="610.0" layoutY="269.0" prefHeight="31.0" prefWidth="43.0" />
+      <Label layoutX="18.0" layoutY="311.0" text="Nazwa czynności do zmiany" />
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>

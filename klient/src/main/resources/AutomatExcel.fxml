@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.KontolerAutomatExcel">
+   <children>
+      <Button fx:id="migrator_zakresow" layoutX="174.0" layoutY="169.0" mnemonicParsing="false" onAction="#migrujZakresy" text="Migruj zakresy" />
+      <Button fx:id="tworzenie_nowego_arkusza" layoutX="325.0" layoutY="169.0" mnemonicParsing="false" onAction="#utworzNowyArkusz" text="UtwĂłrz arkusz na nowy rok" />
+      <Label layoutX="29.0" layoutY="59.0" text="ĹšcieĹĽka do arkusza" />
+      <Label fx:id="sciezka" layoutX="29.0" layoutY="107.0" text="Label" />
+      <Button fx:id="zmien_sciezke" layoutX="32.0" layoutY="169.0" mnemonicParsing="false" onAction="#zmienSciezke" text="ZmieĹ„ Ĺ›cieĹĽkÄ™" />
+      <TextArea fx:id="log" layoutX="31.0" layoutY="223.0" prefHeight="274.0" prefWidth="801.0" />
+   </children>
+</AnchorPane>
