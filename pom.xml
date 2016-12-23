@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>github.kjkow</groupId>
-  <artifactId>dom_2_1</artifactId>
+  <artifactId>dom2</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>dom_2_1</name>
-  <url>http://maven.apache.org</url>
+  <name>dom2</name>
+  <url>http://github.com/kjkow/dom2</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,9 +39,9 @@
   </modules>
 
 <!--
-  JavaFXKlient -> Dao
-  JavaFXKlient -> Model
-  JavaFXKlient -> Narzedzia
-  Dao -> Model
+  klient -> dao
+  klient -> model
+  klient -> narzedzia
+  dao -> model
 -->
 </project>
