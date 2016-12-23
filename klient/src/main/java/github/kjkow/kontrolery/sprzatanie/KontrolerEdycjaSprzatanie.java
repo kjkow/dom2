@@ -115,9 +115,9 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         try {
             sprzatanieDAO.dodajCzynnosc(nowaCzynnosc);
         } catch (SQLException e) {
-            obsluzBlad("Problem na bazie danych", e);
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
         } catch (ClassNotFoundException e) {
-            obsluzBlad("Problem z konektorem bazy danych", e);
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
         }
 
         przeladujFormatke();
@@ -216,10 +216,10 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
                 czynnosciPrezentacja.add(nazwaCzynnosci);
             }
         } catch (SQLException e) {
-            obsluzBlad("Problem na bazie danych", e);
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
-            obsluzBlad("Problem z konektorem bazy danych", e);
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
         }
         czynnosc.setItems(czynnosciPrezentacja);
@@ -230,7 +230,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         try {
             sprzatanieDAO = new SprzatanieDAOImpl();
         } catch (IOException e) {
-            obsluzBlad("Problem z wczytywaniem danych z pliku", e);
+            obsluzBlad(KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO, e);
         }
     }
 

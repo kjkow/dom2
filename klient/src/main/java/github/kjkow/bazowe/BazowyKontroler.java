@@ -16,6 +16,9 @@ public abstract class BazowyKontroler {
 
     protected IZarzadcaFormatek zarzadcaFormatek;
     protected IAutomatDoExcela automatDoExcela;
+    protected static final String KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO = "Błąd podczas wczytywania konfiguracji bazy danych z pliku";
+    protected static final String KOMUNIKAT_BLEDU_SQL = "Wystąpił błąd na bazie danych";
+    protected static final String KOMUNIKAT_BLEDU_KONEKTORA_JDBC = "Wystąpił błąd sterownika bazy danych";
 
     protected URL zrodloFormatki;
 
