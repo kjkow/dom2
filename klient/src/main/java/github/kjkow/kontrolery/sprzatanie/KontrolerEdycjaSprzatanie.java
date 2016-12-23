@@ -96,7 +96,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         if(nazwa_czynnosci.getText().compareTo("") != 0){
             nowaCzynnosc.setNazwaCzynnosci(nazwa_czynnosci.getText());
         }else{
-            powiadomienia.wyswietlOknoInformacji("Nie wprowadzono nazwy czynnosci.");
+            zarzadcaFormatek.wyswietlOknoInformacji("Nie wprowadzono nazwy czynnosci.");
             return;
         }
 

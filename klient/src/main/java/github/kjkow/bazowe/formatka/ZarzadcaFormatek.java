@@ -1,11 +1,11 @@
 package github.kjkow.bazowe.formatka;
 
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.powiadomienia.IPowiadomienia;
-import github.kjkow.powiadomienia.Powiadomienia;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class ZarzadcaFormatek implements IZarzadcaFormatek {
 
-    private IPowiadomienia powiadomienia;
+    private Alert alert;
 
     @Override
     public void wyswietlNowaFormatke(BazowyKontroler pKontroler, Stage scena) {
@@ -28,11 +28,36 @@ public class ZarzadcaFormatek implements IZarzadcaFormatek {
                 podmienRodzicaSceny(scena, nowyRodzic);
             }
         } catch (IOException | NullPointerException e) {
-            powiadomienia = new Powiadomienia();
-            powiadomienia.wyswietlOknoBledu("Błąd podczas wyświetlania formatki.");
+            wyswietlOknoBledu("Błąd podczas wyświetlania formatki.");
             e.printStackTrace();
             //TODO: obsluzyc
         }
+    }
+
+    @Override
+    public void wyswietlOknoBledu(String tresc) {
+        alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Błąd!");
+        alert.setContentText(tresc);
+        alert.showAndWait();
+    }
+
+    @Override
+    public boolean wyswietlOknoPotwierdzenia(String tresc) {
+        alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdź");
+        alert.setContentText(tresc);
+        alert.showAndWait();
+
+        return alert.getResult() == ButtonType.OK;
+    }
+
+    @Override
+    public void wyswietlOknoInformacji(String tresc) {
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informacja");
+        alert.setContentText(tresc);
+        alert.showAndWait();
     }
 
     private void podmienRodzicaSceny(Stage scena, Parent nowyRodzic){

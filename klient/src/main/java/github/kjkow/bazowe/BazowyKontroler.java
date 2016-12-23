@@ -7,8 +7,6 @@ import github.kjkow.bazowe.formatka.IZarzadcaFormatek;
 import github.kjkow.bazowe.formatka.ZarzadcaFormatek;
 import github.kjkow.dziennik.Dziennik;
 import github.kjkow.dziennik.IDziennik;
-import github.kjkow.powiadomienia.IPowiadomienia;
-import github.kjkow.powiadomienia.Powiadomienia;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -21,7 +19,6 @@ public abstract class BazowyKontroler {
     protected IZarzadcaFormatek zarzadcaFormatek;
     protected IDziennik dziennik;
     protected IAutomatDoExcela automatDoExcela;
-    protected IPowiadomienia powiadomienia;
 
     protected URL zrodloFormatki;
 
@@ -42,15 +39,11 @@ public abstract class BazowyKontroler {
         if(automatDoExcela == null){
             automatDoExcela = new AutomatDoExcela();
         }
-
-        if(powiadomienia == null){
-            powiadomienia = new Powiadomienia();
-        }
     }
 
     protected void obsluzBlad(String trescKomunikatu, Exception e){
         dziennik.zapiszBlad(trescKomunikatu, e);
-        powiadomienia.wyswietlOknoBledu(trescKomunikatu);
+        zarzadcaFormatek.wyswietlOknoBledu(trescKomunikatu);
     }
 
     public URL pobierzZrodloFormatki(){

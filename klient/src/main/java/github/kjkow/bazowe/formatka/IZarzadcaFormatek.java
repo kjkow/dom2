@@ -14,4 +14,10 @@ public interface IZarzadcaFormatek {
      * @param scena scena obecnej formatki
      */
     void wyswietlNowaFormatke(BazowyKontroler pKontroler, Stage scena);
+
+    void wyswietlOknoBledu(String tresc);
+
+    boolean wyswietlOknoPotwierdzenia(String tresc);
+
+    void wyswietlOknoInformacji(String tresc);
 }
