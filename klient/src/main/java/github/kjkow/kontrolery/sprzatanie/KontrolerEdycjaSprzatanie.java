@@ -4,7 +4,6 @@ package github.kjkow.kontrolery.sprzatanie;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
-import github.kjkow.bazowe.formatka.EnumOknoAplikacji;
 import github.kjkow.sprzatanie.Czynnosc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -84,7 +83,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        zarzadcaFormatek.wyswietlNowaFormatke(EnumOknoAplikacji.SPRZATANIE, zwrocSceneFormatki());
+        zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerSprzatanieEkranGlowny(), zwrocSceneFormatki());
     }
 
     /**
@@ -204,7 +203,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
     }
 
     private void przeladujFormatke(){
-        zarzadcaFormatek.wyswietlNowaFormatke(EnumOknoAplikacji.SPRZATANIEEDYCJA, zwrocSceneFormatki());
+        zarzadcaFormatek.wyswietlNowaFormatke(this, zwrocSceneFormatki());
     }
 
     private void przeladujComboCzynnosci(){
@@ -238,5 +237,10 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
     @Override
     protected Stage zwrocSceneFormatki() {
         return (Stage)zmien_nazwe_czynnosci.getScene().getWindow();
+    }
+
+    @Override
+    protected void ustawZrodloFormatki() {
+        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEdycja.fxml");
     }
 }

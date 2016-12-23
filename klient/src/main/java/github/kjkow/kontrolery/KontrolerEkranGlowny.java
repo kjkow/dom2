@@ -2,7 +2,7 @@ package github.kjkow.kontrolery;
 
 
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.bazowe.formatka.EnumOknoAplikacji;
+import github.kjkow.kontrolery.sprzatanie.KontrolerSprzatanieEkranGlowny;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,7 +58,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
     }
 
     public void obslugaSprzatanie(ActionEvent actionEvent) {
-        zarzadcaFormatek.wyswietlNowaFormatke(EnumOknoAplikacji.SPRZATANIE, zwrocSceneFormatki());
+        zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerSprzatanieEkranGlowny(), zwrocSceneFormatki());
     }
 
     private void inicjujUroczystosci(){
@@ -84,5 +84,10 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
     @Override
     protected Stage zwrocSceneFormatki() {
         return (Stage)sprzatanie.getScene().getWindow();
+    }
+
+    @Override
+    protected void ustawZrodloFormatki() {
+        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/StartProgramu.fxml");
     }
 }

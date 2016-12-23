@@ -31,7 +31,7 @@ public class KontolerAutomatExcel extends BazowyKontroler implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        sciezka.setText("C:\\Users\\kamil.kowalczyk\\IdeaProjects\\automat_xls\\budzet_2016.xls");//TODO: 'odszyæ'
+        sciezka.setText("C:\\Users\\kamil.kowalczyk\\IdeaProjects\\automat_xls\\budzet_2016.xls");//TODO: 'odszyc'
         sciezka.setUnderline(true);
     }
 
@@ -67,5 +67,10 @@ public class KontolerAutomatExcel extends BazowyKontroler implements Initializab
     @Override
     protected Stage zwrocSceneFormatki() {
         return (Stage)zmien_sciezke.getScene().getWindow();
+    }
+
+    @Override
+    protected void ustawZrodloFormatki() {
+        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/AutomatExcel.fxml");
     }
 }

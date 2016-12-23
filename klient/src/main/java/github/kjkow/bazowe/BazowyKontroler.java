@@ -11,6 +11,8 @@ import github.kjkow.powiadomienia.IPowiadomienia;
 import github.kjkow.powiadomienia.Powiadomienia;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
@@ -21,8 +23,11 @@ public abstract class BazowyKontroler {
     protected IAutomatDoExcela automatDoExcela;
     protected IPowiadomienia powiadomienia;
 
+    protected URL zrodloFormatki;
+
     public BazowyKontroler(){
         inicjujNarzedzia();
+        ustawZrodloFormatki();
     }
 
     private void inicjujNarzedzia(){
@@ -48,10 +53,14 @@ public abstract class BazowyKontroler {
         powiadomienia.wyswietlOknoBledu(trescKomunikatu);
     }
 
+    public URL pobierzZrodloFormatki(){
+        return zrodloFormatki;
+    }
+
     /**
-     * potrzebne do zmiany formatki
-     * @return
+     * ***********potrzebne do zmiany formatki*************
      */
     protected abstract Stage zwrocSceneFormatki();
+    protected abstract void ustawZrodloFormatki();
 
 }

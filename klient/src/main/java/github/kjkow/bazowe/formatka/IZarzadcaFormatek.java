@@ -1,5 +1,6 @@
 package github.kjkow.bazowe.formatka;
 
+import github.kjkow.bazowe.BazowyKontroler;
 import javafx.stage.Stage;
 
 /**
@@ -7,5 +8,10 @@ import javafx.stage.Stage;
  */
 public interface IZarzadcaFormatek {
 
-    void wyswietlNowaFormatke(EnumOknoAplikacji nowaFormatka, Stage scena);
+    /**
+     *
+     * @param pKontroler kontroler formatki na ktora chcemy przejsc
+     * @param scena scena obecnej formatki
+     */
+    void wyswietlNowaFormatke(BazowyKontroler pKontroler, Stage scena);
 }

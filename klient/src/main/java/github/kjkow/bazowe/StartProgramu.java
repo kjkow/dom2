@@ -1,8 +1,8 @@
 package github.kjkow.bazowe;
 
-import github.kjkow.bazowe.formatka.EnumOknoAplikacji;
 import github.kjkow.bazowe.formatka.IZarzadcaFormatek;
 import github.kjkow.bazowe.formatka.ZarzadcaFormatek;
+import github.kjkow.kontrolery.KontrolerEkranGlowny;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,7 +18,7 @@ public class StartProgramu extends Application {
 
         try{
             IZarzadcaFormatek zarzadcaFormatek = new ZarzadcaFormatek();
-            zarzadcaFormatek.wyswietlNowaFormatke(EnumOknoAplikacji.GLOWNE, primaryStage);
+            zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerEkranGlowny(), primaryStage);
             primaryStage.show();
         }catch (Exception e){
             //TODO: obsluzyc
