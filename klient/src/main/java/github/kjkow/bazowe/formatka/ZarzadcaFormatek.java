@@ -1,6 +1,7 @@
 package github.kjkow.bazowe.formatka;
 
 import github.kjkow.bazowe.BazowyKontroler;
+import github.kjkow.bazowe.ObslugaBledu;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,9 +29,7 @@ public class ZarzadcaFormatek implements IZarzadcaFormatek {
                 podmienRodzicaSceny(scena, nowyRodzic);
             }
         } catch (IOException | NullPointerException e) {
-            wyswietlOknoBledu("Błąd podczas wyświetlania formatki.");
-            e.printStackTrace();
-            //TODO: obsluzyc
+            ObslugaBledu.obsluzBlad("Błąd podczas wyświetlania formatki.", e);
         }
     }
 

@@ -21,9 +21,7 @@ public class StartProgramu extends Application {
             zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerEkranGlowny(), primaryStage);
             primaryStage.show();
         }catch (Exception e){
-            //TODO: obsluzyc
-            System.out.println("Błąd przy otwieraniu programu");
-            e.printStackTrace();
+            ObslugaBledu.obsluzBlad("Błąd przy otwieraniu programu", e);
         }
     }
 }
