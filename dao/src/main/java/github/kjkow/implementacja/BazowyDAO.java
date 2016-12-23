@@ -10,7 +10,7 @@ import java.util.Properties;
  * Created by Kamil.Kowalczyk on 2016-12-21.
  */
 public class BazowyDAO {
-    //TODO: dto?
+
     protected Connection polaczenie;
     protected Statement statement;
     protected ResultSet wynikKwerendy;
