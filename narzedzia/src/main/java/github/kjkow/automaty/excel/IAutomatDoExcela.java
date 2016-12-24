@@ -6,7 +6,7 @@ import github.kjkow.kontekst.KontekstZwracany;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-07.
  */
-public interface IAutomatDoExcela {
+public interface IAutomatDoExcela { //TODO: przetestowac po zastosowaniu Kontekstu
 
     /**
      * zmienia zakresy w arkuszu plus jeden miesiac na zakladce Wydatki zestawienie
@@ -20,5 +20,5 @@ public interface IAutomatDoExcela {
      * @param sciezkaDoArkusza
      * @return
      */
-    void utworzArkuszNaNowyRok(String sciezkaDoArkusza);
+    KontekstZwracany utworzArkuszNaNowyRok(String sciezkaDoArkusza);
 }

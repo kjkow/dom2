@@ -1,5 +1,6 @@
 package github.kjkow.automaty.excel.migrator_arkusza_nowy_rok;
 
+import github.kjkow.kontekst.KontekstZwracany;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
@@ -10,20 +11,26 @@ public class MigratorNazwArkuszy extends MigratorArkuszaNowyRok {
 
     public MigratorNazwArkuszy(HSSFWorkbook Arkusz){
         super(Arkusz);
+        pKontekst = new KontekstZwracany();
     }
 
-    public void modyfikujNazwyArkuszy(){
+    @Override
+    public KontekstZwracany migruj() {
         zmienNazwyArkuszy();
+        return pKontekst;
     }
 
     private void zmienNazwyArkuszy(){
-        for(int i = 0; i < nowyArkusz.getNumberOfSheets(); i++){
-            nowyArkusz.setSheetName(i, ustalNowaNazwe(nowyArkusz.getSheetName(i)));
+        try {
+            for (int i = 0; i < nowyArkusz.getNumberOfSheets(); i++) {
+                nowyArkusz.setSheetName(i, ustalNowaNazwe(nowyArkusz.getSheetName(i)));
+            }
+        } catch (Exception e){
+            pKontekst.dodajDoLogu("Blad podczas ustawiania nowych nazw arkuszy.\n" + e);
         }
     }
 
     private String ustalNowaNazwe(String staraNazwa){
-        //logger.info("Zmiana roku w nazwach arkuszy z " + obecnyRok + " na " + przyszlyRok);
         return staraNazwa.replaceAll(String.valueOf(obecnyRok), String.valueOf(przyszlyRok));
     }
 
