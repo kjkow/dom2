@@ -31,6 +31,7 @@ public class MigratorZakresow  {
      */
     public MigratorZakresow(HSSFWorkbook Arkusz){
         arkusz = Arkusz;
+        pKontekst = new KontekstZwracany();
     }
 
     public KontekstZwracany migrujZakresy(int obecnyMiesiac) {
@@ -42,8 +43,6 @@ public class MigratorZakresow  {
     }
 
     public KontekstZwracany migrujPrzyZmianieRoku(){
-        pKontekst = new KontekstZwracany();
-
         inicjujKarteArkusza();
         if(!pKontekst.isCzyBrakBledow()) return pKontekst;
 

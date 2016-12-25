@@ -40,6 +40,10 @@ public abstract class BazowyKontroler {
         ObslugaBledu.obsluzBlad(trescKomunikatu, e);
     }
 
+    protected void otworzNowaFormatke(BazowyKontroler pKontroler){
+        zarzadcaFormatek.wyswietlNowaFormatke(pKontroler, zwrocSceneFormatki());
+    }
+
     public URL pobierzZrodloFormatki(){
         return zrodloFormatki;
     }

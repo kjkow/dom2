@@ -25,13 +25,7 @@ import java.util.ResourceBundle;
  */
 public class KontrolerEkranGlowny extends BazowyKontroler implements Initializable {
 
-    @FXML public Label polaczenie;
-    @FXML public Button sprzatanie;
-    @FXML public Button jedzenie;
-    @FXML public Button konfiguracja;
-    @FXML public Button log;
-    @FXML public Label uroczystosci;
-    //TODO: przejscie na automat do excela
+    @FXML public Label uroczystosci;//TODO: Zamienic na powiadomienia i dodac info o lokatach
 
     private UroczystoscDAO uroczystoscDAO;
 
@@ -55,6 +49,10 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
 
     public void obslugaSprzatanie(ActionEvent actionEvent) {
         zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerSprzatanieEkranGlowny(), zwrocSceneFormatki());
+    }
+
+    public void obslugaNarzedziaExcel(ActionEvent actionEvent) {
+        otworzNowaFormatke(new KontolerAutomatExcel());//TODO: przerobic wszystkie przejscia formatkowe w ten sposob
     }
 
     private void inicjujUroczystosci(){
@@ -98,7 +96,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
 
     @Override
     protected Stage zwrocSceneFormatki() {
-        return (Stage)sprzatanie.getScene().getWindow();
+        return (Stage)uroczystosci.getScene().getWindow();
     }
 
     @Override

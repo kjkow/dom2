@@ -22,17 +22,19 @@ import java.util.ResourceBundle;
  */
 public class KontolerAutomatExcel extends BazowyKontroler implements Initializable{
 
-    public Button migrator_zakresow;
-    public Button tworzenie_nowego_arkusza;
     public Label sciezka;
-    public Button zmien_sciezke;
     public TextArea log;
 
+    private IAutomatDoExcela automat;
+    private KontekstZwracany pKontekst;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        sciezka.setText("C:\\Users\\kamil.kowalczyk\\IdeaProjects\\automat_xls\\budzet_2016.xls");//TODO: 'odszyc'
-        sciezka.setUnderline(true);
+        automat = new AutomatDoExcela();
+    }
+
+    public void akcjaPowrot(ActionEvent actionEvent) {
+        otworzNowaFormatke(new KontrolerEkranGlowny());
     }
 
     public void zmienSciezke(ActionEvent actionEvent) {
@@ -46,16 +48,15 @@ public class KontolerAutomatExcel extends BazowyKontroler implements Initializab
 
     public void utworzNowyArkusz(ActionEvent actionEvent) {
         if(!czyPustaSciezka()) {
-            IAutomatDoExcela automat = new AutomatDoExcela();
-            automat.utworzArkuszNaNowyRok(sciezka.getText());
+            pKontekst = automat.utworzArkuszNaNowyRok(sciezka.getText());
+            log.setText(pKontekst.getLog());
         }
     }
 
 
     public void migrujZakresy(ActionEvent actionEvent) {
         if(!czyPustaSciezka()){
-            IAutomatDoExcela automat = new AutomatDoExcela();
-            KontekstZwracany pKontekst = automat.migrujZakresy(sciezka.getText());
+            pKontekst = automat.migrujZakresy(sciezka.getText());
             log.setText(pKontekst.getLog());
         }
     }
@@ -66,7 +67,7 @@ public class KontolerAutomatExcel extends BazowyKontroler implements Initializab
 
     @Override
     protected Stage zwrocSceneFormatki() {
-        return (Stage)zmien_sciezke.getScene().getWindow();
+        return (Stage)log.getScene().getWindow();
     }
 
     @Override
