@@ -48,7 +48,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
     }
 
     public void obslugaSprzatanie(ActionEvent actionEvent) {
-        zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerSprzatanieEkranGlowny(), zwrocSceneFormatki());
+        otworzNowaFormatke(new KontrolerSprzatanieEkranGlowny());
     }
 
     public void obslugaNarzedziaExcel(ActionEvent actionEvent) {

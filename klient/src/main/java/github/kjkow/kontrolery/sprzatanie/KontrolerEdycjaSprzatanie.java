@@ -4,15 +4,11 @@ package github.kjkow.kontrolery.sprzatanie;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
-import github.kjkow.sprzatanie.Czynnosc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,72 +21,31 @@ import java.util.ResourceBundle;
  */
 public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initializable {
 
-    @FXML public ComboBox<String> czynnosc;
-    @FXML public Button powrot;
-    @FXML public Button dodaj_czynnosc;
-    @FXML public TextField nazwa_czynnosci;
-    @FXML public Button usun_czynnosc;
-    @FXML public Button zmien_nazwe_czynnosci;
-    @FXML public TextField nazwa_czynnosci_do_zmiany;
-    @FXML public TextField czestotliwosc;
-    @FXML public Button zmien_czestotliwosc;
-    @FXML public TextField czestotliwosc_nowa;
+    public ListView lista_czynnosci;
+    private ObservableList<String> listaCzynnosciPrezentacja = FXCollections.observableArrayList();
 
     private SprzatanieDAO sprzatanieDAO;
 
-    private final ObservableList<String> czynnosciPrezentacja = FXCollections.observableArrayList();
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        przeladujComboCzynnosci();
-        ustawEdytowalnosci();
+        zaladujListeCzynnosci();
     }
 
-    /**
-     * Combobox Czynnosci
-     * @param actionEvent
-     */
-    public void akcja_czynnosc(ActionEvent actionEvent) {
-        /* edycja czynnosci
-        ----po wejsciu na formatke
-        * przycisk usun disable
-        * nazwa czynnosci uneditable
-        * nazwa czynnosci tekst prompt wybierz czynność
-        * zmien nazwe disable
-        * czestotliwosc nieedytowalne
-        * zmien czestotliwosc disable
-        *
-        * ----po wybraniu czynnosci
-        * usun enable
-        * nazwa editable
-        * nazwa prompt text - wpisz nazwe do zmiany
-        * zmien nazwe enable
-        * czestotliwosc wypelnic obecna wartoscia
-        * czestotliwosc editable
-        * zmien czestotliwosc enable
-        * */
-//        usun_czynnosc.setDisable(false);
-//        nazwa_czynnosci_do_zmiany.setEditable(true);
-//        nazwa_czynnosci_do_zmiany.setPromptText("Wpisz nową nazwę czynności");
-//        zmien_nazwe_czynnosci.setDisable(false);
-//        czestotliwosc.setEditable(true);
-//        zmien_czestotliwosc.setDisable(false);
-//        czestotliwosc.setText(String.valueOf(model.pobierzModelSprzatanie().pobierzModelListaKategorii().pobierzCzynnosc(czynnosc.getValue()).pobierzLiczbeDniCzestotliwosci()));
-    }
+
 
     /**
      * Button Powrot
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerSprzatanieEkranGlowny(), zwrocSceneFormatki());
+        otworzNowaFormatke(new KontrolerSprzatanieEkranGlowny());
     }
 
     /**
      * Button Dodaj czynnosc
      * @param actionEvent
      */
-    public void akcja_dodaj_czynnosc(ActionEvent actionEvent) {
+    /*public void akcja_dodaj_czynnosc(ActionEvent actionEvent) {
         Czynnosc nowaCzynnosc = new Czynnosc();
 
         if(nazwa_czynnosci.getText().compareTo("") != 0){
@@ -121,7 +76,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         }
 
         przeladujFormatke();
-    }
+    }*/
 
     /**
      * Button Usun czynnosc
@@ -189,31 +144,15 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
 //        przeladujFormatke();
     }
 
-    private void ustawEdytowalnosci(){
-        //dodaj nową czynność
-        nazwa_czynnosci.setPromptText("Wpisz nazwę nowej czynności");
 
-        //edycja czynnosci
-        usun_czynnosc.setDisable(true);
-        nazwa_czynnosci_do_zmiany.setEditable(false);
-        nazwa_czynnosci_do_zmiany.setPromptText("Wybierz czynność");
-        zmien_nazwe_czynnosci.setDisable(true);
-        czestotliwosc.setEditable(false);
-        zmien_czestotliwosc.setDisable(true);
-    }
-
-    private void przeladujFormatke(){
-        zarzadcaFormatek.wyswietlNowaFormatke(this, zwrocSceneFormatki());
-    }
-
-    private void przeladujComboCzynnosci(){
+    private void zaladujListeCzynnosci(){
         inicjujDAO();
         if(sprzatanieDAO == null){
             return;
         }
         try {
             for(String nazwaCzynnosci: sprzatanieDAO.pobierzNazwyCzynnosci()){
-                czynnosciPrezentacja.add(nazwaCzynnosci);
+                listaCzynnosciPrezentacja.add(nazwaCzynnosci);
             }
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
@@ -222,8 +161,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
         }
-        czynnosc.setItems(czynnosciPrezentacja);
-        czynnosc.getSelectionModel().clearSelection();
+        lista_czynnosci.setItems(listaCzynnosciPrezentacja);
     }
 
     private void inicjujDAO(){
@@ -236,11 +174,19 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
 
     @Override
     protected Stage zwrocSceneFormatki() {
-        return (Stage)zmien_nazwe_czynnosci.getScene().getWindow();
+        return (Stage)lista_czynnosci.getScene().getWindow();
     }
 
     @Override
     protected void ustawZrodloFormatki() {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEdycja.fxml");
+    }
+
+    public void akcjaModyfikacja(ActionEvent actionEvent) {
+        //TODO: implementacja
+    }
+
+    public void akcjaDodaj(ActionEvent actionEvent) {
+        //TODO: implementacja
     }
 }
