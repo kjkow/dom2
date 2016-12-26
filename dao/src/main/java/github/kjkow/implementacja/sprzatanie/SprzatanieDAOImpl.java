@@ -20,8 +20,16 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     //TODO:implementacja
 
     @Override
-    public void wykonajCzynnosc(String nazwaCzynnosci, Date dataWykonania) {
-        throw new NotImplementedException();
+    public void wykonajCzynnosc(String nazwaCzynnosci, Date dataWykonania) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareCall("CALL WYKONAJ_CZYNNOSC(?,?)");
+            kwerenda.setString(1, nazwaCzynnosci);
+            kwerenda.setDate(2, dataWykonania);
+            kwerenda.executeQuery();
+            zamknijPolczenie();
+        }
     }
 
     @Override
@@ -30,8 +38,23 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     }
 
     @Override
-    public List<Czynnosc> pobierzNajblizszeSprzatania() {
-        throw new NotImplementedException();
+    public List<Czynnosc> pobierzNajblizszeSprzatania() throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        ArrayList<Czynnosc> czynnosci = new ArrayList<>();
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSC ORDER BY DATA_NASTEPNEGO_SPRZATANIA ASC limit 10");
+            wynikKwerendy = kwerenda.executeQuery();
+
+            while (wynikKwerendy.next()){
+                Czynnosc nowa = new Czynnosc();
+                nowa.setNazwaCzynnosci(wynikKwerendy.getString("NAZWA"));
+                nowa.setDataNastepnegoSprzatania(wynikKwerendy.getDate("DATA_NASTEPNEGO_SPRZATANIA").toLocalDate());
+                nowa.setDataOstatniegoSprzatania(wynikKwerendy.getDate("DATA_OSTATNIEGO_SPRZATANIA").toLocalDate());
+                nowa.setDniCzestotliwosci(wynikKwerendy.getInt("CZESTOTLIWOSC"));
+                czynnosci.add(nowa);
+            }
+        }
+        return czynnosci;
     }
 
     @Override
@@ -77,6 +100,26 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
         }
 
         return czynnosci;
+    }
+
+    @Override
+    public Czynnosc pobierzDaneCzynnosci(String nazwaCzynnosci) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        Czynnosc czynnosc = new Czynnosc();
+        czynnosc.setNazwaCzynnosci(nazwaCzynnosci);
+
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSC WHERE NAZWA = ?");
+            kwerenda.setString(1, nazwaCzynnosci);
+            wynikKwerendy = kwerenda.executeQuery();
+            if(wynikKwerendy.next()){
+                czynnosc.setDataOstatniegoSprzatania(wynikKwerendy.getDate("DATA_OSTATNIEGO_SPRZATANIA").toLocalDate());
+                czynnosc.setDataNastepnegoSprzatania(wynikKwerendy.getDate("DATA_NASTEPNEGO_SPRZATANIA").toLocalDate());
+                czynnosc.setDniCzestotliwosci(wynikKwerendy.getInt("CZESTOTLIWOSC"));
+            }
+        }
+
+        return czynnosc;
     }
 
 

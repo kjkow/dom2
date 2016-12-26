@@ -2,7 +2,12 @@ package github.kjkow.kontrolery.sprzatanie;
 
 
 import github.kjkow.bazowe.BazowyKontroler;
+import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
+import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
 import github.kjkow.kontrolery.KontrolerEkranGlowny;
+import github.kjkow.sprzatanie.Czynnosc;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,8 +15,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -19,29 +26,45 @@ import java.util.ResourceBundle;
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
 public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements Initializable {
-    @FXML
-    public ComboBox<String> kategoria;
+
+
     @FXML public ComboBox<String> czynnosc;
-    @FXML public TextField aktualna_czynnosc;
     @FXML public TextField data_nastepnego_sprzatania;
     @FXML public TextField data_ostatniego_sprzatania;
     @FXML public DatePicker data_wykonania;
-    @FXML public Button wykonano;
-    @FXML public Button powrot;
     @FXML public ListView<String> najblizsze_sprzatania;
-    @FXML public Button odloz;
-    @FXML public Button edycja;
 
-    //private Kategoria wybranaKategoria;
-    //private Czynnosc wybranaCzynnosc;
+    private ObservableList<String> najblizszeSprzatania = FXCollections.observableArrayList();
+    private ObservableList<String> listaCzynnosciPrezentacja = FXCollections.observableArrayList();
+    private Czynnosc wybranaCzynnosc; //wybrana może być albo z combosa albo z najbliższych sprzątań
+    private SprzatanieDAO sprzatanieDAO;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //kategoria.setItems(model.pobierzModelSprzatanie().pobierzModelListaKategorii().pobierzNazwyKategorii());
-//        wybranaKategoria = null;
-//        wybranaCzynnosc = null;
-        //odswiezNajblizszeSprzatania();
+        zaladujListeNajblizszychSprzatan();
         data_wykonania.setValue(LocalDate.now());
+        zaladujComboCzynnosci();
+    }
+
+    private void zaladujComboCzynnosci(){
+        inicjujDAO();
+
+        if(sprzatanieDAO == null){
+            return;
+        }
+
+        try {
+            for(String nazwaCzynnosci: sprzatanieDAO.pobierzNazwyCzynnosci()){
+                listaCzynnosciPrezentacja.add(nazwaCzynnosci);
+            }
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+        czynnosc.setItems(listaCzynnosciPrezentacja);
     }
 
 
@@ -49,26 +72,64 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     //------------------------AKCJE FORMATKI-------------------------------//
     //---------------------------------------------------------------------//
 
-    public void akcja_kategoria(ActionEvent actionEvent) {
-//        String wartoscZCombo = kategoria.getValue();
-//        wybranaKategoria = model.pobierzModelSprzatanie().pobierzModelListaKategorii().pobierzKategorie(wartoscZCombo);
-//        if(wybranaKategoria != null) {
-//            czynnosc.setItems(wybranaKategoria.pobierzCzynnosciPrezentacja());
-//        }
-//        wyczyscPolaCzynnosci();
-    }
-
+    /**
+     * Combobox
+     * @param actionEvent
+     */
     public void akcja_czynnosc(ActionEvent actionEvent) {
-//        wybranaCzynnosc = wybranaKategoria.pobierzCzynnosc(czynnosc.getValue());
-//        if(wybranaCzynnosc != null){
-//            ustawDatyCzynnosci();
-//            aktualna_czynnosc.setText(wybranaCzynnosc.pobierzNazweCzynnosci());
-//        }else{
-//            wyczyscPolaCzynnosci();
-//        }
+        inicjujDAO();
+
+        if(sprzatanieDAO == null){
+            return;
+        }
+
+        try {
+            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(czynnosc.getValue());
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+        ustawDatyCzynnosci();
     }
 
     public void akcja_wykonano(ActionEvent actionEvent) {
+        if(data_wykonania.getValue() == null){
+            zarzadcaFormatek.wyswietlOknoInformacji("Pole data wykonania nie może być puste.");
+            return;
+        }
+        if(wybranaCzynnosc.getNazwaCzynnosci() == null && wybranaCzynnosc.getNazwaCzynnosci().compareTo("") == 0){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nie wybrano czynności do wykonania.");
+            return;
+        }
+
+        inicjujDAO();
+
+        try {
+            sprzatanieDAO.wykonajCzynnosc(wybranaCzynnosc.getNazwaCzynnosci(), konwerujLocalDateNaSqlDate(data_wykonania.getValue()));
+            //TODO: zapisz do logu
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+
+        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie wykonano czynność.");
+
+        try {
+            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(wybranaCzynnosc.getNazwaCzynnosci());
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        }
+
+        ustawDatyCzynnosci();
+
 //        if (wykonanieCzynnosciWalidacja() && op.PokazOknoPotwierdzenia("Wykonywanie czynności", "Wykonano czynność " + wybranaCzynnosc.pobierzNazweCzynnosci().toLowerCase() + "?")) {
 //            LocalDate noweOstatnieSprzatanie = data_wykonania.getValue();
 //            LocalDate noweNastepneSprzatanie = noweOstatnieSprzatanie.plusDays(wybranaCzynnosc.pobierzLiczbeDniCzestotliwosci());
@@ -100,26 +161,30 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
     }
 
+    /**
+     * ListView
+     * @param mouseEvent
+     */
     public void akcja_najblizsze_sprzatania(MouseEvent mouseEvent) {
-//        String nazwaCzynnosci = najblizsze_sprzatania.getSelectionModel().getSelectedItem();
-//
-//        //obcinanie nazwy tabelarycznej
-//        int dlugoscNazwy = nazwaCzynnosci.length();
-//        nazwaCzynnosci = nazwaCzynnosci.substring(10,dlugoscNazwy);
-//        nazwaCzynnosci = nazwaCzynnosci.trim();
-//
-//        wybranaKategoria = model.pobierzModelSprzatanie().pobierzModelListaKategorii().pobierzKategoriePoCzynnosci(nazwaCzynnosci);
-//        if(wybranaKategoria == null){
-//            op.PokazOknoInformacji("", "Nie znaleziono kategorii odpowiadającej czynności " + nazwaCzynnosci);
-//            return;
-//        }
-//        wybranaCzynnosc = model.pobierzModelSprzatanie().pobierzModelListaKategorii().pobierzKategorie(wybranaKategoria.pobierzNazweKategorii()).pobierzCzynnosc(nazwaCzynnosci);
-//        if(wybranaCzynnosc == null){
-//            op.PokazOknoInformacji("", "Nie znaleziono czynności " + nazwaCzynnosci);
-//            return;
-//        }
-//        ustawDatyCzynnosci();
-//        aktualna_czynnosc.setText(wybranaCzynnosc.pobierzNazweCzynnosci());
+        String nazwaCzynnosci = najblizsze_sprzatania.getSelectionModel().getSelectedItem();
+
+        inicjujDAO();
+
+        if(sprzatanieDAO == null || nazwaCzynnosci == null){
+            return;
+        }
+
+        try {
+            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(nazwaCzynnosci.substring(10,nazwaCzynnosci.length()).trim());
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+
+        ustawDatyCzynnosci();
     }
 
     public void akcja_odloz(ActionEvent actionEvent) {
@@ -161,19 +226,40 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     //-----------------------metody pomocnicze-----------------------------//
 
     private void wyczyscPolaCzynnosci(){
-        aktualna_czynnosc.clear();
         data_nastepnego_sprzatania.clear();
         data_ostatniego_sprzatania.clear();
     }
 
-    private void odswiezNajblizszeSprzatania(){
-//        model.pobierzModelSprzatanie().pobierzModelNajblizszeSprzatania().odswiezWarstwePrezentacji();
-//        najblizsze_sprzatania.setItems(model.pobierzModelSprzatanie().pobierzModelNajblizszeSprzatania().pobierzNajblizszeCzynnosciPrezentacja());
+    private void zaladujListeNajblizszychSprzatan(){
+        inicjujDAO();
+
+        if(sprzatanieDAO == null){
+            return;
+        }
+
+        try {
+            for(Czynnosc czynnosc: sprzatanieDAO.pobierzNajblizszeSprzatania()){
+                najblizszeSprzatania.add(czynnosc.getDataNastepnegoSprzatania().toString() + "\t" + czynnosc.getNazwaCzynnosci());
+            }
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        }
+        najblizsze_sprzatania.setItems(najblizszeSprzatania);
+    }
+
+    private void inicjujDAO(){
+        try {
+            sprzatanieDAO = new SprzatanieDAOImpl();
+        } catch (IOException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO, e);
+        }
     }
 
     private void ustawDatyCzynnosci(){
-//        data_nastepnego_sprzatania.setText(wybranaCzynnosc.pobierzDateNastepnegoSprzatania().toString());
-//        data_ostatniego_sprzatania.setText(wybranaCzynnosc.pobierzDateOstatniegoSprzatania().toString());
+        data_nastepnego_sprzatania.setText(wybranaCzynnosc.getDataNastepnegoSprzatania() != null ? wybranaCzynnosc.getDataNastepnegoSprzatania().toString() : "");
+        data_ostatniego_sprzatania.setText(wybranaCzynnosc.getDataOstatniegoSprzatania() != null ? wybranaCzynnosc.getDataOstatniegoSprzatania().toString() : "");
     }
 
     private Date konwerujLocalDateNaSqlDate(LocalDate data) {
@@ -195,7 +281,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
     @Override
     protected Stage zwrocSceneFormatki() {
-        return (Stage)edycja.getScene().getWindow();
+        return (Stage)czynnosc.getScene().getWindow();
     }
 
     @Override
