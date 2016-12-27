@@ -2,8 +2,10 @@ package github.kjkow.kontrolery.sprzatanie;
 
 
 import github.kjkow.bazowe.BazowyKontroler;
+import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
+import github.kjkow.sprzatanie.Czynnosc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +23,7 @@ import java.util.ResourceBundle;
  */
 public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initializable {
 
-    public ListView lista_czynnosci;
+    public ListView<String> lista_czynnosci;
     private ObservableList<String> listaCzynnosciPrezentacja = FXCollections.observableArrayList();
 
     private SprzatanieDAO sprzatanieDAO;
@@ -183,10 +185,22 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
     }
 
     public void akcjaModyfikacja(ActionEvent actionEvent) {
-        //TODO: implementacja
+        Czynnosc czynnosc;
+
+        try {
+            czynnosc = sprzatanieDAO.pobierzDaneCzynnosci(lista_czynnosci.getSelectionModel().getSelectedItem());
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+        PrzechowywaczDanych.zapiszObiekt(czynnosc);
+        otworzNowaFormatke(new KontrolerModyfikujCzynnosc());
     }
 
     public void akcjaDodaj(ActionEvent actionEvent) {
-        //TODO: implementacja
+        otworzNowaFormatke(new KontrolerDodajCzynnosc());
     }
 }
