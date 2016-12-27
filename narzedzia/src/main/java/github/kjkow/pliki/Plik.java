@@ -4,6 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-07.
@@ -34,6 +35,21 @@ public class Plik implements IPlik {
 
         inputChannel.close();
         outputChannel.close();
+    }
+
+    @Override
+    public ArrayList<String> czytajZPliku(String sciezkaDoPliku) throws IOException {
+        ArrayList<String> liniePliku = new ArrayList<>();
+        BufferedReader bufor = new BufferedReader(new FileReader(sciezkaDoPliku));
+        String liniaZPliku;
+        do{
+            liniaZPliku = bufor.readLine();
+            if(liniaZPliku != null){
+                liniePliku.add(liniaZPliku);
+            }
+        } while (liniaZPliku != null);
+
+        return liniePliku;
     }
 
 
