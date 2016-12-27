@@ -23,9 +23,10 @@ public abstract class BazowyKontroler {
     protected IAutomatDoExcela automatDoExcela;
     protected IDziennik dziennik;
 
-    protected static final String KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO = "Błąd podczas wczytywania konfiguracji bazy danych z pliku";
+    protected static final String KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO = "Wystąpił błąd podczas wczytywania konfiguracji bazy danych z pliku";
     protected static final String KOMUNIKAT_BLEDU_SQL = "Wystąpił błąd na bazie danych";
     protected static final String KOMUNIKAT_BLEDU_KONEKTORA_JDBC = "Wystąpił błąd sterownika bazy danych";
+    protected static final String KOMUNIKAT_BLEDU_IO = "Wystąpił błąd podczas wczytywania pliku.";
 
     protected SprzatanieDAO sprzatanieDAO;
 

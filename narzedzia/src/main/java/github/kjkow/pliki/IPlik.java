@@ -22,4 +22,6 @@ public interface IPlik {
      * @return linie tekstu z wczytanego pliku
      */
     ArrayList<String> czytajZPliku(String sciezkaDoPliku) throws IOException;
+
+    void zapiszDoPliku(String sciezkaDoPliku, ArrayList<String> linieDoZapisania) throws IOException;
 }

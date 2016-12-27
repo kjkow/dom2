@@ -52,5 +52,16 @@ public class Plik implements IPlik {
         return liniePliku;
     }
 
+    @Override
+    public void zapiszDoPliku(String sciezkaDoPliku, ArrayList<String> linieDoZapisania) throws IOException {
+        FileWriter zapisywaczPliku =  new FileWriter(sciezkaDoPliku, true);
+        BufferedWriter buforZapisu = new BufferedWriter(zapisywaczPliku);
+        PrintWriter zapisywacz = new PrintWriter(buforZapisu);
 
+        for(String linia: linieDoZapisania){
+            zapisywacz.println(linia);
+        }
+
+        zapisywacz.close();
+    }
 }

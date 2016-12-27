@@ -10,7 +10,6 @@ import github.kjkow.kontrolery.sprzatanie.KontrolerSprzatanieEkranGlowny;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -35,7 +34,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
     }
 
     public void obslugaLog(ActionEvent actionEvent) {
-        //scena.wyswietlNowaScene(sprzatanie, EnumOknaAplikacji.LOG);
+        otworzNowaFormatke(new KontrolerLog());
     }
 
     public void obslugaKonfiguracja(ActionEvent actionEvent) {

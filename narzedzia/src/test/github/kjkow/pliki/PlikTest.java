@@ -29,4 +29,18 @@ public class PlikTest {
         }
         System.out.println(linie);
     }
+
+    @Test
+    public void testZapiszDoPliku(){
+        ArrayList<String> linie = new ArrayList<>();
+        linie.add("test1");
+        linie.add("test2");
+        linie.add("test3");
+
+        try {
+            plik.zapiszDoPliku("narzedzia/src/test/github/kjkow/pliki/test.txt", linie);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

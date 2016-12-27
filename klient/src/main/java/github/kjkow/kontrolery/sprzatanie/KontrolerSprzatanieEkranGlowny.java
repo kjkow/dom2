@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -102,6 +103,8 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zapisano wykonanie czynności.");
