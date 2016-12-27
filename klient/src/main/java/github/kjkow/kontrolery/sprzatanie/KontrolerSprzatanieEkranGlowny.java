@@ -42,31 +42,9 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         zaladujListeNajblizszychSprzatan();
-        data_wykonania.setValue(LocalDate.now());
+        ustawDateWykonaniaNaDzis();
         zaladujComboCzynnosci();
     }
-
-    private void zaladujComboCzynnosci(){
-        inicjujDAO();
-
-        if(sprzatanieDAO == null){
-            return;
-        }
-
-        try {
-            for(String nazwaCzynnosci: sprzatanieDAO.pobierzNazwyCzynnosci()){
-                listaCzynnosciPrezentacja.add(nazwaCzynnosci);
-            }
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
-        }
-        czynnosc.setItems(listaCzynnosciPrezentacja);
-    }
-
 
     //---------------------------------------------------------------------//
     //------------------------AKCJE FORMATKI-------------------------------//
@@ -100,12 +78,16 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
             zarzadcaFormatek.wyswietlOknoInformacji("Pole data wykonania nie może być puste.");
             return;
         }
-        if(wybranaCzynnosc.getNazwaCzynnosci() == null && wybranaCzynnosc.getNazwaCzynnosci().compareTo("") == 0){
+        if(wybranaCzynnosc.getNazwaCzynnosci() == null || wybranaCzynnosc.getNazwaCzynnosci().compareTo("") == 0){
             zarzadcaFormatek.wyswietlOknoInformacji("Nie wybrano czynności do wykonania.");
             return;
         }
 
         inicjujDAO();
+
+        if(sprzatanieDAO == null){
+            return;
+        }
 
         try {
             sprzatanieDAO.wykonajCzynnosc(wybranaCzynnosc.getNazwaCzynnosci(), konwerujLocalDateNaSqlDate(data_wykonania.getValue()));
@@ -118,8 +100,11 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
             return;
         }
 
-        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie wykonano czynność.");
+        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zapisano wykonanie czynności.");
+        ustawDateWykonaniaNaDzis();
+        zaladujListeNajblizszychSprzatan();
 
+        //przepisanie do zmiennej dla ustawienia dat czynnosci
         try {
             wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(wybranaCzynnosc.getNazwaCzynnosci());
         } catch (SQLException e) {
@@ -129,31 +114,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         }
 
         ustawDatyCzynnosci();
-
-//        if (wykonanieCzynnosciWalidacja() && op.PokazOknoPotwierdzenia("Wykonywanie czynności", "Wykonano czynność " + wybranaCzynnosc.pobierzNazweCzynnosci().toLowerCase() + "?")) {
-//            LocalDate noweOstatnieSprzatanie = data_wykonania.getValue();
-//            LocalDate noweNastepneSprzatanie = noweOstatnieSprzatanie.plusDays(wybranaCzynnosc.pobierzLiczbeDniCzestotliwosci());
-//
-//            //zapisanie stanu przed próbą zapisu na baze
-//            LocalDate tmpOstatnieSprzatanie = wybranaCzynnosc.pobierzDateOstatniegoSprzatania();
-//            LocalDate tmpNastepneSprzatanie = wybranaCzynnosc.pobierzDateNastepnegoSprzatania();
-//
-//            //zmiana na modelu
-//            wybranaCzynnosc.ustawDateNastepnegoSprzatania(noweNastepneSprzatanie);
-//            wybranaCzynnosc.ustawDateOstatniegoSprzatania(noweOstatnieSprzatanie);
-//
-//            if (model.pobierzModelSprzatanie().pobierzModelListaKategorii().wykonajCzynnosc(wybranaCzynnosc.pobierzNazweCzynnosci(), konwerujLocalDateNaSqlDate(data_wykonania.getValue()))) {
-//                ustawDatyCzynnosci();
-//                log.zapiszWykonanieCzynnosci(wybranaCzynnosc.pobierzNazweCzynnosci());
-//                zapiszLogNaBazie("AKCJA", "Wykonanie czynnosci: " + wybranaCzynnosc.pobierzNazweCzynnosci());
-//            }else{
-//                //przywrócenie danych po nieudanym zapisie na bazie
-//                wybranaCzynnosc.ustawDateOstatniegoSprzatania(tmpNastepneSprzatanie);
-//                wybranaCzynnosc.ustawDateNastepnegoSprzatania(tmpOstatnieSprzatanie);
-//            }
-//        }
-//        odswiezNajblizszeSprzatania();
-//        data_wykonania.setValue(null);
     }
 
     public void akcja_powrot(ActionEvent actionEvent) {
@@ -225,11 +185,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
     //-----------------------metody pomocnicze-----------------------------//
 
-    private void wyczyscPolaCzynnosci(){
-        data_nastepnego_sprzatania.clear();
-        data_ostatniego_sprzatania.clear();
-    }
-
     private void zaladujListeNajblizszychSprzatan(){
         inicjujDAO();
 
@@ -266,17 +221,30 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         return Date.valueOf(data);
     }
 
-    private boolean wykonanieCzynnosciWalidacja(){
-//        String tytulBledu = "Błąd walidacji";
-//        if(wybranaCzynnosc == null){
-//            op.PokazOknoInformacji(tytulBledu, "Nie wybrano czynności.");
-//            return false;
-//        }
-//        if(data_wykonania.getValue()==null){
-//            op.PokazOknoInformacji(tytulBledu, "Nie wybrano daty wykonania.");
-//            return false;
-//        }
-        return true;
+
+    private void ustawDateWykonaniaNaDzis(){
+        data_wykonania.setValue(LocalDate.now());
+    }
+
+    private void zaladujComboCzynnosci(){
+        inicjujDAO();
+
+        if(sprzatanieDAO == null){
+            return;
+        }
+
+        try {
+            for(String nazwaCzynnosci: sprzatanieDAO.pobierzNazwyCzynnosci()){
+                listaCzynnosciPrezentacja.add(nazwaCzynnosci);
+            }
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+        czynnosc.setItems(listaCzynnosciPrezentacja);
     }
 
     @Override
