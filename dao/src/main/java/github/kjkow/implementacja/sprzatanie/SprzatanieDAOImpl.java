@@ -33,8 +33,15 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     }
 
     @Override
-    public void odlozCzynnosc(String nazwaCzynnosci) {
-        throw new NotImplementedException();
+    public void odlozCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareCall("CALL ODLOZ_CZYNNOSC(?)");
+            kwerenda.setString(1, nazwaCzynnosci);
+            kwerenda.executeQuery();
+            zamknijPolczenie();
+        }
     }
 
     @Override

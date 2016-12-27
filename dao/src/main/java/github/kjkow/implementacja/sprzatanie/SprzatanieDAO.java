@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface SprzatanieDAO {
     void wykonajCzynnosc(String nazwaCzynnosci, Date dataWykonania) throws SQLException, ClassNotFoundException;
-    void odlozCzynnosc(String nazwaCzynnosci);
+    void odlozCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException;
     List<Czynnosc> pobierzNajblizszeSprzatania() throws SQLException, ClassNotFoundException;
     void dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException;
     void usunCzynnosc(String nazwaCzynnosci);

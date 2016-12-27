@@ -51,6 +51,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
     /**
      * Combobox
+     * klikniecie w element z listy combo
      * @param actionEvent
      */
     public void akcja_czynnosc(ActionEvent actionEvent) {
@@ -72,6 +73,10 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         ustawDatyCzynnosci();
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void akcja_wykonano(ActionEvent actionEvent) {
         if(data_wykonania.getValue() == null){
             zarzadcaFormatek.wyswietlOknoInformacji("Pole data wykonania nie może być puste.");
@@ -121,6 +126,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
     /**
      * ListView
+     * klikniecie na element z listy
      * @param mouseEvent
      */
     public void akcja_najblizsze_sprzatania(MouseEvent mouseEvent) {
@@ -145,29 +151,32 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         ustawDatyCzynnosci();
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void akcja_odloz(ActionEvent actionEvent) {
-//        if (wybranaCzynnosc != null && op.PokazOknoPotwierdzenia("Odkładanie czynności", "Odłożyć czynność " + wybranaCzynnosc.pobierzNazweCzynnosci().toLowerCase() + "?")) {
-//            LocalDate stareNastepneSprzatanie = konwertujStringNaLocalDate(data_nastepnego_sprzatania.getText());
-//            LocalDate noweNastepneSprzatanie = stareNastepneSprzatanie.plusDays(7);
-//
-//            //zapisanie stanu przed próbą zapisu na baze
-//            LocalDate tmpNastepneSprzatanie = wybranaCzynnosc.pobierzDateNastepnegoSprzatania();
-//
-//            //zmiana na modelu
-//            wybranaCzynnosc.ustawDateNastepnegoSprzatania(noweNastepneSprzatanie);
-//
-//            if(model.pobierzModelSprzatanie().pobierzModelListaKategorii().odlozCzynnosc(wybranaCzynnosc.pobierzNazweCzynnosci())){
-//                ustawDatyCzynnosci();
-//                log.zapiszOdlozenieCzynnosci(wybranaCzynnosc.pobierzNazweCzynnosci());
-//                zapiszLogNaBazie("AKCJA", "Odlozenie czynnosci: " + wybranaCzynnosc.pobierzNazweCzynnosci());
-//            }else{
-//                //przywrócenie danych po nieudanym zapisie na bazie
-//                wybranaCzynnosc.ustawDateOstatniegoSprzatania(tmpNastepneSprzatanie);
-//            }
-//        }else if(wybranaCzynnosc==null){
-//            op.PokazOknoInformacji("Błąd walidacji", "Nie wybrano czynności.");
-//        }
-//        odswiezNajblizszeSprzatania();
+
+        if(wybranaCzynnosc == null){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nie wybrano czynności.");
+            return;
+        }
+
+        inicjujSprzatanieDAO();
+        if(sprzatanieDAO == null) return;
+
+        try {
+            sprzatanieDAO.odlozCzynnosc(wybranaCzynnosc.getNazwaCzynnosci());
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+
+        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zapisano odłożenie czynności.");
+        zaladujListeNajblizszychSprzatan();
     }
 
 
