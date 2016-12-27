@@ -116,8 +116,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     }
 
     public void akcja_powrot(ActionEvent actionEvent) {
-       zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerEkranGlowny(), zwrocSceneFormatki());
-
+        otworzNowaFormatke(new KontrolerEkranGlowny());
     }
 
     /**
