@@ -5,8 +5,13 @@ import github.kjkow.automaty.excel.AutomatDoExcela;
 import github.kjkow.automaty.excel.IAutomatDoExcela;
 import github.kjkow.bazowe.formatka.IZarzadcaFormatek;
 import github.kjkow.bazowe.formatka.ZarzadcaFormatek;
+import github.kjkow.dziennik.Dziennik;
+import github.kjkow.dziennik.IDziennik;
+import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
+import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -16,9 +21,13 @@ public abstract class BazowyKontroler {
 
     protected IZarzadcaFormatek zarzadcaFormatek;
     protected IAutomatDoExcela automatDoExcela;
+    protected IDziennik dziennik;
+
     protected static final String KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO = "Błąd podczas wczytywania konfiguracji bazy danych z pliku";
     protected static final String KOMUNIKAT_BLEDU_SQL = "Wystąpił błąd na bazie danych";
     protected static final String KOMUNIKAT_BLEDU_KONEKTORA_JDBC = "Wystąpił błąd sterownika bazy danych";
+
+    protected SprzatanieDAO sprzatanieDAO;
 
     protected URL zrodloFormatki;
 
@@ -34,6 +43,9 @@ public abstract class BazowyKontroler {
         if(automatDoExcela == null){
             automatDoExcela = new AutomatDoExcela();
         }
+        if(dziennik == null){
+            dziennik = new Dziennik();
+        }
     }
 
     protected void obsluzBlad(String trescKomunikatu, Exception e){
@@ -42,6 +54,17 @@ public abstract class BazowyKontroler {
 
     protected void otworzNowaFormatke(BazowyKontroler pKontroler){
         zarzadcaFormatek.wyswietlNowaFormatke(pKontroler, zwrocSceneFormatki());
+    }
+
+
+    protected void inicjujSprzatanieDAO(){
+        if(sprzatanieDAO != null) return;
+
+        try {
+            sprzatanieDAO = new SprzatanieDAOImpl();
+        } catch (IOException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO, e);
+        }
     }
 
     public URL pobierzZrodloFormatki(){

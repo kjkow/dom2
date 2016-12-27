@@ -2,8 +2,6 @@ package github.kjkow.kontrolery.sprzatanie;
 
 
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
-import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
 import github.kjkow.kontrolery.KontrolerEkranGlowny;
 import github.kjkow.sprzatanie.Czynnosc;
 import javafx.collections.FXCollections;
@@ -11,11 +9,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -37,7 +37,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     private ObservableList<String> najblizszeSprzatania = FXCollections.observableArrayList();
     private ObservableList<String> listaCzynnosciPrezentacja = FXCollections.observableArrayList();
     private Czynnosc wybranaCzynnosc; //wybrana może być albo z combosa albo z najbliższych sprzątań
-    private SprzatanieDAO sprzatanieDAO;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -55,7 +54,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
      * @param actionEvent
      */
     public void akcja_czynnosc(ActionEvent actionEvent) {
-        inicjujDAO();
+        inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
             return;
@@ -83,7 +82,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
             return;
         }
 
-        inicjujDAO();
+        inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
             return;
@@ -91,7 +90,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
         try {
             sprzatanieDAO.wykonajCzynnosc(wybranaCzynnosc.getNazwaCzynnosci(), konwerujLocalDateNaSqlDate(data_wykonania.getValue()));
-            //TODO: zapisz do logu
+            dziennik.zapiszInformacje("Wykonano czynność " + wybranaCzynnosc.getNazwaCzynnosci());
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
@@ -128,7 +127,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     public void akcja_najblizsze_sprzatania(MouseEvent mouseEvent) {
         String nazwaCzynnosci = najblizsze_sprzatania.getSelectionModel().getSelectedItem();
 
-        inicjujDAO();
+        inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null || nazwaCzynnosci == null){
             return;
@@ -186,7 +185,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     //-----------------------metody pomocnicze-----------------------------//
 
     private void zaladujListeNajblizszychSprzatan(){
-        inicjujDAO();
+        inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
             return;
@@ -204,14 +203,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         najblizsze_sprzatania.setItems(najblizszeSprzatania);
     }
 
-    private void inicjujDAO(){
-        try {
-            sprzatanieDAO = new SprzatanieDAOImpl();
-        } catch (IOException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO, e);
-        }
-    }
-
     private void ustawDatyCzynnosci(){
         data_nastepnego_sprzatania.setText(wybranaCzynnosc.getDataNastepnegoSprzatania() != null ? wybranaCzynnosc.getDataNastepnegoSprzatania().toString() : "");
         data_ostatniego_sprzatania.setText(wybranaCzynnosc.getDataOstatniegoSprzatania() != null ? wybranaCzynnosc.getDataOstatniegoSprzatania().toString() : "");
@@ -227,7 +218,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     }
 
     private void zaladujComboCzynnosci(){
-        inicjujDAO();
+        inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
             return;
