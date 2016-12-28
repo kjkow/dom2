@@ -42,6 +42,10 @@ public class KontrolerLog extends BazowyKontroler implements Initializable {
         }
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void akcja_powrot(ActionEvent actionEvent) {
         wrocDoPoprzedniejFormatki();
     }

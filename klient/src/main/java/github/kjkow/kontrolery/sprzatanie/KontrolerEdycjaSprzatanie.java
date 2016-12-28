@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -28,7 +29,33 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         zaladujListeCzynnosci();
     }
 
+    /**
+     * Button modyfikuj
+     * @param actionEvent
+     */
+    public void akcjaModyfikacja(ActionEvent actionEvent) {
+        Czynnosc czynnosc;
 
+        try {
+            czynnosc = sprzatanieDAO.pobierzDaneCzynnosci(lista_czynnosci.getSelectionModel().getSelectedItem());
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+        PrzechowywaczDanych.zapiszObiekt(czynnosc);
+        otworzNowaFormatke(new KontrolerModyfikujCzynnosc());
+    }
+
+    /**
+     * Button dodaj
+     * @param actionEvent
+     */
+    public void akcjaDodaj(ActionEvent actionEvent) {
+        otworzNowaFormatke(new KontrolerDodajCzynnosc());
+    }
 
     /**
      * Button Powrot
@@ -49,15 +76,20 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
             return;
         }
 
+        String nazwaCzynnosci = lista_czynnosci.getSelectionModel().getSelectedItem();
         int liczbaZmienionychWierszy;
 
         try {
-            liczbaZmienionychWierszy = sprzatanieDAO.usunCzynnosc(lista_czynnosci.getSelectionModel().getSelectedItem());
+            liczbaZmienionychWierszy = sprzatanieDAO.usunCzynnosc(nazwaCzynnosci);
+            dziennik.zapiszInformacje("Usunięto czynność " + nazwaCzynnosci);
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             return;
         }
 
@@ -102,25 +134,5 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
     @Override
     protected void zapametajPowrot() {
         PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-    public void akcjaModyfikacja(ActionEvent actionEvent) {
-        Czynnosc czynnosc;
-
-        try {
-            czynnosc = sprzatanieDAO.pobierzDaneCzynnosci(lista_czynnosci.getSelectionModel().getSelectedItem());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
-        }
-        PrzechowywaczDanych.zapiszObiekt(czynnosc);
-        otworzNowaFormatke(new KontrolerModyfikujCzynnosc());
-    }
-
-    public void akcjaDodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerDodajCzynnosc());
     }
 }

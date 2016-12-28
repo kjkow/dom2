@@ -51,7 +51,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     //---------------------------------------------------------------------//
 
     /**
-     * Combobox
+     * Combobox czynnosc
      * klikniecie w element z listy combo
      * @param actionEvent
      */
@@ -75,7 +75,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     }
 
     /**
-     * Button
+     * Button wykonano
      * @param actionEvent
      */
     public void akcja_wykonano(ActionEvent actionEvent) {
@@ -123,12 +123,16 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         ustawDatyCzynnosci();
     }
 
+    /**
+     * Button powrot
+     * @param actionEvent
+     */
     public void akcja_powrot(ActionEvent actionEvent) {
         wrocDoPoprzedniejFormatki();
     }
 
     /**
-     * ListView
+     * ListView najblizsze sprzatania
      * klikniecie na element z listy
      * @param mouseEvent
      */
@@ -155,7 +159,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     }
 
     /**
-     * Button
+     * Button odloz
      * @param actionEvent
      */
     public void akcja_odloz(ActionEvent actionEvent) {
@@ -170,11 +174,15 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
         try {
             sprzatanieDAO.odlozCzynnosc(wybranaCzynnosc.getNazwaCzynnosci());
+            dziennik.zapiszInformacje("Odłożono czynność " + wybranaCzynnosc.getNazwaCzynnosci());
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             return;
         }
 
@@ -182,7 +190,10 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         zaladujListeNajblizszychSprzatan();
     }
 
-
+    /**
+     * Button edytuj
+     * @param actionEvent
+     */
     public void akcja_edycja(ActionEvent actionEvent) {
         otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
     }

@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,10 +34,18 @@ public class KontolerAutomatExcel extends BazowyKontroler implements Initializab
         automat = new AutomatDoExcela();
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void akcjaPowrot(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerEkranGlowny());
+        wrocDoPoprzedniejFormatki();
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void zmienSciezke(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         File wybranyPlik = fileChooser.showOpenDialog(null);
@@ -46,18 +55,35 @@ public class KontolerAutomatExcel extends BazowyKontroler implements Initializab
         }
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void utworzNowyArkusz(ActionEvent actionEvent) {
         if(!czyPustaSciezka()) {
             pKontekst = automat.utworzArkuszNaNowyRok(sciezka.getText());
             log.setText(pKontekst.getLog());
+            try {
+                dziennik.zapiszInformacje("Wykonano migrator tworzenia nowego arkusza." + "\n" + pKontekst.getLog());
+            } catch (IOException e) {
+                zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            }
         }
     }
 
-
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void migrujZakresy(ActionEvent actionEvent) {
         if(!czyPustaSciezka()){
             pKontekst = automat.migrujZakresy(sciezka.getText());
             log.setText(pKontekst.getLog());
+            try {
+                dziennik.zapiszInformacje("Wykonano migrator przesuwania zakresów." + "\n" + pKontekst.getLog());
+            } catch (IOException e) {
+                zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            }
         }
     }
 

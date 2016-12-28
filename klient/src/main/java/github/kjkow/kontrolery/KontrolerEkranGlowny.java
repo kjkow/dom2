@@ -34,25 +34,47 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
         inicjujUroczystosci();
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void obslugaLog(ActionEvent actionEvent) {
         otworzNowaFormatke(new KontrolerLog());
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void obslugaKonfiguracja(ActionEvent actionEvent) {
         //plik.otworzZewnetrzny("E:\\programy\\dom\\zrodla\\konfiguracja.txt");
+        //TODO: formatka i kontroler
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void obslugaJedzenie(ActionEvent actionEvent) {
         //scena.wyswietlNowaScene(sprzatanie, EnumOknaAplikacji.JEDZENIE);
+        //TODO: formatka i kontroler
 
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void obslugaSprzatanie(ActionEvent actionEvent) {
         otworzNowaFormatke(new KontrolerSprzatanieEkranGlowny());
     }
 
+    /**
+     * Button
+     * @param actionEvent
+     */
     public void obslugaNarzedziaExcel(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontolerAutomatExcel());//TODO: przerobic wszystkie przejscia formatkowe w ten sposob
+        otworzNowaFormatke(new KontolerAutomatExcel());
     }
 
     private void inicjujUroczystosci(){

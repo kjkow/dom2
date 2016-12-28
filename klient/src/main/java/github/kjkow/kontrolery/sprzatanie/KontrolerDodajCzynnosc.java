@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -33,10 +34,18 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
         PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 
+    /**
+     * Button anuluj
+     * @param actionEvent
+     */
     public void powrot(ActionEvent actionEvent) {
         wrocDoPoprzedniejFormatki();
     }
 
+    /**
+     * Button zapisz
+     * @param actionEvent
+     */
     public void zapiszCzynnosc(ActionEvent actionEvent) {
         Czynnosc nowaCzynnosc = new Czynnosc();
 
@@ -64,11 +73,15 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
 
         try {
             liczbaZmienionychWierszy = sprzatanieDAO.dodajCzynnosc(nowaCzynnosc);
+            dziennik.zapiszInformacje("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             return;
         }
 

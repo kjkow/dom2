@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -30,10 +31,18 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
         czestotliwosc.setText(String.valueOf(czynnosc.getDniCzestotliwosci()));
     }
 
+    /**
+     * Button anuluj
+     * @param actionEvent
+     */
     public void powrot(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
+        wrocDoPoprzedniejFormatki();
     }
 
+    /**
+     * Button zapisz
+     * @param actionEvent
+     */
     public void zapiszCzynnosc(ActionEvent actionEvent) {
         inicjujSprzatanieDAO();
 
@@ -45,11 +54,15 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
 
         try {
             liczbaZmienionychWierszy = sprzatanieDAO.modyfikujCzynnosc(czynnosc);
+            dziennik.zapiszInformacje("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             return;
         }
 
