@@ -11,10 +11,10 @@
 <AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.KontrolerEdycjaSprzatanie">
    <children>
        <Button fx:id="powrot" layoutX="11.0" layoutY="641.0" onAction="#akcja_powrot" prefHeight="25.0" prefWidth="100.0" text="Powrót" />
-      <Button fx:id="usun_czynnosc" layoutX="453.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcja_usun_czynnosc" prefHeight="25.0" prefWidth="100.0" text="Usuń" />
-      <ListView fx:id="lista_czynnosci" layoutX="14.0" layoutY="31.0" prefHeight="591.0" prefWidth="650.0" />
+      <Button fx:id="usun_czynnosc" disable="true" layoutX="453.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcja_usun_czynnosc" prefHeight="25.0" prefWidth="100.0" text="Usuń" />
+      <ListView fx:id="lista_czynnosci" layoutX="14.0" layoutY="31.0" onMouseClicked="#akcja_lista" prefHeight="591.0" prefWidth="650.0" />
       <Label layoutX="14.0" layoutY="14.0" text="Czynności" />
-      <Button fx:id="modyfikacja" layoutX="564.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcjaModyfikacja" prefHeight="25.0" prefWidth="100.0" text="Modyfikuj" />
+      <Button fx:id="modyfikacja" disable="true" layoutX="564.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcjaModyfikacja" prefHeight="25.0" prefWidth="100.0" text="Modyfikuj" />
       <Button fx:id="dodaj" layoutX="339.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcjaDodaj" prefHeight="25.0" prefWidth="100.0" text="Dodaj nową" />
    </children>
    <opaqueInsets>

@@ -3,7 +3,8 @@ package github.kjkow.kontrolery.sprzatanie;
 
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.sprzatanie.Czynnosc;
+import github.kjkow.Czynnosc;
+import github.kjkow.kontrolery.KontrolerEkranGlowny;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -273,5 +274,10 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     @Override
     protected void zapametajPowrot() {
         PrzechowywaczDanych.zapamietajWyjscie(this);
+    }
+
+    @Override
+    protected void wrocDoPoprzedniejFormatki(){
+        otworzNowaFormatke(new KontrolerEkranGlowny());
     }
 }

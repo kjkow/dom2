@@ -2,7 +2,7 @@ package github.kjkow.kontrolery.sprzatanie;
 
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.sprzatanie.Czynnosc;
+import github.kjkow.Czynnosc;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -49,6 +49,15 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
         if(sprzatanieDAO == null){
             return;
         }
+
+        czynnosc.setNazwaCzynnosci(nazwa.getText());
+        try{
+            czynnosc.setDniCzestotliwosci(Integer.parseInt(czestotliwosc.getText()));
+        }catch (NumberFormatException e){
+            obsluzBlad("Niepoprawnie wprowadzona liczba", e);
+            return;
+        }
+        //TODO: daty
 
         int liczbaZmienionychWierszy;
 

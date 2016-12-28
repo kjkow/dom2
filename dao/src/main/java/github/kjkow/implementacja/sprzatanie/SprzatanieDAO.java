@@ -1,6 +1,6 @@
 package github.kjkow.implementacja.sprzatanie;
 
-import github.kjkow.sprzatanie.Czynnosc;
+import github.kjkow.Czynnosc;
 
 import java.sql.Date;
 import java.sql.SQLException;

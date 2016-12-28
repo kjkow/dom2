@@ -2,7 +2,7 @@ package github.kjkow.kontrolery.sprzatanie;
 
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.sprzatanie.Czynnosc;
+import github.kjkow.Czynnosc;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -15,24 +15,8 @@ import java.sql.SQLException;
  */
 public class KontrolerDodajCzynnosc extends BazowyKontroler {
 
-
     public TextField nazwa;
     public TextField czestotliwosc;
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)czestotliwosc.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
 
     /**
      * Button anuluj
@@ -92,5 +76,20 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową częstotliwość.");
         wrocDoPoprzedniejFormatki();
+    }
+
+    @Override
+    protected Stage zwrocSceneFormatki() {
+        return (Stage)czestotliwosc.getScene().getWindow();
+    }
+
+    @Override
+    protected void ustawZrodloFormatki() {
+        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
+    }
+
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 }

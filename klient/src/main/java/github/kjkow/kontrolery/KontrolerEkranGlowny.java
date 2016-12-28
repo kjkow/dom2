@@ -7,6 +7,7 @@ import github.kjkow.bazowe.ObslugaBledu;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAO;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAOImpl;
+import github.kjkow.kontrolery.jedzenie.KontrolerJedzenieGlowny;
 import github.kjkow.kontrolery.sprzatanie.KontrolerSprzatanieEkranGlowny;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,9 +57,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaJedzenie(ActionEvent actionEvent) {
-        //scena.wyswietlNowaScene(sprzatanie, EnumOknaAplikacji.JEDZENIE);
-        //TODO: formatka i kontroler
-
+        otworzNowaFormatke(new KontrolerJedzenieGlowny());
     }
 
     /**

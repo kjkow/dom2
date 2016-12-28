@@ -1,13 +1,15 @@
 package github.kjkow.kontrolery.sprzatanie;
 
 
+import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.sprzatanie.Czynnosc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
@@ -22,6 +24,8 @@ import java.util.ResourceBundle;
 public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initializable {
 
     public ListView<String> lista_czynnosci;
+    public Button modyfikacja;
+    public Button usun_czynnosc;
     private ObservableList<String> listaCzynnosciPrezentacja = FXCollections.observableArrayList();
 
     @Override
@@ -70,6 +74,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
      * @param actionEvent
      */
     public void akcja_usun_czynnosc(ActionEvent actionEvent) {
+        //TODO: to jest poprawnie obsluzone odpytanie bazy. zastosowac wszedzie
         inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
@@ -77,32 +82,46 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         }
 
         String nazwaCzynnosci = lista_czynnosci.getSelectionModel().getSelectedItem();
+        if(nazwaCzynnosci == null) return;
+
         int liczbaZmienionychWierszy;
 
         try {
             liczbaZmienionychWierszy = sprzatanieDAO.usunCzynnosc(nazwaCzynnosci);
-            dziennik.zapiszInformacje("Usunięto czynność " + nazwaCzynnosci);
+
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
+        }
+
+        if(liczbaZmienionychWierszy > 1){
+            zarzadcaFormatek.wyswietlOknoBledu("Z bazy usunął się więcej niż jeden rekord.");
+            return;
+        }
+
+        if(liczbaZmienionychWierszy == 0){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
+            return;
+        }
+
+        try {
+            dziennik.zapiszInformacje("Usunięto czynność " + nazwaCzynnosci);
         } catch (IOException e) {
             zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             return;
         }
 
-        if(liczbaZmienionychWierszy > 1){
-            zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            return;
-        }
-
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto czynność");
         zaladujListeCzynnosci();
+        modyfikacja.setDisable(true);
+        usun_czynnosc.setDisable(true);
     }
 
     private void zaladujListeCzynnosci(){
+        listaCzynnosciPrezentacja.clear();
         inicjujSprzatanieDAO();
         if(sprzatanieDAO == null){
             return;
@@ -134,5 +153,19 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
     @Override
     protected void zapametajPowrot() {
         PrzechowywaczDanych.zapamietajWyjscie(this);
+    }
+
+    @Override
+    protected void wrocDoPoprzedniejFormatki(){
+        otworzNowaFormatke(new KontrolerSprzatanieEkranGlowny());
+    }
+
+    /**
+     * ListView czynnosci
+     * @param event
+     */
+    public void akcja_lista(Event event) {
+        modyfikacja.setDisable(false);
+        usun_czynnosc.setDisable(false);
     }
 }

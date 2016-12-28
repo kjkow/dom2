@@ -7,6 +7,8 @@ import github.kjkow.bazowe.formatka.IZarzadcaFormatek;
 import github.kjkow.bazowe.formatka.ZarzadcaFormatek;
 import github.kjkow.dziennik.Dziennik;
 import github.kjkow.dziennik.IDziennik;
+import github.kjkow.implementacja.jedzenie.JedzenieDAO;
+import github.kjkow.implementacja.jedzenie.JedzenieDAOImpl;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
 import javafx.stage.Stage;
@@ -29,6 +31,7 @@ public abstract class BazowyKontroler {
     protected static final String KOMUNIKAT_BLEDU_IO = "Wystąpił błąd podczas wczytywania pliku.";
 
     protected SprzatanieDAO sprzatanieDAO;
+    protected JedzenieDAO jedzenieDAO;
 
     protected URL zrodloFormatki;
 
@@ -69,6 +72,20 @@ public abstract class BazowyKontroler {
         }
     }
 
+    protected void inicjujJedzenieDAO(){
+        if(jedzenieDAO != null) return;
+
+        try{
+            jedzenieDAO = new JedzenieDAOImpl();
+        } catch (IOException e){
+            obsluzBlad(KOMUNIKAT_BLEDU_KONSTRUKTORA_DAO, e);
+        }
+    }
+
+    /**
+     * Formatka ktora ma jakas formatke wstecz(powrot) i jakas formatke dalej musi nadpisac ta metode,
+     * inaczej moze utknac pomiedzy soba a ta formatka wprzod
+     */
     protected void wrocDoPoprzedniejFormatki(){
         otworzNowaFormatke(PrzechowywaczDanych.pobierzWyjscie());
     }

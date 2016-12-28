@@ -1,4 +1,4 @@
-package github.kjkow.sprzatanie;
+package github.kjkow;
 
 import java.time.LocalDate;
 

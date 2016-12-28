@@ -1,7 +1,7 @@
 package github.kjkow.implementacja.sprzatanie;
 
 import github.kjkow.implementacja.BazowyDAO;
-import github.kjkow.sprzatanie.Czynnosc;
+import github.kjkow.Czynnosc;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -47,7 +47,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
         otworzPolaczenie();
         ArrayList<Czynnosc> czynnosci = new ArrayList<>();
         if(polaczenie != null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSC ORDER BY DATA_NASTEPNEGO_SPRZATANIA ASC limit 10");
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSCI ORDER BY DATA_NASTEPNEGO_SPRZATANIA ASC limit 10");
             wynikKwerendy = kwerenda.executeQuery();
 
             while (wynikKwerendy.next()){
@@ -66,7 +66,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     public int dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException {
         otworzPolaczenie();
         if(polaczenie != null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("INSERT INTO SPRZATANIE_CZYNNOSC(NAZWA, DATA_OSTATNIEGO_SPRZATANIA, DATA_NASTEPNEGO_SPRZATANIA, CZESTOTLIWOSC) VALUES (?, CURDATE(), CURDATE(), ?)");
+            PreparedStatement kwerenda = polaczenie.prepareStatement("INSERT INTO SPRZATANIE_CZYNNOSCI(NAZWA, DATA_OSTATNIEGO_SPRZATANIA, DATA_NASTEPNEGO_SPRZATANIA, CZESTOTLIWOSC) VALUES (?, CURDATE(), CURDATE(), ?)");
             kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
             kwerenda.setInt(2, czynnosc.getDniCzestotliwosci());
             int liczbaZmienionychWierszy = kwerenda.executeUpdate();
@@ -80,7 +80,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     public int usunCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException {
         otworzPolaczenie();
         if(polaczenie != null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("DELETE FROM SPRZATANIE_CZYNNOSC WHERE NAZWA=?");
+            PreparedStatement kwerenda = polaczenie.prepareStatement("DELETE FROM SPRZATANIE_CZYNNOSCI WHERE NAZWA=?");
             kwerenda.setString(1, nazwaCzynnosci);
             int liczbaZmienionychWierszy =  kwerenda.executeUpdate();
             zamknijPolczenie();
@@ -93,7 +93,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     public int modyfikujCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException {
         otworzPolaczenie();
         if(polaczenie !=null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE SPRZATANIE_CZYNNOSC SET NAZWA=?, DATA_OSTATNIEGO_SPRZATANIA=?, DATA_NASTEPNEGO_SPRZATANIA=?, CZESTOTLIWOSC=? WHERE NAZWA=?");
+            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE SPRZATANIE_CZYNNOSCI SET NAZWA=?, DATA_OSTATNIEGO_SPRZATANIA=?, DATA_NASTEPNEGO_SPRZATANIA=?, CZESTOTLIWOSC=? WHERE NAZWA=?");
             kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
             kwerenda.setDate(2, Date.valueOf(czynnosc.getDataOstatniegoSprzatania()));
             kwerenda.setDate(3, Date.valueOf(czynnosc.getDataNastepnegoSprzatania()));
@@ -112,7 +112,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
         ArrayList<String> czynnosci = new ArrayList<>();
 
         if(polaczenie != null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT NAZWA FROM SPRZATANIE_CZYNNOSC");
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT NAZWA FROM SPRZATANIE_CZYNNOSCI");
             wynikKwerendy = kwerenda.executeQuery();
 
             while (wynikKwerendy.next()){
@@ -131,7 +131,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
         czynnosc.setNazwaCzynnosci(nazwaCzynnosci);
 
         if(polaczenie != null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSC WHERE NAZWA = ?");
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSCI WHERE NAZWA = ?");
             kwerenda.setString(1, nazwaCzynnosci);
             wynikKwerendy = kwerenda.executeQuery();
             if(wynikKwerendy.next()){
