@@ -4,6 +4,7 @@ package github.kjkow.kontrolery;
 import github.kjkow.Uroczystosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.ObslugaBledu;
+import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAO;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAOImpl;
 import github.kjkow.kontrolery.sprzatanie.KontrolerSprzatanieEkranGlowny;
@@ -101,5 +102,10 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
     @Override
     protected void ustawZrodloFormatki() {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/StartProgramu.fxml");
+    }
+
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 }

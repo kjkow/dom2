@@ -55,11 +55,11 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
 
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
+            powrot();
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
-        otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
+        powrot();
     }
 
     @Override
@@ -70,6 +70,11 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
     @Override
     protected void ustawZrodloFormatki() {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
+    }
+
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 
 

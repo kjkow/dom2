@@ -3,11 +3,11 @@ package github.kjkow.kontrolery;
 
 import github.kjkow.automaty.excel.AutomatDoExcela;
 import github.kjkow.automaty.excel.IAutomatDoExcela;
-import github.kjkow.kontekst.KontekstZwracany;
 import github.kjkow.bazowe.BazowyKontroler;
+import github.kjkow.bazowe.PrzechowywaczDanych;
+import github.kjkow.kontekst.KontekstZwracany;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
@@ -73,5 +73,10 @@ public class KontolerAutomatExcel extends BazowyKontroler implements Initializab
     @Override
     protected void ustawZrodloFormatki() {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/AutomatExcel.fxml");
+    }
+
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 }

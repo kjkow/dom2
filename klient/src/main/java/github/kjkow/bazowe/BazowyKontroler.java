@@ -54,6 +54,7 @@ public abstract class BazowyKontroler {
     }
 
     protected void otworzNowaFormatke(BazowyKontroler pKontroler){
+        zapametajPowrot();
         zarzadcaFormatek.wyswietlNowaFormatke(pKontroler, zwrocSceneFormatki());
     }
 
@@ -68,6 +69,10 @@ public abstract class BazowyKontroler {
         }
     }
 
+    protected void powrot(){
+        otworzNowaFormatke(PrzechowywaczDanych.pobierzWyjscie());
+    }
+
     public URL pobierzZrodloFormatki(){
         return zrodloFormatki;
     }
@@ -77,5 +82,6 @@ public abstract class BazowyKontroler {
      */
     protected abstract Stage zwrocSceneFormatki();
     protected abstract void ustawZrodloFormatki();
+    protected abstract void zapametajPowrot();
 
 }

@@ -1,6 +1,7 @@
 package github.kjkow.kontrolery.sprzatanie;
 
 import github.kjkow.bazowe.BazowyKontroler;
+import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.sprzatanie.Czynnosc;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
@@ -27,8 +28,13 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
     }
 
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
+    }
+
     public void powrot(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
+        powrot();
     }
 
     public void zapiszCzynnosc(ActionEvent actionEvent) {
@@ -68,10 +74,10 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
 
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
+            powrot();
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową częstotliwość.");
-        otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
+        powrot();
     }
 }

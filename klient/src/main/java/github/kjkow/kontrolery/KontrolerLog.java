@@ -1,6 +1,7 @@
 package github.kjkow.kontrolery;
 
 import github.kjkow.bazowe.BazowyKontroler;
+import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +23,10 @@ public class KontrolerLog extends BazowyKontroler implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        inicjujOknoLogu();
+    }
+
+    private void inicjujOknoLogu(){
         try {
             Scanner s = new Scanner(new File("dziennik.log")).useDelimiter("\\s+");
             while (s.hasNext()) {
@@ -32,13 +37,13 @@ public class KontrolerLog extends BazowyKontroler implements Initializable {
                 }
             }
         } catch (FileNotFoundException e) {
-          obsluzBlad("Nie udało się wczytać logu aplikacji.", e);
-            otworzNowaFormatke(new KontrolerEkranGlowny());
+            obsluzBlad("Nie udało się wczytać logu aplikacji.", e);
+            powrot();
         }
     }
 
     public void akcja_powrot(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerEkranGlowny());
+        powrot();
     }
 
     @Override
@@ -49,5 +54,10 @@ public class KontrolerLog extends BazowyKontroler implements Initializable {
     @Override
     protected void ustawZrodloFormatki() {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/Log.fxml");
+    }
+
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 }

@@ -40,7 +40,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerSprzatanieEkranGlowny());
+        powrot();
     }
 
     /**
@@ -182,6 +182,11 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
     @Override
     protected void ustawZrodloFormatki() {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEdycja.fxml");
+    }
+
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 
     public void akcjaModyfikacja(ActionEvent actionEvent) {

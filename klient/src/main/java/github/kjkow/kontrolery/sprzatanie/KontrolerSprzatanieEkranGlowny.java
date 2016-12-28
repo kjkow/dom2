@@ -2,7 +2,7 @@ package github.kjkow.kontrolery.sprzatanie;
 
 
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.kontrolery.KontrolerEkranGlowny;
+import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.sprzatanie.Czynnosc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -124,7 +124,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     }
 
     public void akcja_powrot(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerEkranGlowny());
+        powrot();
     }
 
     /**
@@ -184,7 +184,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
 
     public void akcja_edycja(ActionEvent actionEvent) {
-        zarzadcaFormatek.wyswietlNowaFormatke(new KontrolerEdycjaSprzatanie(), zwrocSceneFormatki());
+        otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
     }
 
     //---------------------------------------------------------------------//
@@ -257,5 +257,10 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     @Override
     protected void ustawZrodloFormatki() {
         zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEkranGlowny.fxml");
+    }
+
+    @Override
+    protected void zapametajPowrot() {
+        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 }
