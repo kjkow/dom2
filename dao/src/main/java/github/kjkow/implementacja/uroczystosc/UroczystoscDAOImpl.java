@@ -22,8 +22,7 @@ public class UroczystoscDAOImpl extends BazowyDAO implements UroczystoscDAO {
 
         otworzPolaczenie();
 
-        PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM UROCZYSTOSCI ORDER BY DATA_UROCZYSTOSCI ASC");
-        //TODO: w tym selectcie dodac jakies ograniczenie zeby tylko np dwa miesiace wprzod
+        PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM UROCZYSTOSCI WHERE DATA_UROCZYSTOSCI < DATE_ADD(CURDATE(), INTERVAL 2 MONTH)  ORDER BY DATA_UROCZYSTOSCI ASC");
 
         wynikKwerendy = kwerenda.executeQuery();
         while (wynikKwerendy.next()){
