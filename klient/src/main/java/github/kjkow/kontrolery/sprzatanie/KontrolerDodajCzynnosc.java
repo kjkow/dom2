@@ -34,7 +34,7 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
     }
 
     public void powrot(ActionEvent actionEvent) {
-        powrot();
+        wrocDoPoprzedniejFormatki();
     }
 
     public void zapiszCzynnosc(ActionEvent actionEvent) {
@@ -74,10 +74,10 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
 
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            powrot();
+            wrocDoPoprzedniejFormatki();
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową częstotliwość.");
-        powrot();
+        wrocDoPoprzedniejFormatki();
     }
 }

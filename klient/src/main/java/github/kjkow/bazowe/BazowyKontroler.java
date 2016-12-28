@@ -69,7 +69,7 @@ public abstract class BazowyKontroler {
         }
     }
 
-    protected void powrot(){
+    protected void wrocDoPoprzedniejFormatki(){
         otworzNowaFormatke(PrzechowywaczDanych.pobierzWyjscie());
     }
 

@@ -38,12 +38,12 @@ public class KontrolerLog extends BazowyKontroler implements Initializable {
             }
         } catch (FileNotFoundException e) {
             obsluzBlad("Nie udało się wczytać logu aplikacji.", e);
-            powrot();
+            wrocDoPoprzedniejFormatki();
         }
     }
 
     public void akcja_powrot(ActionEvent actionEvent) {
-        powrot();
+        wrocDoPoprzedniejFormatki();
     }
 
     @Override

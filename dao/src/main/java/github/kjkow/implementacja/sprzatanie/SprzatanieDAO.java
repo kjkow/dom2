@@ -24,7 +24,14 @@ public interface SprzatanieDAO {
      */
     int dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException;
 
-    void usunCzynnosc(String nazwaCzynnosci);
+    /**
+     *
+     * @param nazwaCzynnosci
+     * @return zwraca liczbę zmienionych wierszy, zwraca -1 jesli nie udalo sie ustalic polaczenia z baza
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    int usunCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException;
 
     /**
      * @param czynnosc

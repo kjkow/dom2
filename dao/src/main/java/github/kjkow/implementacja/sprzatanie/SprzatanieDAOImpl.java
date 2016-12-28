@@ -2,7 +2,6 @@ package github.kjkow.implementacja.sprzatanie;
 
 import github.kjkow.implementacja.BazowyDAO;
 import github.kjkow.sprzatanie.Czynnosc;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -17,7 +16,6 @@ import java.util.List;
 public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
 
     public SprzatanieDAOImpl() throws IOException {}
-    //TODO:implementacja
 
     @Override
     public void wykonajCzynnosc(String nazwaCzynnosci, Date dataWykonania) throws SQLException, ClassNotFoundException {
@@ -79,8 +77,16 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     }
 
     @Override
-    public void usunCzynnosc(String nazwaCzynnosci) {
-        throw new NotImplementedException();
+    public int usunCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("DELETE FROM SPRZATANIE_CZYNNOSC WHERE NAZWA=?");
+            kwerenda.setString(1, nazwaCzynnosci);
+            int liczbaZmienionychWierszy =  kwerenda.executeUpdate();
+            zamknijPolczenie();
+            return liczbaZmienionychWierszy;
+        }
+        return -1;
     }
 
     @Override

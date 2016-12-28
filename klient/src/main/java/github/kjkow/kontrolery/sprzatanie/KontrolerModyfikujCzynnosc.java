@@ -55,11 +55,11 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
 
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            powrot();
+            wrocDoPoprzedniejFormatki();
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
-        powrot();
+        wrocDoPoprzedniejFormatki();
     }
 
     @Override

@@ -124,7 +124,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     }
 
     public void akcja_powrot(ActionEvent actionEvent) {
-        powrot();
+        wrocDoPoprzedniejFormatki();
     }
 
     /**
