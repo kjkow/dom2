@@ -11,12 +11,30 @@ import java.util.List;
  */
 public interface SprzatanieDAO {
     void wykonajCzynnosc(String nazwaCzynnosci, Date dataWykonania) throws SQLException, ClassNotFoundException;
+
     void odlozCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException;
+
     List<Czynnosc> pobierzNajblizszeSprzatania() throws SQLException, ClassNotFoundException;
-    void dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException;
+
+    /**
+     * @param czynnosc
+     * @return zwraca liczbę zmienionych wierszy, zwraca -1 jesli nie udalo sie ustalic polaczenia z baza
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    int dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException;
+
     void usunCzynnosc(String nazwaCzynnosci);
-    void zmienNazweCzynnosci(String staraNazwa, String nowaNazwa);
-    void zmienCzestotliwoscCzynnosci(String nazwaCzynnosci, int nowaCzestotliwosc);
+
+    /**
+     * @param czynnosc
+     * @return zwraca liczbę zmienionych wierszy, zwraca -1 jesli nie udalo sie ustalic polaczenia z baza
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    int modyfikujCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException;
+
     List<String> pobierzNazwyCzynnosci() throws SQLException, ClassNotFoundException;
+
     Czynnosc pobierzDaneCzynnosci(String nazwaCzynnosci) throws SQLException, ClassNotFoundException;
 }

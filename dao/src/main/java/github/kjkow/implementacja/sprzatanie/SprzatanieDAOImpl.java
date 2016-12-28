@@ -65,15 +65,17 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     }
 
     @Override
-    public void dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException {
+    public int dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException {
         otworzPolaczenie();
         if(polaczenie != null){
             PreparedStatement kwerenda = polaczenie.prepareStatement("INSERT INTO SPRZATANIE_CZYNNOSC(NAZWA, DATA_OSTATNIEGO_SPRZATANIA, DATA_NASTEPNEGO_SPRZATANIA, CZESTOTLIWOSC) VALUES (?, CURDATE(), CURDATE(), ?)");
             kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
             kwerenda.setInt(2, czynnosc.getDniCzestotliwosci());
-            kwerenda.executeUpdate();
+            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
             zamknijPolczenie();
+            return liczbaZmienionychWierszy;
         }
+        return -1;
     }
 
     @Override
@@ -82,13 +84,20 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     }
 
     @Override
-    public void zmienNazweCzynnosci(String staraNazwa, String nowaNazwa) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void zmienCzestotliwoscCzynnosci(String nazwaCzynnosci, int nowaCzestotliwosc) {
-        throw new NotImplementedException();
+    public int modyfikujCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        if(polaczenie !=null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE SPRZATANIE_CZYNNOSC SET NAZWA=?, DATA_OSTATNIEGO_SPRZATANIA=?, DATA_NASTEPNEGO_SPRZATANIA=?, CZESTOTLIWOSC=? WHERE NAZWA=?");
+            kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
+            kwerenda.setDate(2, Date.valueOf(czynnosc.getDataOstatniegoSprzatania()));
+            kwerenda.setDate(3, Date.valueOf(czynnosc.getDataNastepnegoSprzatania()));
+            kwerenda.setInt(4, czynnosc.getDniCzestotliwosci());
+            kwerenda.setString(5, czynnosc.getNazwaCzynnosci());
+            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
+            zamknijPolczenie();
+            return liczbaZmienionychWierszy;
+        }
+        return -1;
     }
 
     @Override

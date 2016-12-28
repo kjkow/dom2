@@ -54,12 +54,21 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
             return;
         }
 
+        int liczbaZmienionychWierszy;
+
         try {
-            sprzatanieDAO.dodajCzynnosc(nowaCzynnosc);
+            liczbaZmienionychWierszy = sprzatanieDAO.dodajCzynnosc(nowaCzynnosc);
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+
+        if(liczbaZmienionychWierszy > 1){
+            zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
+            otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową częstotliwość.");
