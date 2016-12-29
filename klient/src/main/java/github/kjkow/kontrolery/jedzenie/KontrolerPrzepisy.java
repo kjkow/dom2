@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -150,14 +149,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
             return;
         }
 
-        try {
-            dziennik.zapiszInformacje("Usunięto przepis " + nazwaPrzepisu);
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
-                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            wrocDoPoprzedniejFormatki();
-        }
-
+        zapiszWykonanieWDzienniku("Usunięto przepis " + nazwaPrzepisu);
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto przepis");
         zaladujListePrzepisow();
         zablokujEdytowalnoscPrzyciskow();

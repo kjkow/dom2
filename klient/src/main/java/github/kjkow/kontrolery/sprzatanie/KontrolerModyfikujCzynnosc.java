@@ -1,14 +1,13 @@
 package github.kjkow.kontrolery.sprzatanie;
 
+import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.Czynnosc;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -80,14 +79,7 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
             return;
         }
 
-        try {
-            dziennik.zapiszInformacje("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
-                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            wrocDoPoprzedniejFormatki();
-        }
-
+        zapiszWykonanieWDzienniku("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
         wrocDoPoprzedniejFormatki();
     }

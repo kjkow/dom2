@@ -8,7 +8,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -61,14 +60,7 @@ public class KontrolerDodajPrzepis extends BazowyKontroler {
             return;
         }
 
-        try {
-            dziennik.zapiszInformacje("Dodano nowy przepis: " + nowyPrzepis.getNazwa());
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
-                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            wrocDoPoprzedniejFormatki();
-        }
-
+        zapiszWykonanieWDzienniku("Dodano nowy przepis: " + nowyPrzepis.getNazwa());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nowy przepis");
         wrocDoPoprzedniejFormatki();
     }

@@ -1,9 +1,9 @@
 package github.kjkow.kontrolery.sprzatanie;
 
 
+import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.Czynnosc;
 import github.kjkow.kontrolery.KontrolerEkranGlowny;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,7 +107,10 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         } catch (IOException e) {
             zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
                     KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            wrocDoPoprzedniejFormatki();
+            ustawDateWykonaniaNaDzis();
+            zaladujListeNajblizszychSprzatan();
+            ustawDatyCzynnosci();
+            return;
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zapisano wykonanie czynności.");
@@ -185,6 +188,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         } catch (IOException e) {
             zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
                     KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            zaladujListeNajblizszychSprzatan();
             return;
         }
 

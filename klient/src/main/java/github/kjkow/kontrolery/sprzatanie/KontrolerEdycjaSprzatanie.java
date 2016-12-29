@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -103,14 +102,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
             return;
         }
 
-        try {
-            dziennik.zapiszInformacje("Usunięto czynność " + nazwaCzynnosci);
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
-                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            wrocDoPoprzedniejFormatki();
-        }
-
+        zapiszWykonanieWDzienniku("Usunięto czynność " + nazwaCzynnosci);
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto czynność");
         zaladujListeCzynnosci();
         modyfikacja.setDisable(true);

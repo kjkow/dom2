@@ -1,13 +1,12 @@
 package github.kjkow.kontrolery.sprzatanie;
 
+import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.Czynnosc;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -73,14 +72,7 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
             return;
         }
 
-        try {
-            dziennik.zapiszInformacje("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
-                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            wrocDoPoprzedniejFormatki();
-        }
-
+        zapiszWykonanieWDzienniku("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową czynność.");
         wrocDoPoprzedniejFormatki();
     }

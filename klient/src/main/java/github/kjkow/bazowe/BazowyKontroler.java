@@ -83,6 +83,16 @@ public abstract class BazowyKontroler {
         }
     }
 
+    protected void zapiszWykonanieWDzienniku(String tresc){
+        try {
+            dziennik.zapiszInformacje(tresc);
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
+                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            wrocDoPoprzedniejFormatki();
+        }
+    }
+
     /**
      * Formatka ktora ma jakas formatke wstecz(powrot) i jakas formatke dalej musi nadpisac ta metode,
      * inaczej moze utknac pomiedzy soba a ta formatka wprzod
