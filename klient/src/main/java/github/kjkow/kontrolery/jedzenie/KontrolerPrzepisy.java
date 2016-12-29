@@ -71,7 +71,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
      * @param actionEvent
      */
     public void akcja_dodaj(ActionEvent actionEvent) {
-        //TODO: impl
+        otworzNowaFormatke(new KontrolerDodajPrzepis());
     }
 
     /**
