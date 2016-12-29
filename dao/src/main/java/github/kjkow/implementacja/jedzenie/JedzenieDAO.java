@@ -22,4 +22,13 @@ public interface JedzenieDAO {
     int usunPrzepis(String nazwaPrzepisu) throws SQLException, ClassNotFoundException;
 
     List<String> pobierzListePrzepisow() throws SQLException, ClassNotFoundException;
+
+    /**
+     *
+     * @param przepis
+     * @return zwraca liczbę zmienionych wierszy, zwraca -1 jesli nie udalo sie ustalic polaczenia z baza
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    int dodajPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException;
 }

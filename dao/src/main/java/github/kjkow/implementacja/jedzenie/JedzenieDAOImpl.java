@@ -4,6 +4,7 @@ import github.kjkow.Przepis;
 import github.kjkow.implementacja.BazowyDAO;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,5 +62,23 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
             zamknijPolczenie();
         }
         return przepisy;
+    }
+
+    @Override
+    public int dodajPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("INSERT INTO JEDZENIE_PRZEPISY(NAZWA, DATA_OSTATNIEGO_PRZYGOTOWANIA, SKLADNIKI, SPOSOB_PRZYGOTOWANIA) VALUES(?, ?, ?, ?)");
+            kwerenda.setString(1, przepis.getNazwa());
+            kwerenda.setDate(2, Date.valueOf(przepis.getDataOstatniegoPrzygotowania()));
+            kwerenda.setString(3, przepis.getSkladniki());
+            kwerenda.setString(4, przepis.getSposobPrzygotowania());
+
+            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
+
+            zamknijPolczenie();
+            return liczbaZmienionychWierszy;
+        }
+        return -1;
     }
 }
