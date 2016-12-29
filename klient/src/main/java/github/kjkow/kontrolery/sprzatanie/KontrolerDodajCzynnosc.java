@@ -57,24 +57,31 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
 
         try {
             liczbaZmienionychWierszy = sprzatanieDAO.dodajCzynnosc(nowaCzynnosc);
-            dziennik.zapiszInformacje("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            return;
         }
 
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
             wrocDoPoprzedniejFormatki();
+        }else if(liczbaZmienionychWierszy == 0){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało dodane");
+            return;
         }
 
-        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową częstotliwość.");
+        try {
+            dziennik.zapiszInformacje("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
+                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            wrocDoPoprzedniejFormatki();
+        }
+
+        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową czynność.");
         wrocDoPoprzedniejFormatki();
     }
 

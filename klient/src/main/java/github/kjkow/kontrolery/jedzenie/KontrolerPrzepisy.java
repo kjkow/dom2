@@ -27,7 +27,6 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
     public Button szczegoly;
 
     private ObservableList<String> listaPrzepisowPrezentacja = FXCollections.observableArrayList();
-
     private Przepis przepis;
 
 
@@ -103,8 +102,18 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
      */
     public void akcja_przepisy(Event event) {
         //TODO: przypisanie wybranego przepisu(jeśli potrzebne)
+        odblokujEdytowalnoscPrzyciskow();
+    }
+
+    //w obydwu ponizszych metodach chodzi o przyciski zwiazane z wyborem elementu z listy
+    private void odblokujEdytowalnoscPrzyciskow(){
         usun.setDisable(false);
         szczegoly.setDisable(false);
+    }
+
+    private void zablokujEdytowalnoscPrzyciskow(){
+        usun.setDisable(true);
+        szczegoly.setDisable(true);
     }
 
     /**
@@ -114,26 +123,44 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
     public void akcja_usun(ActionEvent actionEvent) {
         inicjujJedzenieDAO();
 
-        if(jedzenieDAO == null) return;
+        if(jedzenieDAO == null){
+            return;
+        }
 
         String nazwaPrzepisu = przepisy.getSelectionModel().getSelectedItem();
+        if(nazwaPrzepisu == null) return;
+
+        int liczbaZmienionychWierszy;
 
         try {
-            jedzenieDAO.usunPrzepis(nazwaPrzepisu);
-            dziennik.zapiszInformacje("Usunięto przepis " + nazwaPrzepisu);
+            liczbaZmienionychWierszy = jedzenieDAO.usunPrzepis(nazwaPrzepisu);
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+        }
+
+        if(liczbaZmienionychWierszy > 1){
+            zarzadcaFormatek.wyswietlOknoBledu("Z bazy usunął się więcej niż jeden rekord.");
+            return;
+        }else if(liczbaZmienionychWierszy == 0){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
             return;
         }
 
-        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto przepis.");
+        try {
+            dziennik.zapiszInformacje("Usunięto przepis " + nazwaPrzepisu);
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
+                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            wrocDoPoprzedniejFormatki();
+        }
+
+        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto przepis");
         zaladujListePrzepisow();
+        zablokujEdytowalnoscPrzyciskow();
     }
 
     @Override

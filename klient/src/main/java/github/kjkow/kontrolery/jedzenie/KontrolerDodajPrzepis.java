@@ -45,20 +45,27 @@ public class KontrolerDodajPrzepis extends BazowyKontroler {
 
         try {
             liczbaZmienionychWierszy = jedzenieDAO.dodajPrzepis(nowyPrzepis);
-            dziennik.zapiszInformacje("Dodano nowy przepis: " + nowyPrzepis.getNazwa());
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
-        } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            return;
         }
 
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
+            wrocDoPoprzedniejFormatki();
+        }else if(liczbaZmienionychWierszy == 0){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
+            return;
+        }
+
+        try {
+            dziennik.zapiszInformacje("Dodano nowy przepis: " + nowyPrzepis.getNazwa());
+        } catch (IOException e) {
+            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
+                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             wrocDoPoprzedniejFormatki();
         }
 

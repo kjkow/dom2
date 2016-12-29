@@ -74,7 +74,6 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
      * @param actionEvent
      */
     public void akcja_usun_czynnosc(ActionEvent actionEvent) {
-        //TODO: to jest poprawnie obsluzone odpytanie bazy. zastosowac wszedzie
         inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
@@ -88,7 +87,6 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
 
         try {
             liczbaZmienionychWierszy = sprzatanieDAO.usunCzynnosc(nazwaCzynnosci);
-
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
@@ -100,9 +98,7 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Z bazy usunął się więcej niż jeden rekord.");
             return;
-        }
-
-        if(liczbaZmienionychWierszy == 0){
+        }else if(liczbaZmienionychWierszy == 0){
             zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
             return;
         }
@@ -110,8 +106,9 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
         try {
             dziennik.zapiszInformacje("Usunięto czynność " + nazwaCzynnosci);
         } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            return;
+            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
+                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            wrocDoPoprzedniejFormatki();
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto czynność");

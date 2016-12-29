@@ -29,6 +29,7 @@ public abstract class BazowyKontroler {
     protected static final String KOMUNIKAT_BLEDU_SQL = "Wystąpił błąd na bazie danych";
     protected static final String KOMUNIKAT_BLEDU_KONEKTORA_JDBC = "Wystąpił błąd sterownika bazy danych";
     protected static final String KOMUNIKAT_BLEDU_IO = "Wystąpił błąd podczas wczytywania pliku.";
+    protected static final String KOMUNIKAT_AMBIWALENCJI_DZIENNIKA = "Nastąpił poprawny zapis na bazie, ale nie udało się zapisać informacji w dzienniku aplikacji.";
 
     protected SprzatanieDAO sprzatanieDAO;
     protected JedzenieDAO jedzenieDAO;

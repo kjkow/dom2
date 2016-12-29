@@ -47,10 +47,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
         zaladujComboCzynnosci();
     }
 
-    //---------------------------------------------------------------------//
-    //------------------------AKCJE FORMATKI-------------------------------//
-    //---------------------------------------------------------------------//
-
     /**
      * Combobox czynnosc
      * klikniecie w element z listy combo
@@ -97,30 +93,26 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
         try {
             sprzatanieDAO.wykonajCzynnosc(wybranaCzynnosc.getNazwaCzynnosci(), konwerujLocalDateNaSqlDate(data_wykonania.getValue()));
-            dziennik.zapiszInformacje("Wykonano czynność " + wybranaCzynnosc.getNazwaCzynnosci());
+            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(wybranaCzynnosc.getNazwaCzynnosci()); //przepisanie do zmiennej dla ustawienia dat czynnosci
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
+        }
+
+        try {
+            dziennik.zapiszInformacje("Wykonano czynność " + wybranaCzynnosc.getNazwaCzynnosci());
         } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
+                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            wrocDoPoprzedniejFormatki();
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zapisano wykonanie czynności.");
         ustawDateWykonaniaNaDzis();
         zaladujListeNajblizszychSprzatan();
-
-        //przepisanie do zmiennej dla ustawienia dat czynnosci
-        try {
-            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(wybranaCzynnosc.getNazwaCzynnosci());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-        }
-
         ustawDatyCzynnosci();
     }
 
@@ -142,7 +134,12 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
         inicjujSprzatanieDAO();
 
-        if(sprzatanieDAO == null || nazwaCzynnosci == null){
+        if(sprzatanieDAO == null){
+            return;
+        }
+
+        if(nazwaCzynnosci == null){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nie zidentyfikowano czynności.");
             return;
         }
 
@@ -175,15 +172,19 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
         try {
             sprzatanieDAO.odlozCzynnosc(wybranaCzynnosc.getNazwaCzynnosci());
-            dziennik.zapiszInformacje("Odłożono czynność " + wybranaCzynnosc.getNazwaCzynnosci());
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
         } catch (ClassNotFoundException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
+        }
+
+        try {
+            dziennik.zapiszInformacje("Odłożono czynność " + wybranaCzynnosc.getNazwaCzynnosci());
         } catch (IOException e) {
-            zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
+            zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
+                    KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             return;
         }
 
@@ -198,14 +199,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     public void akcja_edycja(ActionEvent actionEvent) {
         otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
     }
-
-    //---------------------------------------------------------------------//
-    //--------------------KONIEC AKCJI FORMATKI----------------------------//
-    //---------------------------------------------------------------------//
-
-
-
-    //-----------------------metody pomocnicze-----------------------------//
 
     private void zaladujListeNajblizszychSprzatan(){
         inicjujSprzatanieDAO();
@@ -234,7 +227,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
     private Date konwerujLocalDateNaSqlDate(LocalDate data) {
         return Date.valueOf(data);
     }
-
 
     private void ustawDateWykonaniaNaDzis(){
         data_wykonania.setValue(LocalDate.now());
