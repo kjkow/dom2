@@ -71,14 +71,7 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
             return;
         }
 
-        if(liczbaZmienionychWierszy > 1){
-            zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            wrocDoPoprzedniejFormatki();
-        }else if(liczbaZmienionychWierszy == 0){
-            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało zmodyfikowane");
-            wrocDoPoprzedniejFormatki();
-        }
-
+        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "zmodyfikowane");
         zapiszWykonanieWDzienniku("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
         wrocDoPoprzedniejFormatki();

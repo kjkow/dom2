@@ -54,15 +54,7 @@ public class KontrolerModyfikujPrzepis extends BazowyKontroler implements Initia
             obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
             return;
         }
-
-        if(liczbaZmienionychWierszy > 1){
-            zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            wrocDoPoprzedniejFormatki();
-        }else if(liczbaZmienionychWierszy == 0){
-            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało zmodyfikowane");
-            wrocDoPoprzedniejFormatki();
-        } //TODO: caly ten blok do bazowki i wszedzie przeniesc
-
+        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "zmodyfikowane");
         zapiszWykonanieWDzienniku("Zmodyfikowano przepis " + przepis.getNazwa());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano przepis.");
         wrocDoPoprzedniejFormatki();

@@ -64,14 +64,7 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
             return;
         }
 
-        if(liczbaZmienionychWierszy > 1){
-            zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            wrocDoPoprzedniejFormatki();
-        }else if(liczbaZmienionychWierszy == 0){
-            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało dodane");
-            return;
-        }
-
+        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "dodane");
         zapiszWykonanieWDzienniku("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową czynność.");
         wrocDoPoprzedniejFormatki();

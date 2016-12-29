@@ -93,6 +93,16 @@ public abstract class BazowyKontroler {
         }
     }
 
+    protected void walidujZwroconaLiczbeWierszy(int liczbaZmienionychWierszy, String nicNieZostalo){
+        if(liczbaZmienionychWierszy > 1){
+            zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
+            wrocDoPoprzedniejFormatki();
+        }else if(liczbaZmienionychWierszy == 0){
+            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało " + nicNieZostalo);
+            wrocDoPoprzedniejFormatki();
+        }
+    }
+
     /**
      * Formatka ktora ma jakas formatke wstecz(powrot) i jakas formatke dalej musi nadpisac ta metode,
      * inaczej moze utknac pomiedzy soba a ta formatka wprzod

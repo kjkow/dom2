@@ -164,14 +164,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
             return;
         }
 
-        if(liczbaZmienionychWierszy > 1){
-            zarzadcaFormatek.wyswietlOknoBledu("Z bazy usunął się więcej niż jeden rekord.");
-            return;
-        }else if(liczbaZmienionychWierszy == 0){
-            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
-            return;
-        }
-
+        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "usunięte");
         zapiszWykonanieWDzienniku("Usunięto przepis " + nazwaPrzepisu);
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto przepis");
         zaladujListePrzepisow();

@@ -52,14 +52,7 @@ public class KontrolerDodajPrzepis extends BazowyKontroler {
             return;
         }
 
-        if(liczbaZmienionychWierszy > 1){
-            zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            wrocDoPoprzedniejFormatki();
-        }else if(liczbaZmienionychWierszy == 0){
-            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
-            return;
-        }
-
+        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "usunięte");
         zapiszWykonanieWDzienniku("Dodano nowy przepis: " + nowyPrzepis.getNazwa());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nowy przepis");
         wrocDoPoprzedniejFormatki();
