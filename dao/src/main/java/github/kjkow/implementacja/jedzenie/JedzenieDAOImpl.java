@@ -81,4 +81,21 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
         }
         return -1;
     }
+
+    @Override
+    public int modyfikujPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        if(polaczenie !=null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE JEDZENIE_PRZEPISY SET NAZWA=?, DATA_OSTATNIEGO_PRZYGOTOWANIA=?, SKLADNIKI=?, SPOSOB_PRZYGOTOWANIA=? WHERE NAZWA=?");
+            kwerenda.setString(1, przepis.getNazwa());
+            kwerenda.setDate(2, Date.valueOf(przepis.getDataOstatniegoPrzygotowania()));
+            kwerenda.setString(3, przepis.getSkladniki());
+            kwerenda.setString(4, przepis.getSposobPrzygotowania());
+            kwerenda.setString(5, przepis.getNazwa());
+            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
+            zamknijPolczenie();
+            return liczbaZmienionychWierszy;
+        }
+        return -1;
+    }
 }

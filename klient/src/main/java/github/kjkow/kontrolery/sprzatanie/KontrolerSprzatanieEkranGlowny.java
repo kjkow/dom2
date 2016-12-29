@@ -201,7 +201,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
      * @param actionEvent
      */
     public void akcja_edycja(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerEdycjaSprzatanie());
+        otworzNowaFormatke(new KontrolerCzynnosci());
     }
 
     private void zaladujListeNajblizszychSprzatan(){

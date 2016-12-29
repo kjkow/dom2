@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
-public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initializable {
+public class KontrolerCzynnosci extends BazowyKontroler implements Initializable {
 
     public ListView<String> lista_czynnosci;
     public Button modyfikacja;
@@ -37,6 +37,9 @@ public class KontrolerEdycjaSprzatanie extends BazowyKontroler implements Initia
      * @param actionEvent
      */
     public void akcjaModyfikacja(ActionEvent actionEvent) {
+        inicjujSprzatanieDAO();
+        if(sprzatanieDAO == null) return;
+
         Czynnosc czynnosc;
 
         try {

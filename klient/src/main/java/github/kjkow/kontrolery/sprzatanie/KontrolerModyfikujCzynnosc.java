@@ -75,8 +75,8 @@ public class KontrolerModyfikujCzynnosc extends BazowyKontroler implements Initi
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
             wrocDoPoprzedniejFormatki();
         }else if(liczbaZmienionychWierszy == 0){
-            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
-            return;
+            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało zmodyfikowane");
+            wrocDoPoprzedniejFormatki();
         }
 
         zapiszWykonanieWDzienniku("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());

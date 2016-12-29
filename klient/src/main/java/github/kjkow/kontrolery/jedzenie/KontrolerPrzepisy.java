@@ -24,6 +24,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
     public ListView<String> przepisy;
     public Button usun;
     public Button szczegoly;
+    public Button modyfikuj;
 
     private ObservableList<String> listaPrzepisowPrezentacja = FXCollections.observableArrayList();
     private Przepis przepis;
@@ -54,7 +55,27 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
         przepisy.setItems(listaPrzepisowPrezentacja);
     }
 
-    //TODO: modyfikuj przepis(mamy tylko pokaz) - to samo z czynnością
+    /**
+     * Button
+     * @param actionEvent
+     */
+    public void akcja_modyfikuj(ActionEvent actionEvent) {
+        inicjujJedzenieDAO();
+        if(jedzenieDAO == null) return;
+
+        try {
+            przepis = jedzenieDAO.pobierzDanePrzepisu(przepisy.getSelectionModel().getSelectedItem());
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+
+        PrzechowywaczDanych.zapiszObiekt(przepis);
+        otworzNowaFormatke(new KontrolerModyfikujPrzepis());
+    }
 
     /**
      * Button
@@ -108,11 +129,13 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
     private void odblokujEdytowalnoscPrzyciskow(){
         usun.setDisable(false);
         szczegoly.setDisable(false);
+        modyfikuj.setDisable(true);
     }
 
     private void zablokujEdytowalnoscPrzyciskow(){
         usun.setDisable(true);
         szczegoly.setDisable(true);
+        modyfikuj.setDisable(true);
     }
 
     /**

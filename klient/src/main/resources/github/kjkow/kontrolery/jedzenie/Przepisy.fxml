@@ -12,5 +12,6 @@
       <Button fx:id="dodaj" layoutX="456.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_dodaj" prefHeight="30.0" prefWidth="100.0" text="Dodaj" />
       <Button fx:id="szczegoly" disable="true" layoutX="566.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_szczegoly" prefHeight="30.0" prefWidth="100.0" text="Pokaż przepis" />
       <Button fx:id="usun" disable="true" layoutX="340.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_usun" prefHeight="30.0" prefWidth="100.0" text="Usuń" />
+      <Button fx:id="modyfikuj" disable="true" layoutX="320.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_modyfikuj" prefHeight="30.0" prefWidth="100.0" text="Modyfikuj" />
    </children>
 </AnchorPane>

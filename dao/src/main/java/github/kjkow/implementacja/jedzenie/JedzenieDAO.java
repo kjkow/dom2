@@ -31,4 +31,13 @@ public interface JedzenieDAO {
      * @throws ClassNotFoundException
      */
     int dodajPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException;
+
+    /**
+     *
+     * @param przepis
+     * @return zwraca liczbę zmienionych wierszy, zwraca -1 jesli nie udalo sie ustalic polaczenia z baza
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    int modyfikujPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException;
 }
