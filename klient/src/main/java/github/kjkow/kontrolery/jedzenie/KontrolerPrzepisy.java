@@ -133,7 +133,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
         }
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto przepis.");
-        //TODO: przeladowanie listy przepisow
+        zaladujListePrzepisow();
     }
 
     @Override
