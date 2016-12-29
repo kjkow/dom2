@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
-public class KontrolerCzynnosci extends BazowyKontroler implements Initializable {
+public class CzynnosciKontroler extends BazowyKontroler implements Initializable {
 
     public ListView<String> lista_czynnosci;
     public Button modyfikacja;
@@ -52,7 +52,7 @@ public class KontrolerCzynnosci extends BazowyKontroler implements Initializable
             return;
         }
         PrzechowywaczDanych.zapiszObiekt(czynnosc);
-        otworzNowaFormatke(new KontrolerModyfikujCzynnosc());
+        otworzNowaFormatke(new ModyfikujCzynnoscKontroler());
     }
 
     /**
@@ -60,7 +60,7 @@ public class KontrolerCzynnosci extends BazowyKontroler implements Initializable
      * @param actionEvent
      */
     public void akcjaDodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerDodajCzynnosc());
+        otworzNowaFormatke(new DodajCzynnoscKontroler());
     }
 
     /**
@@ -149,7 +149,7 @@ public class KontrolerCzynnosci extends BazowyKontroler implements Initializable
 
     @Override
     protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new KontrolerSprzatanieEkranGlowny());
+        otworzNowaFormatke(new SprzatanieEkranGlownyKontroler());
     }
 
     /**

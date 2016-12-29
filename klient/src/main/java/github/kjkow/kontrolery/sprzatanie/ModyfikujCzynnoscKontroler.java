@@ -4,18 +4,31 @@ import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-27.
  */
-public class KontrolerDodajCzynnosc extends BazowyKontroler {
+public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initializable{
 
     public TextField nazwa;
     public TextField czestotliwosc;
+    private Czynnosc czynnosc;
+
+    //TODO: daty na formatce
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        czynnosc = (Czynnosc)PrzechowywaczDanych.pobierzObiekt();
+        nazwa.setText(czynnosc.getNazwaCzynnosci());
+        czestotliwosc.setText(String.valueOf(czynnosc.getDniCzestotliwosci()));
+    }
 
     /**
      * Button anuluj
@@ -30,32 +43,26 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
      * @param actionEvent
      */
     public void zapiszCzynnosc(ActionEvent actionEvent) {
-        Czynnosc nowaCzynnosc = new Czynnosc();
-
-        if(nazwa.getText().compareTo("") != 0){
-            nowaCzynnosc.setNazwaCzynnosci(nazwa.getText());
-        }else{
-            zarzadcaFormatek.wyswietlOknoInformacji("Nie wprowadzono nazwy czynnosci.");
-            return;
-        }
-
-        try{
-            nowaCzynnosc.setDniCzestotliwosci(Integer.parseInt(czestotliwosc.getText()));
-        }catch (NumberFormatException e){
-            obsluzBlad("Niepoprawnie wprowadzona liczba", e);
-            return;
-        }
-
         inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
             return;
         }
 
+        czynnosc.setNazwaCzynnosci(nazwa.getText());
+        try{
+            czynnosc.setDniCzestotliwosci(Integer.parseInt(czestotliwosc.getText()));
+        }catch (NumberFormatException e){
+            obsluzBlad("Niepoprawnie wprowadzona liczba", e);
+            return;
+        }
+        //TODO: daty
+
         int liczbaZmienionychWierszy;
 
         try {
-            liczbaZmienionychWierszy = sprzatanieDAO.dodajCzynnosc(nowaCzynnosc);
+            liczbaZmienionychWierszy = sprzatanieDAO.modyfikujCzynnosc(czynnosc);
+
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
@@ -64,9 +71,9 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
             return;
         }
 
-        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "dodane");
-        zapiszWykonanieWDzienniku("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
-        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową czynność.");
+        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "zmodyfikowane");
+        zapiszWykonanieWDzienniku("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
+        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
         wrocDoPoprzedniejFormatki();
     }
 
@@ -77,11 +84,13 @@ public class KontrolerDodajCzynnosc extends BazowyKontroler {
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
+        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
     }
 
     @Override
     protected void zapametajPowrot() {
         PrzechowywaczDanych.zapamietajWyjscie(this);
     }
+
+
 }

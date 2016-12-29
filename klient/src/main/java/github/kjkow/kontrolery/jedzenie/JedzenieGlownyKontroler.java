@@ -2,7 +2,7 @@ package github.kjkow.kontrolery.jedzenie;
 
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.kontrolery.KontrolerEkranGlowny;
+import github.kjkow.kontrolery.EkranGlownyKontroler;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-28.
  */
-public class KontrolerJedzenieGlowny extends BazowyKontroler {
+public class JedzenieGlownyKontroler extends BazowyKontroler {
 
     public Button proces;
 
@@ -27,7 +27,7 @@ public class KontrolerJedzenieGlowny extends BazowyKontroler {
      * @param actionEvent
      */
     public void akcja_przepisy(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerPrzepisy());
+        otworzNowaFormatke(new KontrolerPrzepisyKontroler());
     }
 
     /**
@@ -55,6 +55,6 @@ public class KontrolerJedzenieGlowny extends BazowyKontroler {
 
     @Override
     protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new KontrolerEkranGlowny());
+        otworzNowaFormatke(new EkranGlownyKontroler());
     }
 }

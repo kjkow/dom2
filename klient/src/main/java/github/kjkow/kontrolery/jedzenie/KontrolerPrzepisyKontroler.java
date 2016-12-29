@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-28.
  */
-public class KontrolerPrzepisy extends BazowyKontroler implements Initializable {
+public class KontrolerPrzepisyKontroler extends BazowyKontroler implements Initializable {
 
     public ListView<String> przepisy;
     public Button usun;
@@ -74,7 +74,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
         }
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
-        otworzNowaFormatke(new KontrolerModyfikujPrzepis());
+        otworzNowaFormatke(new ModyfikujPrzepisKontroler());
     }
 
     /**
@@ -90,7 +90,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
      * @param actionEvent
      */
     public void akcja_dodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerDodajPrzepis());
+        otworzNowaFormatke(new DodajPrzepisKontroler());
     }
 
     /**
@@ -113,7 +113,7 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
         }
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
-        otworzNowaFormatke(new KontrolerPokazPrzepis());
+        otworzNowaFormatke(new PokazPrzepisKontroler());
     }
 
     /**
@@ -188,6 +188,6 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
 
     @Override
     protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new KontrolerJedzenieGlowny());
+        otworzNowaFormatke(new JedzenieGlownyKontroler());
     }
 }

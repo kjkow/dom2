@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.KontolerAutomatExcel">
+<AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.AutomatExcelKontroler">
    <children>
       <Button fx:id="migrator_zakresow" layoutX="197.0" layoutY="179.0" mnemonicParsing="false" onAction="#migrujZakresy" prefHeight="25.0" prefWidth="159.0" text="Migruj zakresy" />
       <Button fx:id="tworzenie_nowego_arkusza" layoutX="14.0" layoutY="179.0" mnemonicParsing="false" onAction="#utworzNowyArkusz" text="Utwórz arkusz na nowy rok" />

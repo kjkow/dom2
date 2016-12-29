@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-28.
  */
-public class KontrolerPokazPrzepis extends BazowyKontroler implements Initializable {
+public class PokazPrzepisKontroler extends BazowyKontroler implements Initializable {
 
     public TextField nazwa;
     public TextArea skladniki;

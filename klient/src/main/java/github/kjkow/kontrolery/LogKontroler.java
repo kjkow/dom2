@@ -17,7 +17,7 @@ import java.util.Scanner;
 /**
  * Created by Kamil.Kowalczyk on 2016-08-19.
  */
-public class KontrolerLog extends BazowyKontroler implements Initializable {
+public class LogKontroler extends BazowyKontroler implements Initializable {
 
     @FXML public TextArea obszar_logu;
 

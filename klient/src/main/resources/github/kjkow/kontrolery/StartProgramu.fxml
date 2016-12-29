@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.KontrolerEkranGlowny">
+<AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.EkranGlownyKontroler">
     <children>
         <Button fx:id="sprzatanie" layoutX="34.0" layoutY="120.0" mnemonicParsing="false" onAction="#obslugaSprzatanie" prefHeight="38.0" prefWidth="140.0" text="Sprzatanie" />
         <Button fx:id="jedzenie" layoutX="34.0" layoutY="180.0" mnemonicParsing="false" onAction="#obslugaJedzenie" prefHeight="38.0" prefWidth="140.0" text="Jedzenie" />

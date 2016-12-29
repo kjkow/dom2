@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.KontrolerSprzatanieEkranGlowny">
+<AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.SprzatanieEkranGlownyKontroler">
    <children>
       <ComboBox fx:id="czynnosc" layoutX="14.0" layoutY="40.0" onAction="#akcja_czynnosc" prefHeight="31.0" prefWidth="334.0" promptText="Czynność" />
       <Label layoutX="375.0" layoutY="127.0" text="Następne sprzątanie" />

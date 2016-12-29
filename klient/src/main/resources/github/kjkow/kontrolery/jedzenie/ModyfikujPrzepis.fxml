@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="300.0" prefHeight="590.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.KontrolerModyfikujPrzepis">
+<AnchorPane minHeight="300.0" prefHeight="590.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.ModyfikujPrzepisKontroler">
    <children>
       <Button fx:id="powrot" layoutX="9.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_powrot" prefHeight="31.0" prefWidth="100.0" text="Anuluj" />
       <Button fx:id="zapisz" layoutX="90.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_zapisz" prefHeight="31.0" prefWidth="100.0" text="Zapisz" />

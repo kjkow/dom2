@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.KontrolerDodajCzynnosc">
+<AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.DodajCzynnoscKontroler">
    <opaqueInsets>
       <Insets />
    </opaqueInsets>

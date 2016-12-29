@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="300.0" prefHeight="590.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.KontrolerPokazPrzepis">
+<AnchorPane minHeight="300.0" prefHeight="590.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.PokazPrzepisKontroler">
    <children>
       <Button fx:id="powrot" layoutX="9.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_powrot" prefHeight="31.0" prefWidth="100.0" text="Powrót" />
       <TextField fx:id="nazwa" editable="false" layoutX="15.0" layoutY="56.0" prefHeight="31.0" prefWidth="404.0" />

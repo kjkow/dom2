@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-12.
  */
-public class KontolerAutomatExcel extends BazowyKontroler implements Initializable{
+public class AutomatExcelKontroler extends BazowyKontroler implements Initializable{
 
     public Label sciezka;
     public TextArea log;

@@ -13,7 +13,7 @@ import java.sql.SQLException;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-29.
  */
-public class KontrolerDodajPrzepis extends BazowyKontroler {
+public class DodajPrzepisKontroler extends BazowyKontroler {
 
     public TextField nazwa;
     public TextArea skladniki;

@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-29.
  */
-public class KontrolerModyfikujPrzepis extends BazowyKontroler implements Initializable{
+public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initializable{
 
     public DatePicker data;
     public TextArea przygotowanie;

@@ -4,7 +4,7 @@ package github.kjkow.kontrolery.sprzatanie;
 import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.kontrolery.KontrolerEkranGlowny;
+import github.kjkow.kontrolery.EkranGlownyKontroler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
-public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements Initializable {
+public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements Initializable {
 
 
     @FXML public ComboBox<String> czynnosc;
@@ -201,7 +201,7 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
      * @param actionEvent
      */
     public void akcja_edycja(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerCzynnosci());
+        otworzNowaFormatke(new CzynnosciKontroler());
     }
 
     private void zaladujListeNajblizszychSprzatan(){
@@ -274,6 +274,6 @@ public class KontrolerSprzatanieEkranGlowny extends BazowyKontroler implements I
 
     @Override
     protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new KontrolerEkranGlowny());
+        otworzNowaFormatke(new EkranGlownyKontroler());
     }
 }

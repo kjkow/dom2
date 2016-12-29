@@ -7,8 +7,8 @@ import github.kjkow.bazowe.ObslugaBledu;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAO;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAOImpl;
-import github.kjkow.kontrolery.jedzenie.KontrolerJedzenieGlowny;
-import github.kjkow.kontrolery.sprzatanie.KontrolerSprzatanieEkranGlowny;
+import github.kjkow.kontrolery.jedzenie.JedzenieGlownyKontroler;
+import github.kjkow.kontrolery.sprzatanie.SprzatanieEkranGlownyKontroler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
-public class KontrolerEkranGlowny extends BazowyKontroler implements Initializable {
+public class EkranGlownyKontroler extends BazowyKontroler implements Initializable {
 
     @FXML public Label uroczystosci;//TODO: Zamienic na powiadomienia i dodac info o lokatach
 
@@ -40,7 +40,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaLog(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerLog());
+        otworzNowaFormatke(new LogKontroler());
     }
 
     /**
@@ -57,7 +57,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaJedzenie(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerJedzenieGlowny());
+        otworzNowaFormatke(new JedzenieGlownyKontroler());
     }
 
     /**
@@ -65,7 +65,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaSprzatanie(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontrolerSprzatanieEkranGlowny());
+        otworzNowaFormatke(new SprzatanieEkranGlownyKontroler());
     }
 
     /**
@@ -73,7 +73,7 @@ public class KontrolerEkranGlowny extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaNarzedziaExcel(ActionEvent actionEvent) {
-        otworzNowaFormatke(new KontolerAutomatExcel());
+        otworzNowaFormatke(new AutomatExcelKontroler());
     }
 
     private void inicjujUroczystosci(){
