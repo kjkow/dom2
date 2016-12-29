@@ -3,6 +3,8 @@ package github.kjkow.kontrolery.jedzenie;
 import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
@@ -24,12 +26,34 @@ public class KontrolerPrzepisy extends BazowyKontroler implements Initializable 
     public Button usun;
     public Button szczegoly;
 
+    private ObservableList<String> listaPrzepisowPrezentacja = FXCollections.observableArrayList();
+
     private Przepis przepis;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-     //TODO: zaladuj liste przepisow
+        zaladujListePrzepisow();
+    }
+
+    private void zaladujListePrzepisow(){
+        listaPrzepisowPrezentacja.clear();
+        inicjujJedzenieDAO();
+        if(jedzenieDAO == null) return;
+
+        try {
+            for(String nazwaPrzepisu: jedzenieDAO.pobierzListePrzepisow()){
+                listaPrzepisowPrezentacja.add(nazwaPrzepisu);
+            }
+        } catch (SQLException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+            return;
+        } catch (ClassNotFoundException e) {
+            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            return;
+        }
+
+        przepisy.setItems(listaPrzepisowPrezentacja);
     }
 
     //TODO: modyfikuj przepis(mamy tylko pokaz) - to samo z czynnością

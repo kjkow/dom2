@@ -21,5 +21,5 @@ public interface JedzenieDAO {
      */
     int usunPrzepis(String nazwaPrzepisu) throws SQLException, ClassNotFoundException;
 
-    List<Przepis> pobierzListePrzepisow();
+    List<String> pobierzListePrzepisow() throws SQLException, ClassNotFoundException;
 }

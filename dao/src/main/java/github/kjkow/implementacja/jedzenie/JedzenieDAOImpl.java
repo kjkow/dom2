@@ -6,6 +6,7 @@ import github.kjkow.implementacja.BazowyDAO;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +49,17 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
     }
 
     @Override
-    public List<Przepis> pobierzListePrzepisow() {
-        return null;
+    public List<String> pobierzListePrzepisow() throws SQLException, ClassNotFoundException {
+        List<String> przepisy = new ArrayList<>();
+        otworzPolaczenie();
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT NAZWA FROM JEDZENIE_PRZEPISY");
+            wynikKwerendy = kwerenda.executeQuery();
+            while (wynikKwerendy.next()){
+                przepisy.add(wynikKwerendy.getString("NAZWA"));
+            }
+            zamknijPolczenie();
+        }
+        return przepisy;
     }
 }
