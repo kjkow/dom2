@@ -30,6 +30,14 @@ public class DodajCzynnoscKontroler extends BazowyKontroler {
      * @param actionEvent
      */
     public void zapiszCzynnosc(ActionEvent actionEvent) {
+        try{
+            zapiszCzynnosc();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void zapiszCzynnosc(){
         Czynnosc nowaCzynnosc = new Czynnosc();
 
         if(nazwa.getText().compareTo("") != 0){

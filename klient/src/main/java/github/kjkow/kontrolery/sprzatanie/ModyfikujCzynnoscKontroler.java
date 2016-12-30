@@ -25,9 +25,13 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        czynnosc = (Czynnosc)PrzechowywaczDanych.pobierzObiekt();
-        nazwa.setText(czynnosc.getNazwaCzynnosci());
-        czestotliwosc.setText(String.valueOf(czynnosc.getDniCzestotliwosci()));
+        try {
+            czynnosc = (Czynnosc) PrzechowywaczDanych.pobierzObiekt();
+            nazwa.setText(czynnosc.getNazwaCzynnosci());
+            czestotliwosc.setText(String.valueOf(czynnosc.getDniCzestotliwosci()));
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
     }
 
     /**
@@ -43,6 +47,14 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
      * @param actionEvent
      */
     public void zapiszCzynnosc(ActionEvent actionEvent) {
+        try {
+            zapiszZmodyfikowanaCzynnosc();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void zapiszZmodyfikowanaCzynnosc(){
         inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){

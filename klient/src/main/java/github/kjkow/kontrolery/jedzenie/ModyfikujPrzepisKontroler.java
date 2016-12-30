@@ -28,10 +28,34 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        przepis = (Przepis)PrzechowywaczDanych.pobierzObiekt();
+        try {
+            przepis = (Przepis) PrzechowywaczDanych.pobierzObiekt();
+            inicjujPola();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
     }
 
+    private void inicjujPola(){
+        data.setValue(przepis.getDataOstatniegoPrzygotowania());
+        przygotowanie.setText(przepis.getSposobPrzygotowania());
+        skladniki.setText(przepis.getSkladniki());
+        nazwa.setText(przepis.getNazwa());
+    }
+
+    /**
+     * Button zapisz
+     * @param actionEvent
+     */
     public void akcja_zapisz(ActionEvent actionEvent) {
+        try{
+            zapiszPrzepis();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void zapiszPrzepis(){
         inicjujJedzenieDAO();
 
         if(jedzenieDAO == null){
@@ -60,6 +84,10 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
         wrocDoPoprzedniejFormatki();
     }
 
+    /**
+     * Button powrot
+     * @param actionEvent
+     */
     public void akcja_powrot(ActionEvent actionEvent) {
         wrocDoPoprzedniejFormatki();
     }

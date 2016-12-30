@@ -30,6 +30,7 @@ public abstract class BazowyKontroler {
     protected static final String KOMUNIKAT_BLEDU_KONEKTORA_JDBC = "Wystąpił błąd sterownika bazy danych";
     protected static final String KOMUNIKAT_BLEDU_IO = "Wystąpił błąd podczas wczytywania pliku.";
     protected static final String KOMUNIKAT_AMBIWALENCJI_DZIENNIKA = "Nastąpił poprawny zapis na bazie, ale nie udało się zapisać informacji w dzienniku aplikacji.";
+    protected static final String KOMUNIKAT_NIEOCZEKIWANY = "Wystąpił nieoczekiwany błąd aplikacji";
 
     protected SprzatanieDAO sprzatanieDAO;
     protected JedzenieDAO jedzenieDAO;
@@ -58,8 +59,12 @@ public abstract class BazowyKontroler {
     }
 
     protected void otworzNowaFormatke(BazowyKontroler pKontroler){
-        zapametajPowrot();
-        zarzadcaFormatek.wyswietlNowaFormatke(pKontroler, zwrocSceneFormatki());
+        try {
+            zapametajPowrot();
+            zarzadcaFormatek.wyswietlNowaFormatke(pKontroler, zwrocSceneFormatki());
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
     }
 
 

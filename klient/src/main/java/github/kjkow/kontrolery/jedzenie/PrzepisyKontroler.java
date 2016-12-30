@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-28.
  */
-public class KontrolerPrzepisyKontroler extends BazowyKontroler implements Initializable {
+public class PrzepisyKontroler extends BazowyKontroler implements Initializable {
 
     public ListView<String> przepisy;
     public Button usun;
@@ -32,7 +32,11 @@ public class KontrolerPrzepisyKontroler extends BazowyKontroler implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        zaladujListePrzepisow();
+        try {
+            zaladujListePrzepisow();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
     }
 
     private void zaladujListePrzepisow(){
@@ -60,6 +64,14 @@ public class KontrolerPrzepisyKontroler extends BazowyKontroler implements Initi
      * @param actionEvent
      */
     public void akcja_modyfikuj(ActionEvent actionEvent) {
+        try{
+            przejdzDoModyfikacji();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void przejdzDoModyfikacji(){
         inicjujJedzenieDAO();
         if(jedzenieDAO == null) return;
 
@@ -98,6 +110,14 @@ public class KontrolerPrzepisyKontroler extends BazowyKontroler implements Initi
      * @param actionEvent
      */
     public void akcja_szczegoly(ActionEvent actionEvent) {
+        try {
+            pokazSzczegolyPrzepisu();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void pokazSzczegolyPrzepisu(){
         inicjujJedzenieDAO();
 
         if(jedzenieDAO == null) return;
@@ -129,7 +149,7 @@ public class KontrolerPrzepisyKontroler extends BazowyKontroler implements Initi
     private void odblokujEdytowalnoscPrzyciskow(){
         usun.setDisable(false);
         szczegoly.setDisable(false);
-        modyfikuj.setDisable(true);
+        modyfikuj.setDisable(false);
     }
 
     private void zablokujEdytowalnoscPrzyciskow(){
@@ -143,6 +163,14 @@ public class KontrolerPrzepisyKontroler extends BazowyKontroler implements Initi
      * @param actionEvent
      */
     public void akcja_usun(ActionEvent actionEvent) {
+        try{
+            usunPrzepis();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void usunPrzepis(){
         inicjujJedzenieDAO();
 
         if(jedzenieDAO == null){

@@ -4,6 +4,7 @@ import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.event.ActionEvent;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -18,13 +19,29 @@ public class DodajPrzepisKontroler extends BazowyKontroler {
     public TextField nazwa;
     public TextArea skladniki;
     public TextArea przygotowanie;
-    public TextField data;
+    public DatePicker data;
 
+    /**
+     * Button powrot
+     * @param actionEvent
+     */
     public void akcja_powrot(ActionEvent actionEvent) {
         wrocDoPoprzedniejFormatki();
     }
 
+    /**
+     * Button zapisz
+     * @param actionEvent
+     */
     public void akcja_zapisz(ActionEvent actionEvent) {
+        try{
+            zapiszPrzepis();
+        } catch(Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void zapiszPrzepis(){
         Przepis nowyPrzepis = new Przepis();
 
         if(nazwa.getText().compareTo("") != 0){

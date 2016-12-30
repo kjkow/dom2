@@ -24,11 +24,15 @@ public class PokazPrzepisKontroler extends BazowyKontroler implements Initializa
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Przepis przepis = (Przepis) PrzechowywaczDanych.pobierzObiekt();
-        nazwa.setText(przepis.getNazwa());
-        skladniki.setText(przepis.getSkladniki());
-        przygotowanie.setText(przepis.getSposobPrzygotowania());
-        data.setText(String.valueOf(przepis.getDataOstatniegoPrzygotowania()));
+        try {
+            Przepis przepis = (Przepis) PrzechowywaczDanych.pobierzObiekt();
+            nazwa.setText(przepis.getNazwa());
+            skladniki.setText(przepis.getSkladniki());
+            przygotowanie.setText(przepis.getSposobPrzygotowania());
+            data.setText(String.valueOf(przepis.getDataOstatniegoPrzygotowania()));
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
     }
 
     /**

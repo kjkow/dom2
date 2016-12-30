@@ -42,9 +42,14 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        zaladujListeNajblizszychSprzatan();
-        ustawDateWykonaniaNaDzis();
-        zaladujComboCzynnosci();
+        try{
+            zaladujListeNajblizszychSprzatan();
+            ustawDateWykonaniaNaDzis();
+            zaladujComboCzynnosci();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+
     }
 
     /**
@@ -53,6 +58,14 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
      * @param actionEvent
      */
     public void akcja_czynnosc(ActionEvent actionEvent) {
+        try{
+            pobierzDaneCzynnosci();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void pobierzDaneCzynnosci(){
         inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
@@ -76,6 +89,14 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
      * @param actionEvent
      */
     public void akcja_wykonano(ActionEvent actionEvent) {
+        try{
+            wykonajCzynnosc();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void wykonajCzynnosc(){
         if(data_wykonania.getValue() == null){
             zarzadcaFormatek.wyswietlOknoInformacji("Pole data wykonania nie może być puste.");
             return;
@@ -133,6 +154,14 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
      * @param mouseEvent
      */
     public void akcja_najblizsze_sprzatania(MouseEvent mouseEvent) {
+        try{
+            pobierzDaneCzynnosciZListyNajblizszychSprzatan();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void pobierzDaneCzynnosciZListyNajblizszychSprzatan(){
         String nazwaCzynnosci = najblizsze_sprzatania.getSelectionModel().getSelectedItem();
 
         inicjujSprzatanieDAO();
@@ -164,7 +193,15 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
      * @param actionEvent
      */
     public void akcja_odloz(ActionEvent actionEvent) {
+        try{
+            odlozCzynnosc();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
 
+    }
+
+    private void odlozCzynnosc(){
         if(wybranaCzynnosc == null){
             zarzadcaFormatek.wyswietlOknoInformacji("Nie wybrano czynności.");
             return;

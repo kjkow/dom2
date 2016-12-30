@@ -29,7 +29,11 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        zaladujListeCzynnosci();
+        try {
+            zaladujListeCzynnosci();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
     }
 
     /**
@@ -37,6 +41,14 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
      * @param actionEvent
      */
     public void akcjaModyfikacja(ActionEvent actionEvent) {
+        try{
+            przejdzDoModfikacji();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void przejdzDoModfikacji(){
         inicjujSprzatanieDAO();
         if(sprzatanieDAO == null) return;
 
@@ -76,6 +88,14 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
      * @param actionEvent
      */
     public void akcja_usun_czynnosc(ActionEvent actionEvent) {
+        try{
+            usunCzynnosc();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void usunCzynnosc(){
         inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
