@@ -26,6 +26,10 @@ public class KontekstZwracany {
     }
 
     public void dodajDoLogu(String dodatek){
-        log += "\n" + dodatek + "\n";
+        if(dodatek.compareTo("") == 0){
+            log += dodatek;
+            return;
+        }
+        log += dodatek + "\n";
     }
 }

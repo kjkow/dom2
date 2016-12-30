@@ -47,7 +47,6 @@ public class MigratorZakresow  {
         if(!pKontekst.isCzyBrakBledow()) return pKontekst;
 
         miesiac = 13; //dodatkowa opcja która przestawi zakresy na 'do grudnia'
-        pKontekst.dodajDoLogu("Rozpocznij zmianę zakresów dla miesiąca " + miesiac);
         zmienWartosci();
 
         return pKontekst;
@@ -185,7 +184,7 @@ public class MigratorZakresow  {
             zmienSrednieWydatkiNieregularne(staraZwiekszania + "100", nowaZwiekszania + "100"); //punkt 5
         }
         if(pKontekst.isCzyBrakBledow()){
-            zmienZakresOszczednosci(staraZwiekszania + "105", nowaZwiekszania + "105"); //punkt 6
+            zmienZakresOszczednosci(staraZwiekszania + "103", nowaZwiekszania + "103"); //punkt 6
         }
     }
 

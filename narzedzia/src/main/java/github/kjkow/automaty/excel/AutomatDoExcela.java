@@ -31,14 +31,14 @@ public class AutomatDoExcela implements IAutomatDoExcela {
         try {
             arkusz = plik.wczytajArkuszExcela(sciezkaDoArkusza);
         } catch (IOException e) {
-            kontekstAutomatu.dodajDoLogu("Nie udalo sie wczytac pliku " + sciezkaDoArkusza + "\n" + e);
+            kontekstAutomatu.dodajDoLogu("Nie udało się wczytać pliku " + sciezkaDoArkusza + "\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);
             return kontekstAutomatu;
         }
 
         //pusc migrator
         if(arkusz != null && obecnyMiesiac != 0) {
-            kontekstAutomatu.dodajDoLogu("Rozpocznij migrację zakresow.");
+            kontekstAutomatu.dodajDoLogu("Rozpoczęto migrację zakresów.");
             MigratorZakresow migrator = new MigratorZakresow(arkusz);
 
             KontekstZwracany kontekstMigratoraZakresow = migrator.migrujZakresy(obecnyMiesiac);
@@ -48,7 +48,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
             if(!kontekstAutomatu.isCzyBrakBledow()) return kontekstAutomatu;
 
         }else if(Calendar.getInstance().get(Calendar.MONTH) != 0){
-            kontekstAutomatu.dodajDoLogu("Tego migratora nie mozna puszczac w styczniu.");
+            kontekstAutomatu.dodajDoLogu("Tego migratora nie można puszczać w styczniu.");
             kontekstAutomatu.setCzyBrakBledow(false);
             return kontekstAutomatu;
         }
@@ -58,76 +58,79 @@ public class AutomatDoExcela implements IAutomatDoExcela {
         try {
             plik.zapiszArkuszExcela(arkusz, sciezkaDoArkusza);
         } catch (IOException e) {
-            kontekstAutomatu.dodajDoLogu("Nie udalo sie zapisac pliku " + sciezkaDoArkusza + "\n" + e);
+            kontekstAutomatu.dodajDoLogu("Nie udało sie zapisać pliku " + sciezkaDoArkusza + "\n" + e);
             return kontekstAutomatu;
         }
+
+        kontekstAutomatu.dodajDoLogu("Migracja zakończona pomyślnie.");
         return kontekstAutomatu;
     }
 
     @Override
     public KontekstZwracany utworzArkuszNaNowyRok(String sciezkaDoArkusza) {
         kontekstAutomatu = new KontekstZwracany();
-
-        if(Calendar.getInstance().get(Calendar.MONTH) != 0){ //robimy to tylko w styczniu
-            //logger.error("Ten automat puszczamy tylko w styczniu.");
-            kontekstAutomatu.dodajDoLogu("Ten automat puszczamy tylko w styczniu!");
-            kontekstAutomatu.setCzyBrakBledow(false);
-            return kontekstAutomatu;
-        }
-
+        //TODO: przerobić tak żeby działał i na końcu grudnia i na początku stycznia
+        //TODO: obecnie dziala na koncu grudnia ale na 99% to tylko zmianka w nazwach arkuszy
         String sciezkaDoArkuszaNaNowyRok = zmienRokWSciezceDoArkusza(sciezkaDoArkusza);
         HSSFWorkbook staryArkusz;
         HSSFWorkbook nowyArkusz;
         IPlik pPlik = new Plik();
 
-        //wczytaj pliki
+        //wczytaj stary arkusz
         try {
             staryArkusz = pPlik.wczytajArkuszExcela(sciezkaDoArkusza);
-            pPlik.kopiujPlik(sciezkaDoArkusza, sciezkaDoArkuszaNaNowyRok);
-            nowyArkusz = pPlik.wczytajArkuszExcela(sciezkaDoArkuszaNaNowyRok);
         } catch (IOException e) {
-            kontekstAutomatu.dodajDoLogu("Bład przy wczytywaniu arkusza.\n" + e);
+            kontekstAutomatu.dodajDoLogu("Błąd przy wczytywaniu arkusza.\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);
             return kontekstAutomatu;
         }
 
-        //pusc migratory
+        MigratorZakresow migratorNaNowyRok = new MigratorZakresow(staryArkusz);
+        KontekstZwracany kontekstZmianyRoku = migratorNaNowyRok.migrujPrzyZmianieRoku();
+        przepakujDoKontekstuAutomatu(kontekstZmianyRoku);
+        if(!kontekstZmianyRoku.isCzyBrakBledow()) return kontekstAutomatu;
+        //zapisz stary arkusz
+        try {
+            pPlik.zapiszArkuszExcela(staryArkusz, sciezkaDoArkusza);
+        } catch (IOException e) {
+            kontekstAutomatu.dodajDoLogu("Błąd przy zapisywaniu arkusza.\n" + e);
+            kontekstAutomatu.setCzyBrakBledow(false);
+            return kontekstAutomatu;
+        }
+
+        //skopiuj stary na nowy i wczytaj nowy
+        try {
+            pPlik.kopiujPlik(sciezkaDoArkusza, sciezkaDoArkuszaNaNowyRok);
+            nowyArkusz = pPlik.wczytajArkuszExcela(sciezkaDoArkuszaNaNowyRok);
+        } catch (IOException e) {
+            kontekstAutomatu.dodajDoLogu("Błąd przy wczytywaniu arkusza.\n" + e);
+            kontekstAutomatu.setCzyBrakBledow(false);
+            return kontekstAutomatu;
+        }
+
+        //pusc migratory na nowym arkuszu
         if(staryArkusz != null && nowyArkusz != null) {
             MigratorArkuszaNowyRok migratorNazwArkuszy = new MigratorNazwArkuszy(nowyArkusz);
             MigratorArkuszaNowyRok migratorCzyszczeniaKomorek = new MigratorCzyszczeniaKomorek(nowyArkusz);
             MigratorArkuszaNowyRok migratorPrzepisywaniaWartosci = new MigratorPrzepisywaniaWartosci(staryArkusz, nowyArkusz);
             MigratorZakresow migratorZakresow = new MigratorZakresow(nowyArkusz);
-            MigratorZakresow migratorNaNowyRok = new MigratorZakresow(staryArkusz);
-
-            KontekstZwracany kontekstZmianyRoku = migratorNaNowyRok.migrujPrzyZmianieRoku();
-            if(!kontekstZmianyRoku.isCzyBrakBledow()){
-                przepakujDoKontekstuAutomatu(kontekstZmianyRoku);
-                return kontekstAutomatu;
-            }
 
             KontekstZwracany kontekstNazwArkuszy = migratorNazwArkuszy.migruj();
-            if(!kontekstNazwArkuszy.isCzyBrakBledow()){
-                przepakujDoKontekstuAutomatu(kontekstNazwArkuszy);
-                return kontekstAutomatu;
-            }
+            przepakujDoKontekstuAutomatu(kontekstNazwArkuszy);
+            if(!kontekstNazwArkuszy.isCzyBrakBledow()) return kontekstAutomatu;
 
             KontekstZwracany kontekstCzyszczeniaKomorek = migratorCzyszczeniaKomorek.migruj();
-            if(!kontekstCzyszczeniaKomorek.isCzyBrakBledow()){
-                przepakujDoKontekstuAutomatu(kontekstCzyszczeniaKomorek);
-                return kontekstAutomatu;
-            }
+            przepakujDoKontekstuAutomatu(kontekstCzyszczeniaKomorek);
+            if(!kontekstCzyszczeniaKomorek.isCzyBrakBledow()) return kontekstAutomatu;
 
             KontekstZwracany kontekstPrzepisywaniaWartosci = migratorPrzepisywaniaWartosci.migruj();
-            if(!kontekstPrzepisywaniaWartosci.isCzyBrakBledow()){
-                przepakujDoKontekstuAutomatu(kontekstPrzepisywaniaWartosci);
-                return kontekstAutomatu;
-            }
+            przepakujDoKontekstuAutomatu(kontekstPrzepisywaniaWartosci);
+            if(!kontekstPrzepisywaniaWartosci.isCzyBrakBledow()) return kontekstAutomatu;
 
-            KontekstZwracany kontekstZakresow = migratorZakresow.migrujZakresy(obecnyMiesiac);
-            if(!kontekstZakresow.isCzyBrakBledow()){
-                przepakujDoKontekstuAutomatu(kontekstZakresow);
-                return kontekstAutomatu;
-            }
+            KontekstZwracany kontekstZakresow = migratorZakresow.migrujZakresy(1);//puszczamy to pod koniec grudnia, ale chcemy żeby wykonała się switch(1)
+            przepakujDoKontekstuAutomatu(kontekstZakresow);
+            if(!kontekstZakresow.isCzyBrakBledow()) return kontekstAutomatu;
+
         }else{
             kontekstAutomatu.dodajDoLogu("Nie udało się utowrzyć arkusza.");
             kontekstAutomatu.setCzyBrakBledow(false);
@@ -137,15 +140,13 @@ public class AutomatDoExcela implements IAutomatDoExcela {
         //zapisz nowy nowyArkusz
         try {
             pPlik.zapiszArkuszExcela(nowyArkusz, sciezkaDoArkuszaNaNowyRok);
-            //puszczenie migratorZakresow.migrujPrzyZmianieRoku() zmieni zakresy na starym arkuszu, zapisujemy go w postaci "do grudnia"
-            pPlik.zapiszArkuszExcela(staryArkusz, sciezkaDoArkusza);
         } catch (IOException e) {
             kontekstAutomatu.dodajDoLogu("Błąd przy zapisywaniu arkusza.\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);
             return kontekstAutomatu;
         }
 
-        kontekstAutomatu.dodajDoLogu("Migrator zakończony sukcesem.");
+        kontekstAutomatu.dodajDoLogu("Migracja zakończona pomyślnie.");
         return kontekstAutomatu;
     }
 

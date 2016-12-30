@@ -76,6 +76,14 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
      * @param actionEvent
      */
     public void migrujZakresy(ActionEvent actionEvent) {
+        try{
+            puscMigratorZakresow();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void puscMigratorZakresow(){
         if(!czyPustaSciezka()){
             pKontekst = automat.migrujZakresy(sciezka.getText());
             log.setText(pKontekst.getLog());
