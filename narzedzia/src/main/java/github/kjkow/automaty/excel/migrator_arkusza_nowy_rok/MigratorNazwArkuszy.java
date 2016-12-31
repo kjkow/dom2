@@ -9,9 +9,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  */
 public class MigratorNazwArkuszy extends MigratorArkuszaNowyRok {
 
-    public MigratorNazwArkuszy(HSSFWorkbook Arkusz){
+    public MigratorNazwArkuszy(HSSFWorkbook Arkusz, int pNowyRok, int pObecnyRok){
         super(Arkusz);
         pKontekst = new KontekstZwracany();
+        przyszlyRok = pNowyRok;
+        obecnyRok = pObecnyRok;
     }
 
     @Override

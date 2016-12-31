@@ -20,6 +20,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
     private static final int obecnyMiesiac = Calendar.getInstance().get(Calendar.MONTH) + 1;
     private KontekstZwracany kontekstAutomatu;
+    private int nowyRok = Calendar.getInstance().get(Calendar.YEAR) + 1;
 
     @Override
     public KontekstZwracany migrujZakresy(String sciezkaDoArkusza) {
@@ -37,7 +38,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
         }
 
         //pusc migrator
-        if(arkusz != null && obecnyMiesiac != 0) {
+        if(arkusz != null && obecnyMiesiac != 1) {
             kontekstAutomatu.dodajDoLogu("Rozpoczęto migrację zakresów.");
             MigratorZakresow migrator = new MigratorZakresow(arkusz);
 
@@ -47,7 +48,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
             if(!kontekstAutomatu.isCzyBrakBledow()) return kontekstAutomatu;
 
-        }else if(Calendar.getInstance().get(Calendar.MONTH) != 0){
+        }else if(Calendar.getInstance().get(Calendar.MONTH) != 1){
             kontekstAutomatu.dodajDoLogu("Tego migratora nie można puszczać w styczniu.");
             kontekstAutomatu.setCzyBrakBledow(false);
             return kontekstAutomatu;
@@ -69,12 +70,19 @@ public class AutomatDoExcela implements IAutomatDoExcela {
     @Override
     public KontekstZwracany utworzArkuszNaNowyRok(String sciezkaDoArkusza) {
         kontekstAutomatu = new KontekstZwracany();
-        //TODO: przerobić tak żeby działał i na końcu grudnia i na początku stycznia
-        //TODO: obecnie dziala na koncu grudnia ale na 99% to tylko zmianka w nazwach arkuszy
-        String sciezkaDoArkuszaNaNowyRok = zmienRokWSciezceDoArkusza(sciezkaDoArkusza);
         HSSFWorkbook staryArkusz;
         HSSFWorkbook nowyArkusz;
         IPlik pPlik = new Plik();
+        if(obecnyMiesiac != 12 && obecnyMiesiac != 1){
+            kontekstAutomatu.dodajDoLogu("Ten migrator można puszczać tylko w grudniu lub styczniu.");
+            kontekstAutomatu.setCzyBrakBledow(false);
+            return kontekstAutomatu;
+        }
+
+        if(obecnyMiesiac == 1){//jeśli puścimy to na początku stycznia to dla migratorow nowym rokiem bedzie obecny rok
+            nowyRok = Calendar.getInstance().get(Calendar.YEAR);
+        }
+
 
         //wczytaj stary arkusz
         try {
@@ -98,6 +106,8 @@ public class AutomatDoExcela implements IAutomatDoExcela {
             return kontekstAutomatu;
         }
 
+        String sciezkaDoArkuszaNaNowyRok = zmienRokWSciezceDoArkusza(sciezkaDoArkusza);
+
         //skopiuj stary na nowy i wczytaj nowy
         try {
             pPlik.kopiujPlik(sciezkaDoArkusza, sciezkaDoArkuszaNaNowyRok);
@@ -110,8 +120,8 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
         //pusc migratory na nowym arkuszu
         if(staryArkusz != null && nowyArkusz != null) {
-            MigratorArkuszaNowyRok migratorNazwArkuszy = new MigratorNazwArkuszy(nowyArkusz);
-            MigratorArkuszaNowyRok migratorCzyszczeniaKomorek = new MigratorCzyszczeniaKomorek(nowyArkusz);
+            MigratorArkuszaNowyRok migratorNazwArkuszy = new MigratorNazwArkuszy(nowyArkusz, nowyRok, nowyRok-1);
+            MigratorArkuszaNowyRok migratorCzyszczeniaKomorek = new MigratorCzyszczeniaKomorek(nowyArkusz, nowyRok);
             MigratorArkuszaNowyRok migratorPrzepisywaniaWartosci = new MigratorPrzepisywaniaWartosci(staryArkusz, nowyArkusz);
             MigratorZakresow migratorZakresow = new MigratorZakresow(nowyArkusz);
 
@@ -127,7 +137,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
             przepakujDoKontekstuAutomatu(kontekstPrzepisywaniaWartosci);
             if(!kontekstPrzepisywaniaWartosci.isCzyBrakBledow()) return kontekstAutomatu;
 
-            KontekstZwracany kontekstZakresow = migratorZakresow.migrujZakresy(1);//puszczamy to pod koniec grudnia, ale chcemy żeby wykonała się switch(1)
+            KontekstZwracany kontekstZakresow = migratorZakresow.migrujZakresy(1);
             przepakujDoKontekstuAutomatu(kontekstZakresow);
             if(!kontekstZakresow.isCzyBrakBledow()) return kontekstAutomatu;
 
@@ -152,7 +162,6 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
     private String zmienRokWSciezceDoArkusza(String sciezkaDoArkusza){
         String obcietaSciezka = sciezkaDoArkusza.substring(0, sciezkaDoArkusza.length() - 8);
-        int nowyRok = Calendar.getInstance().get(Calendar.YEAR) + 1;
         return obcietaSciezka + String.valueOf(nowyRok) + ".xls";
     }
 

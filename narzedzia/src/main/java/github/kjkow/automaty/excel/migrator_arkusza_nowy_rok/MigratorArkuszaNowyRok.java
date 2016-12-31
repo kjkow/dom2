@@ -12,8 +12,8 @@ public abstract class MigratorArkuszaNowyRok {
 
     HSSFWorkbook nowyArkusz;
     HSSFWorkbook staryArkusz;
-    final static int przyszlyRok = Calendar.getInstance().get(Calendar.YEAR) + 1;
-    final static int obecnyRok = Calendar.getInstance().get(Calendar.YEAR);
+    int przyszlyRok;
+    int obecnyRok;
     KontekstZwracany pKontekst;
 
     MigratorArkuszaNowyRok(HSSFWorkbook aStaryArkusz, HSSFWorkbook aNowyArkusz){

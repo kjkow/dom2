@@ -11,9 +11,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  */
 public class MigratorCzyszczeniaKomorek extends MigratorArkuszaNowyRok{
 
-    public MigratorCzyszczeniaKomorek(HSSFWorkbook Arkusz){
+    public MigratorCzyszczeniaKomorek(HSSFWorkbook Arkusz, int pPrzyszlyRok){
         super(Arkusz);
         pKontekst = new KontekstZwracany();
+        przyszlyRok = pPrzyszlyRok;
     }
 
     @Override

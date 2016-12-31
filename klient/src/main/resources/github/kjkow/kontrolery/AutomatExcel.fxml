@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.AutomatExcelKontroler">
+<AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.AutomatExcelKontroler">
    <children>
-      <Button fx:id="migrator_zakresow" layoutX="197.0" layoutY="179.0" mnemonicParsing="false" onAction="#migrujZakresy" prefHeight="25.0" prefWidth="159.0" text="Migruj zakresy" />
-      <Button fx:id="tworzenie_nowego_arkusza" layoutX="14.0" layoutY="179.0" mnemonicParsing="false" onAction="#utworzNowyArkusz" text="Utwórz arkusz na nowy rok" />
-      <Label layoutX="29.0" layoutY="37.0" text="Ścieżka do arkusza" />
-      <Label fx:id="sciezka" layoutX="151.0" layoutY="37.0" text="C:/" underline="true" />
-      <Button fx:id="zmien_sciezke" layoutX="29.0" layoutY="68.0" mnemonicParsing="false" onAction="#zmienSciezke" prefHeight="25.0" prefWidth="264.0" text="Zmień ścieżkę do arkusza kalkulacyjnego" />
-      <TextArea fx:id="log" layoutX="8.0" layoutY="246.0" prefHeight="386.0" prefWidth="663.0" promptText="Puść migrator aby wyświetlić rezultat" />
-      <Label layoutX="8.0" layoutY="229.0" text="Rezultat migratora" />
+      <Button fx:id="migrator_zakresow" layoutX="260.0" layoutY="179.0" mnemonicParsing="false" onAction="#migrujZakresy" prefHeight="25.0" prefWidth="200.0" text="Migruj zakresy" />
+      <Button fx:id="tworzenie_nowego_arkusza" layoutX="15.0" layoutY="179.0" mnemonicParsing="false" onAction="#utworzNowyArkusz" prefHeight="25.0" prefWidth="200.0" text="Utwórz arkusz na nowy rok" />
+      <Label layoutX="15.0" layoutY="40.0" text="Ścieżka do arkusza:" />
+      <Label fx:id="sciezka" layoutX="151.0" layoutY="40.0" text="C:/" underline="true" />
+      <Button fx:id="zmien_sciezke" layoutX="15.0" layoutY="65.0" mnemonicParsing="false" onAction="#zmienSciezke" prefHeight="25.0" prefWidth="300.0" text="Ustaw ścieżkę do arkusza kalkulacyjnego" />
+      <TextArea fx:id="log" layoutX="15.0" layoutY="246.0" prefHeight="386.0" prefWidth="650.0" promptText="Puść migrator aby wyświetlić rezultat" />
+      <Label layoutX="15.0" layoutY="229.0" text="Rezultat migratora" />
       <Label layoutX="15.0" layoutY="150.0" text="Narzędzia:" />
-      <Separator layoutX="14.0" layoutY="166.0" prefHeight="3.0" prefWidth="542.0" />
-      <Button fx:id="powrot" layoutX="8.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcjaPowrot" prefHeight="25.0" prefWidth="83.0" text="Powrót" />
-      <Label layoutX="15.0" layoutY="204.0" text="Należy puścić jeszcze w grudniu">
+      <Separator layoutX="15.0" layoutY="166.0" prefHeight="3.0" prefWidth="542.0" />
+      <Button fx:id="powrot" layoutX="15.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcjaPowrot" prefHeight="25.0" prefWidth="100.0" text="Powrót" />
+      <Label layoutX="15.0" layoutY="204.0" text="Pod koniec grudnia/początek stycznia">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="260.0" layoutY="203.0" text="Na początku miesiąca(oprócz stycznia)">
          <font>
             <Font size="10.0" />
          </font>
