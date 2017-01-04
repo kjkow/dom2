@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.text.*?>
-<?import javafx.scene.paint.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
@@ -21,11 +19,6 @@
       <Button fx:id="narzedzia_excel" layoutX="340.0" layoutY="65.0" mnemonicParsing="false" onAction="#obslugaNarzedziaExcel" prefHeight="25.0" prefWidth="200.0" text="Narzędzia excelowe" />
       <Separator layoutX="15.0" layoutY="56.0" prefWidth="200.0" />
       <Separator layoutX="340.0" layoutY="55.0" prefWidth="200.0" />
-      <Label layoutX="121.0" layoutY="69.0" text="[W REALIZACJI]" textFill="#9cae27">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
       <Label layoutX="121.0" layoutY="109.0" text="[W REALIZACJI]" textFill="#9cae27">
          <font>
             <Font size="10.0" />
@@ -42,6 +35,11 @@
          </font>
       </Label>
       <Label layoutX="449.0" layoutY="150.0" text="[W REALIZACJI]" textFill="#9cae27">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="122.0" layoutY="73.0" text="[UKOŃCZONE]" textFill="#23ae2a">
          <font>
             <Font size="10.0" />
          </font>

@@ -5,6 +5,7 @@ import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -19,9 +20,9 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
 
     public TextField nazwa;
     public TextField czestotliwosc;
+    public DatePicker dataOstatniegoSprzatania;
+    public DatePicker dataNastepnegoSprzatania;
     private Czynnosc czynnosc;
-
-    //TODO: daty na formatce
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -29,6 +30,8 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
             czynnosc = (Czynnosc) PrzechowywaczDanych.pobierzObiekt();
             nazwa.setText(czynnosc.getNazwaCzynnosci());
             czestotliwosc.setText(String.valueOf(czynnosc.getDniCzestotliwosci()));
+            dataNastepnegoSprzatania.setValue(czynnosc.getDataNastepnegoSprzatania());
+            dataOstatniegoSprzatania.setValue(czynnosc.getDataOstatniegoSprzatania());
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
@@ -68,7 +71,14 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
             obsluzBlad("Niepoprawnie wprowadzona liczba", e);
             return;
         }
-        //TODO: daty
+
+        try {
+            czynnosc.setDataNastepnegoSprzatania(dataNastepnegoSprzatania.getValue());
+            czynnosc.setDataOstatniegoSprzatania(dataOstatniegoSprzatania.getValue());
+        }catch (NullPointerException e){
+            obsluzBlad("Brak daty.", e);
+            return;
+        }
 
         int liczbaZmienionychWierszy;
 

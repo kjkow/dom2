@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
+
 
 <AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.ModyfikujCzynnoscKontroler">
    <opaqueInsets>
       <Insets />
    </opaqueInsets>
    <children>
-      <Button layoutX="9.0" layoutY="137.0" mnemonicParsing="false" onAction="#powrot" prefHeight="31.0" prefWidth="100.0" text="Anuluj" />
-      <Button layoutX="555.0" layoutY="137.0" mnemonicParsing="false" onAction="#zapiszCzynnosc" prefHeight="31.0" prefWidth="100.0" text="Zapisz" />
-      <TextField fx:id="nazwa" layoutX="114.0" layoutY="27.0" prefHeight="31.0" prefWidth="427.0" />
-      <TextField fx:id="czestotliwosc" layoutX="114.0" layoutY="67.0" prefHeight="31.0" prefWidth="50.0" />
+      <Button layoutX="9.0" layoutY="280.0" mnemonicParsing="false" onAction="#powrot" prefHeight="31.0" prefWidth="100.0" text="Anuluj" />
+      <Button layoutX="555.0" layoutY="280.0" mnemonicParsing="false" onAction="#zapiszCzynnosc" prefHeight="31.0" prefWidth="100.0" text="Zapisz" />
+      <TextField fx:id="nazwa" layoutX="164.0" layoutY="27.0" prefHeight="31.0" prefWidth="427.0" />
+      <TextField fx:id="czestotliwosc" layoutX="164.0" layoutY="67.0" prefHeight="31.0" prefWidth="50.0" />
       <Label layoutX="14.0" layoutY="32.0" prefHeight="21.0" prefWidth="60.0" text="Nazwa" />
       <Label layoutX="14.0" layoutY="72.0" text="Częstotliwość" />
+      <DatePicker fx:id="dataOstatniegoSprzatania" layoutX="164.0" layoutY="117.0" />
+      <DatePicker fx:id="dataNastepnegoSprzatania" layoutX="164.0" layoutY="167.0" />
+      <Label layoutX="14.0" layoutY="122.0" text="Ostatnie sprzątanie" />
+      <Label layoutX="14.0" layoutY="172.0" text="Następne sprzątanie" />
    </children>
 </AnchorPane>

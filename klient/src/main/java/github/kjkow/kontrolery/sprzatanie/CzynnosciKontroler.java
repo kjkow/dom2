@@ -25,6 +25,7 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
     public ListView<String> lista_czynnosci;
     public Button modyfikacja;
     public Button usun_czynnosc;
+    public Button pokaz;
     private ObservableList<String> listaCzynnosciPrezentacja = FXCollections.observableArrayList();
 
     @Override
@@ -42,13 +43,13 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
      */
     public void akcjaModyfikacja(ActionEvent actionEvent) {
         try{
-            przejdzDoModfikacji();
+            przejdzDalejZWybranaCzynnoscia(new ModyfikujCzynnoscKontroler());
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
     }
 
-    private void przejdzDoModfikacji(){
+    private void przejdzDalejZWybranaCzynnoscia(BazowyKontroler pKontroler){
         inicjujSprzatanieDAO();
         if(sprzatanieDAO == null) return;
 
@@ -64,7 +65,7 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
             return;
         }
         PrzechowywaczDanych.zapiszObiekt(czynnosc);
-        otworzNowaFormatke(new ModyfikujCzynnoscKontroler());
+        otworzNowaFormatke(pKontroler);
     }
 
     /**
@@ -130,6 +131,7 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
         zaladujListeCzynnosci();
         modyfikacja.setDisable(true);
         usun_czynnosc.setDisable(true);
+        pokaz.setDisable(true);
     }
 
     private void zaladujListeCzynnosci(){
@@ -159,7 +161,7 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEdycja.fxml");
+        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
 
     @Override
@@ -179,5 +181,18 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
     public void akcja_lista(Event event) {
         modyfikacja.setDisable(false);
         usun_czynnosc.setDisable(false);
+        pokaz.setDisable(false);
+    }
+
+    /**
+     * Button Pokaz czynnosc
+     * @param actionEvent
+     */
+    public void akcjaPokazCzynnosc(ActionEvent actionEvent) {
+        try {
+            przejdzDalejZWybranaCzynnoscia(new PokazCzynnoscKontroler());
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
     }
 }

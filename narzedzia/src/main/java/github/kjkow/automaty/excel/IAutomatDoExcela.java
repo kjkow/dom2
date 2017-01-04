@@ -6,7 +6,7 @@ import github.kjkow.kontekst.KontekstZwracany;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-07.
  */
-public interface IAutomatDoExcela { //TODO: przetestowac po zastosowaniu Kontekstu
+public interface IAutomatDoExcela {
 
     /**
      * zmienia zakresy w arkuszu plus jeden miesiac na zakladce Wydatki zestawienie
