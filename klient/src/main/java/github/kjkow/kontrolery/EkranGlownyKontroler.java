@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
 public class EkranGlownyKontroler extends BazowyKontroler implements Initializable {
-
+//TODO: zmiana co roku dat urodzin i imienin
     @FXML public Label uroczystosci;//TODO: Zamienic na powiadomienia i dodac info o lokatach
 
     private UroczystoscDAO uroczystoscDAO;

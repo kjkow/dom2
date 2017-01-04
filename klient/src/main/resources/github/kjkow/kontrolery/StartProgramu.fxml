@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
@@ -12,11 +15,36 @@
         <Button fx:id="log" layoutX="340.0" layoutY="145.0" mnemonicParsing="false" onAction="#obslugaLog" prefHeight="25.0" prefWidth="100.0" text="Log" />
         <Label layoutX="15.0" layoutY="40.0" text="Moduły" />
         <Label layoutX="340.0" layoutY="40.0" text="Dodatkowe" />
-        <Label fx:id="uroczystosci" layoutX="15.0" layoutY="245.0" text="test" visible="true" />
+        <Label fx:id="uroczystosci" layoutX="15.0" layoutY="245.0" text="uroczystosci" visible="true" />
         <Label layoutX="34.0" layoutY="420.0" />
         <Line endX="100.0" layoutX="135.0" layoutY="441.0" startX="-100.0" visible="false" />
       <Button fx:id="narzedzia_excel" layoutX="340.0" layoutY="65.0" mnemonicParsing="false" onAction="#obslugaNarzedziaExcel" prefHeight="25.0" prefWidth="200.0" text="Narzędzia excelowe" />
       <Separator layoutX="15.0" layoutY="56.0" prefWidth="200.0" />
       <Separator layoutX="340.0" layoutY="55.0" prefWidth="200.0" />
+      <Label layoutX="121.0" layoutY="69.0" text="[W REALIZACJI]" textFill="#9cae27">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="121.0" layoutY="109.0" text="[W REALIZACJI]" textFill="#9cae27">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="546.0" layoutY="69.0" text="[UKOŃCZONE]" textFill="#23ae2a">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="449.0" layoutY="110.0" text="[W REALIZACJI]" textFill="#9cae27">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="449.0" layoutY="150.0" text="[W REALIZACJI]" textFill="#9cae27">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

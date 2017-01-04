@@ -242,6 +242,7 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
     }
 
     private void zaladujListeNajblizszychSprzatan(){
+        najblizszeSprzatania.clear();
         inicjujSprzatanieDAO();
 
         if(sprzatanieDAO == null){
