@@ -77,10 +77,10 @@ public class EkranGlownyKontroler extends BazowyKontroler implements Initializab
     }
 
     private void inicjujUroczystosci(){
-        uroczystosci.setText("W najbliższym czasie nikt nie obchodzi urodzin ani imienin");
+        uroczystosci.setText("W najbliższym czasie nie ma żadnych uroczystości");
 
         StringBuilder etykieta = new StringBuilder();
-        etykieta.append("Najbliższe urodziny/imieniny:\n");
+        etykieta.append("Najbliższe uroczystości:\n\n");
 
         try {
             uroczystoscDAO = new UroczystoscDAOImpl();
