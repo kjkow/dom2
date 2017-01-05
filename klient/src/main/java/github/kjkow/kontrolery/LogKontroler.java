@@ -18,7 +18,7 @@ import java.util.Scanner;
  * Created by Kamil.Kowalczyk on 2016-08-19.
  */
 public class LogKontroler extends BazowyKontroler implements Initializable {
-//TODO: czyszczenie logu
+
     @FXML public TextArea obszar_logu;
 
     @Override

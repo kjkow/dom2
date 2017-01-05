@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="300.0" prefHeight="590.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.PokazPrzepisKontroler">
+<AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.PokazPrzepisKontroler">
    <children>
-      <Button fx:id="powrot" layoutX="9.0" layoutY="545.0" mnemonicParsing="false" onAction="#akcja_powrot" prefHeight="31.0" prefWidth="100.0" text="Powrót" />
-      <TextField fx:id="nazwa" editable="false" layoutX="15.0" layoutY="56.0" prefHeight="31.0" prefWidth="404.0" />
-      <TextArea fx:id="skladniki" editable="false" layoutX="15.0" layoutY="118.0" prefHeight="82.0" prefWidth="650.0" />
-      <TextArea fx:id="przygotowanie" editable="false" layoutX="15.0" layoutY="234.0" prefHeight="302.0" prefWidth="650.0" />
-      <Label layoutX="14.0" layoutY="38.0" text="Nazwa" />
-      <Label layoutX="14.0" layoutY="97.0" text="Składniki" />
-      <Label layoutX="15.0" layoutY="213.0" text="Sposób przygotowania" />
-      <Label layoutX="449.0" layoutY="38.0" text="Data ostatniego przygotowania" />
-      <TextField fx:id="data" editable="false" layoutX="449.0" layoutY="57.0" prefHeight="31.0" prefWidth="177.0" />
+      <Button fx:id="powrot" layoutX="15.0" layoutY="641.0" mnemonicParsing="false" onAction="#akcja_powrot" prefHeight="25.0" prefWidth="100.0" text="Powrót" />
+      <TextField fx:id="nazwa" editable="false" layoutX="15.0" layoutY="93.0" prefHeight="31.0" prefWidth="404.0" />
+      <TextArea fx:id="skladniki" editable="false" layoutX="15.0" layoutY="169.0" prefHeight="181.0" prefWidth="650.0" />
+      <TextArea fx:id="przygotowanie" editable="false" layoutX="15.0" layoutY="377.0" prefHeight="232.0" prefWidth="650.0" />
+      <Label layoutX="14.0" layoutY="75.0" text="Nazwa" />
+      <Label layoutX="15.0" layoutY="152.0" text="Składniki" />
+      <Label layoutX="15.0" layoutY="360.0" text="Sposób przygotowania" />
+      <Label layoutX="444.0" layoutY="75.0" text="Data ostatniego przygotowania" />
+      <TextField fx:id="data"  editable="false" layoutX="444.0" layoutY="93.0" prefHeight="31.0" prefWidth="149.0" />
+      <Label layoutX="15.0" layoutY="30.0" text="Pokaż przepis" />
+      <Separator layoutX="15.0" layoutY="45.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
