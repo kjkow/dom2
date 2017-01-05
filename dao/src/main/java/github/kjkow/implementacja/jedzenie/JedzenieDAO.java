@@ -23,6 +23,8 @@ public interface JedzenieDAO {
 
     List<String> pobierzListePrzepisow() throws SQLException, ClassNotFoundException;
 
+    List<String> pobierzListePrzepisowDoProcesu() throws SQLException, ClassNotFoundException;
+
     /**
      *
      * @param przepis
@@ -40,4 +42,7 @@ public interface JedzenieDAO {
      * @throws ClassNotFoundException
      */
     int modyfikujPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException;
+
+    void zapiszSciezkeDoExcelaZProduktami(String sciezka) throws SQLException, ClassNotFoundException;
+    String pobierzSciezkeDoExcelaZProduktami() throws SQLException, ClassNotFoundException;
 }

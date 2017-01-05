@@ -1,5 +1,6 @@
 package github.kjkow.kontrolery.jedzenie.proces;
 
+import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.kontrolery.jedzenie.DodajPrzepisKontroler;
@@ -16,6 +17,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
@@ -60,15 +63,57 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
         }
     }
 
+    /**
+     * Button dalej
+     * @param actionEvent
+     */
     public void akcja_dalej(ActionEvent actionEvent) {
-        //TODO: walidacja
-        //TODO: krok 2
+        try{
+            zapiszNoweDatyObiadow();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+        otworzNowaFormatke(new Krok2Kontroler());
     }
 
+    private void zapiszNoweDatyObiadow(){
+        int j = 0;
+        for(int i = pierwszyDzien; i <= ostatniDzien; i++){
+            String nazwaPrzepisu = nazwy[j].getValue();
+            inicjujJedzenieDAO();
+
+            if(jedzenieDAO == null) return;
+            try {
+                Przepis przepis = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
+                przepis.setDataOstatniegoPrzygotowania(konwertujStringNaLocalDate(tablicaDni[i].getText()));
+                jedzenieDAO.modyfikujPrzepis(przepis);
+            } catch (SQLException e) {
+                obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+                return;
+            } catch (ClassNotFoundException e) {
+                obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+                return;
+            }
+            j++;
+        }
+    }
+    private LocalDate konwertujStringNaLocalDate(String dataDoKonwersji){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(dataDoKonwersji, formatter);
+    }
+
+    /**
+     * Button zakoncz proces
+     * @param actionEvent
+     */
     public void akcja_zakoncz(ActionEvent actionEvent) {
         wrocDoPoprzedniejFormatki();
     }
 
+    /**
+     * Button dodaj nowy przepis
+     * @param actionEvent
+     */
     public void akcja_dodaj(ActionEvent actionEvent) {
         otworzNowaFormatke(new DodajPrzepisKontroler());
     }

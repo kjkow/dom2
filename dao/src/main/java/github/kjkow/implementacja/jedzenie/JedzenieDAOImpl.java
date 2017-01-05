@@ -66,6 +66,21 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
     }
 
     @Override
+    public List<String> pobierzListePrzepisowDoProcesu() throws SQLException, ClassNotFoundException {
+        List<String> przepisy = new ArrayList<>();
+        otworzPolaczenie();
+        if(polaczenie != null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT NAZWA FROM JEDZENIE_PRZEPISY ORDER BY DATA_OSTATNIEGO_PRZYGOTOWANIA ASC");
+            wynikKwerendy = kwerenda.executeQuery();
+            while (wynikKwerendy.next()){
+                przepisy.add(wynikKwerendy.getString("NAZWA"));
+            }
+            zamknijPolczenie();
+        }
+        return przepisy;
+    }
+
+    @Override
     public int dodajPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException {
         otworzPolaczenie();
         if(polaczenie != null){
@@ -118,5 +133,31 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
             return liczbaZmienionychWierszy;
         }
         return -1;
+    }
+
+    @Override
+    public void zapiszSciezkeDoExcelaZProduktami(String sciezka) throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        if(polaczenie !=null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE KONFIGURACJA_DOM SET SCIEZKA=? WHERE NAZWA_SCIEZKI=?");
+            kwerenda.setString(1, sciezka);
+            kwerenda.setString(2, "excel_produkty");
+            kwerenda.executeUpdate();
+            zamknijPolczenie();
+        }
+    }
+
+    @Override
+    public String pobierzSciezkeDoExcelaZProduktami() throws SQLException, ClassNotFoundException {
+        otworzPolaczenie();
+        if(polaczenie !=null){
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT SCIEZKA FROM KONFIGURACJA_DOM WHERE NAZWA_SCIEZKI=?");
+            kwerenda.setString(1, "excel_produkty");
+            wynikKwerendy = kwerenda.executeQuery();
+            if(wynikKwerendy.next()){
+                return wynikKwerendy.getString("SCIEZKA");
+            }
+        }
+        return "Nie znaleziono ściezki";
     }
 }

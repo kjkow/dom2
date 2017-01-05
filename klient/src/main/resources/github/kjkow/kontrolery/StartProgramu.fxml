@@ -20,30 +20,5 @@
       <Button fx:id="narzedzia_excel" layoutX="340.0" layoutY="57.0" mnemonicParsing="false" onAction="#obslugaNarzedziaExcel" prefHeight="25.0" prefWidth="200.0" text="Narzędzia excelowe" />
       <Separator layoutX="15.0" layoutY="45.0" prefWidth="200.0" />
       <Separator layoutX="340.0" layoutY="45.0" prefWidth="200.0" />
-      <Label layoutX="121.0" layoutY="101.0" text="[W REALIZACJI]" textFill="#9cae27">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
-      <Label layoutX="546.0" layoutY="61.0" text="[UKOŃCZONE]" textFill="#23ae2a">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
-      <Label layoutX="449.0" layoutY="102.0" text="[W REALIZACJI]" textFill="#9cae27">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
-      <Label layoutX="449.0" layoutY="142.0" text="[W REALIZACJI]" textFill="#9cae27">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
-      <Label layoutX="122.0" layoutY="65.0" text="[UKOŃCZONE]" textFill="#23ae2a">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
     </children>
 </AnchorPane>

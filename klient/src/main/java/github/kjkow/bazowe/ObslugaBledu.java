@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-23.
  */
-public class ObslugaBledu {
+public final class ObslugaBledu {
 
     private static IZarzadcaFormatek zarzadcaFormatek = new ZarzadcaFormatek();
     private static IDziennik dziennik = new Dziennik();

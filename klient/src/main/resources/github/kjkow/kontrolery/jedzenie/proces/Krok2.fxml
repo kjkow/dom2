@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.proces.Krok2Kontroler">
+   <children>
+      <Label layoutX="15.0" layoutY="30.0" text="Krok 2: wybranie obiadów na następny tydzień">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="dalej" layoutX="566.0" layoutY="641.0" mnemonicParsing="false" onAction="#dalej" prefHeight="25.0" prefWidth="100.0" text="Dalej" />
+      <Button fx:id="zakoncz" layoutX="14.0" layoutY="641.0" mnemonicParsing="false" onAction="#zakoncz" prefHeight="25.0" prefWidth="100.0" text="Zakończ proces" />
+      <ListView fx:id="obiady" layoutX="15.0" layoutY="124.0" prefHeight="420.0" prefWidth="358.0" />
+      <Label layoutX="15.0" layoutY="103.0" text="Obiady(od najstarszego):" />
+      <Button fx:id="dodaj" layoutX="402.0" layoutY="124.0" mnemonicParsing="false" onAction="#dodajDoListy" prefHeight="25.0" prefWidth="150.0" text="Dodaj do listy &gt;&gt;" />
+      <ListView fx:id="wybraneObiady" layoutX="402.0" layoutY="164.0" prefHeight="340.0" prefWidth="230.0" />
+      <Button fx:id="usun" layoutX="402.0" layoutY="511.0" mnemonicParsing="false" onAction="#usunZListy" prefHeight="25.0" prefWidth="150.0" text="&lt;&lt; Usuń z listy" />
+      <Button fx:id="dodaj_przepis" layoutX="223.0" layoutY="555.0" mnemonicParsing="false" onAction="#dodajPrzepis" prefHeight="25.0" prefWidth="150.0" text="Dodaj nowy przepis" />
+      <Separator layoutX="15.0" layoutY="45.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

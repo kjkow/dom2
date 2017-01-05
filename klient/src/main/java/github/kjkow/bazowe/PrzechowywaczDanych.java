@@ -3,7 +3,7 @@ package github.kjkow.bazowe;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-27.
  */
-public class PrzechowywaczDanych {
+public final class PrzechowywaczDanych {
 
     private static Object obiekt;
     private static BazowyKontroler formatkaPowrotu;
