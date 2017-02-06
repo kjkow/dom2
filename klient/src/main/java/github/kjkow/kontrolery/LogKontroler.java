@@ -38,30 +38,6 @@ public class LogKontroler extends BazowyKontroler implements Initializable {
             }
         } catch (FileNotFoundException e) {
             obsluzBlad("Nie udało się wczytać logu aplikacji.", e);
-            wrocDoPoprzedniejFormatki();
         }
-    }
-
-    /**
-     * Button
-     * @param actionEvent
-     */
-    public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
-    }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)obszar_logu.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/Log.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 }

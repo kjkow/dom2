@@ -26,7 +26,7 @@ public class DodajPrzepisKontroler extends BazowyKontroler {
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 
     /**
@@ -57,36 +57,16 @@ public class DodajPrzepisKontroler extends BazowyKontroler {
             return;
         }
 
-        int liczbaZmienionychWierszy;
-
         try {
-            liczbaZmienionychWierszy = jedzenieDAO.dodajPrzepis(nowyPrzepis);
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+            jedzenieDAO.dodajPrzepis(nowyPrzepis);
+        } catch (Exception e) {
+            obsluzBlad("Błąd na bazie danych", e);
             return;
         }
 
-        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "usunięte");
         zapiszWykonanieWDzienniku("Dodano nowy przepis: " + nowyPrzepis.getNazwa());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nowy przepis");
-        wrocDoPoprzedniejFormatki();
-    }
 
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)nazwa.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/DodajPrzepis.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 }

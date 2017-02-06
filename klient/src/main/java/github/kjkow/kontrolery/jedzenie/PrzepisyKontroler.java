@@ -86,15 +86,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
         }
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
-        otworzNowaFormatke(new ModyfikujPrzepisKontroler());
-    }
-
-    /**
-     * Button
-     * @param actionEvent
-     */
-    public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/ModyfikujPrzepis.fxml");
     }
 
     /**
@@ -102,7 +94,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
      * @param actionEvent
      */
     public void akcja_dodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new DodajPrzepisKontroler());
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/DodajPrzepis.fxml");
     }
 
     /**
@@ -133,7 +125,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
         }
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
-        otworzNowaFormatke(new PokazPrzepisKontroler());
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/PokazPrzepis.fxml");
     }
 
     /**
@@ -141,7 +133,6 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
      * @param event
      */
     public void akcja_przepisy(Event event) {
-        //TODO: przypisanie wybranego przepisu(jeśli potrzebne)
         odblokujEdytowalnoscPrzyciskow();
     }
 
@@ -197,25 +188,5 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto przepis");
         zaladujListePrzepisow();
         zablokujEdytowalnoscPrzyciskow();
-    }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)przepisy.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-    @Override
-    protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new JedzenieGlownyKontroler());
     }
 }

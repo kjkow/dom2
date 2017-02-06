@@ -65,7 +65,7 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
             return;
         }
         PrzechowywaczDanych.zapiszObiekt(czynnosc);
-        otworzNowaFormatke(pKontroler);
+        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
     }
 
     /**
@@ -73,15 +73,7 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
      * @param actionEvent
      */
     public void akcjaDodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new DodajCzynnoscKontroler());
-    }
-
-    /**
-     * Button Powrot
-     * @param actionEvent
-     */
-    public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
     }
 
     /**
@@ -152,26 +144,6 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
             return;
         }
         lista_czynnosci.setItems(listaCzynnosciPrezentacja);
-    }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)lista_czynnosci.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-    @Override
-    protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new SprzatanieEkranGlownyKontroler());
     }
 
     /**
