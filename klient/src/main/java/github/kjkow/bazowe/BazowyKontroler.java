@@ -14,12 +14,11 @@ import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
-public abstract class BazowyKontroler {
+public class BazowyKontroler {
 
     protected IZarzadcaFormatek zarzadcaFormatek;
     protected IAutomatDoExcela automatDoExcela;
@@ -35,11 +34,10 @@ public abstract class BazowyKontroler {
     protected SprzatanieDAO sprzatanieDAO;
     protected JedzenieDAO jedzenieDAO;
 
-    protected URL zrodloFormatki;
+
 
     public BazowyKontroler(){
         inicjujNarzedzia();
-        ustawZrodloFormatki();
     }
 
     private void inicjujNarzedzia(){
@@ -58,10 +56,9 @@ public abstract class BazowyKontroler {
         ObslugaBledu.obsluzBlad(trescKomunikatu, e);
     }
 
-    protected void otworzNowaFormatke(BazowyKontroler pKontroler){
+    protected void otworzNowaFormatke(String sciezka){
         try {
-            zapametajPowrot();
-            zarzadcaFormatek.wyswietlNowaFormatke(pKontroler, zwrocSceneFormatki());
+            zarzadcaFormatek.wyswietlNowaFormatke(sciezka);
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
@@ -94,37 +91,14 @@ public abstract class BazowyKontroler {
         } catch (IOException e) {
             zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
                     KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
-            wrocDoPoprzedniejFormatki();
         }
     }
 
     protected void walidujZwroconaLiczbeWierszy(int liczbaZmienionychWierszy, String nicNieZostalo){
         if(liczbaZmienionychWierszy > 1){
             zarzadcaFormatek.wyswietlOknoBledu("Na bazie zapisał się więcej niż jeden rekord.");
-            wrocDoPoprzedniejFormatki();
         }else if(liczbaZmienionychWierszy == 0){
             zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało " + nicNieZostalo);
-            wrocDoPoprzedniejFormatki();
         }
     }
-
-    /**
-     * Formatka ktora ma jakas formatke wstecz(powrot) i jakas formatke dalej musi nadpisac ta metode,
-     * inaczej moze utknac pomiedzy soba a ta formatka wprzod
-     */
-    protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(PrzechowywaczDanych.pobierzWyjscie());
-    }
-
-    public URL pobierzZrodloFormatki(){
-        return zrodloFormatki;
-    }
-
-    /**
-     * ***********potrzebne do zmiany formatki*************
-     */
-    protected abstract Stage zwrocSceneFormatki();
-    protected abstract void ustawZrodloFormatki();
-    protected abstract void zapametajPowrot();
-
 }

@@ -4,7 +4,6 @@ package github.kjkow.kontrolery.sprzatanie;
 import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.kontrolery.EkranGlownyKontroler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -82,6 +81,7 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
             return;
         }
         ustawDatyCzynnosci();
+
     }
 
     /**
@@ -140,13 +140,7 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
         ustawDatyCzynnosci();
     }
 
-    /**
-     * Button powrot
-     * @param actionEvent
-     */
-    public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
-    }
+
 
     /**
      * ListView najblizsze sprzatania
@@ -186,6 +180,7 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
         }
 
         ustawDatyCzynnosci();
+        czynnosc.getSelectionModel().select(wybranaCzynnosc.getNazwaCzynnosci());
     }
 
     /**
@@ -231,14 +226,6 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
 
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zapisano odłożenie czynności.");
         zaladujListeNajblizszychSprzatan();
-    }
-
-    /**
-     * Button edytuj
-     * @param actionEvent
-     */
-    public void akcja_edycja(ActionEvent actionEvent) {
-        otworzNowaFormatke(new CzynnosciKontroler());
     }
 
     private void zaladujListeNajblizszychSprzatan(){
@@ -293,25 +280,5 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
             return;
         }
         czynnosc.setItems(listaCzynnosciPrezentacja);
-    }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)czynnosc.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEkranGlowny.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-    @Override
-    protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new EkranGlownyKontroler());
     }
 }

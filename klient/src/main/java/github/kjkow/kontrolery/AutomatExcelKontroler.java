@@ -39,7 +39,7 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
      * @param actionEvent
      */
     public void akcjaPowrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        //todo:przycisk do wywalenia
     }
 
     /**
@@ -97,20 +97,5 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
 
     private boolean czyPustaSciezka(){
         return sciezka.getText().compareTo("") == 0;
-    }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)log.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/AutomatExcel.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 }

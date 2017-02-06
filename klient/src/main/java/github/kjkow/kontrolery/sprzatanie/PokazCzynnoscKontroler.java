@@ -37,26 +37,11 @@ public class PokazCzynnoscKontroler extends BazowyKontroler implements Initializ
         }
     }
 
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)czestotliwosc.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/PokazCzynnosc.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
     /**
      * Button powrot
      * @param actionEvent
      */
     public void powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+       otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
 }

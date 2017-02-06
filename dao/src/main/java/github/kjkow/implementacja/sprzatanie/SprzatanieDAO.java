@@ -39,7 +39,7 @@ public interface SprzatanieDAO {
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    int modyfikujCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException;
+    int modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci) throws SQLException, ClassNotFoundException;
 
     List<String> pobierzNazwyCzynnosci() throws SQLException, ClassNotFoundException;
 

@@ -3,8 +3,6 @@ package github.kjkow.kontrolery.jedzenie.proces;
 import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.kontrolery.jedzenie.DodajPrzepisKontroler;
-import github.kjkow.kontrolery.jedzenie.JedzenieGlownyKontroler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,7 +24,6 @@ import java.util.ResourceBundle;
  * Created by Kamil.Kowalczyk on 2016-12-29.
  */
 public class Krok1Kontroler extends BazowyKontroler implements Initializable {
-
 
     public Label pon;
     public Label wt;
@@ -73,7 +70,7 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
-        otworzNowaFormatke(new Krok2Kontroler());
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/proces/Krok2.fxml");
     }
 
     private void zapiszNoweDatyObiadow(){
@@ -86,7 +83,7 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
             try {
                 Przepis przepis = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
                 przepis.setDataOstatniegoPrzygotowania(konwertujStringNaLocalDate(tablicaDni[i].getText()));
-                jedzenieDAO.modyfikujPrzepis(przepis);
+                jedzenieDAO.modyfikujPrzepis(przepis, przepis.getNazwa());
             } catch (SQLException e) {
                 obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
                 return;
@@ -100,22 +97,6 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
     private LocalDate konwertujStringNaLocalDate(String dataDoKonwersji){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(dataDoKonwersji, formatter);
-    }
-
-    /**
-     * Button zakoncz proces
-     * @param actionEvent
-     */
-    public void akcja_zakoncz(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
-    }
-
-    /**
-     * Button dodaj nowy przepis
-     * @param actionEvent
-     */
-    public void akcja_dodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new DodajPrzepisKontroler());
     }
 
     private void ustawDaty(){
@@ -208,25 +189,5 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
         nazwy[4] = piatek;
         nazwy[5] = sobota;
         nazwy[6] = niedziela;
-    }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)pon.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok1.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-    @Override
-    protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new JedzenieGlownyKontroler());
     }
 }
