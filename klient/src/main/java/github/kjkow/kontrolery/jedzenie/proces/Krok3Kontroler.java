@@ -3,7 +3,6 @@ package github.kjkow.kontrolery.jedzenie.proces;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.bazowe.ZarzadcaZwenetrznychPlikow;
-import github.kjkow.kontrolery.jedzenie.JedzenieGlownyKontroler;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -58,7 +57,7 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok3.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok3.fxml");
     }
 
     @Override
@@ -89,7 +88,7 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
      * @param actionEvent
      */
     public void zakoncz(ActionEvent actionEvent) {
-        otworzNowaFormatke(new JedzenieGlownyKontroler());
+        //todo:zamkniecie formatki
     }
 
     /**

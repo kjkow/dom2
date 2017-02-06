@@ -39,7 +39,7 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
      * @param actionEvent
      */
     public void akcjaPowrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        //todo:przycisk do wywalenia
     }
 
     /**
@@ -106,7 +106,7 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/AutomatExcel.fxml");
+       // zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/AutomatExcel.fxml");
     }
 
     @Override

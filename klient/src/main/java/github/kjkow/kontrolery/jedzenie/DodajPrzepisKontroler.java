@@ -26,7 +26,7 @@ public class DodajPrzepisKontroler extends BazowyKontroler {
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 
     /**
@@ -69,10 +69,11 @@ public class DodajPrzepisKontroler extends BazowyKontroler {
             return;
         }
 
-        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "usunięte");
+        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "usunięte");//todo: wywalic ten mechanizm
         zapiszWykonanieWDzienniku("Dodano nowy przepis: " + nowyPrzepis.getNazwa());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nowy przepis");
-        wrocDoPoprzedniejFormatki();
+
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 
     @Override
@@ -82,7 +83,7 @@ public class DodajPrzepisKontroler extends BazowyKontroler {
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/DodajPrzepis.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/DodajPrzepis.fxml");
     }
 
     @Override

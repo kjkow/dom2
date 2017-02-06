@@ -119,7 +119,7 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
     }
 
     @Override
-    public int modyfikujPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException {
+    public int modyfikujPrzepis(Przepis przepis, String nazwaStaregoPrzepisu) throws SQLException, ClassNotFoundException {
         otworzPolaczenie();
         if(polaczenie !=null){
             PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE JEDZENIE_PRZEPISY SET NAZWA=?, DATA_OSTATNIEGO_PRZYGOTOWANIA=?, SKLADNIKI=?, SPOSOB_PRZYGOTOWANIA=? WHERE NAZWA=?");
@@ -127,7 +127,7 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
             kwerenda.setDate(2, Date.valueOf(przepis.getDataOstatniegoPrzygotowania()));
             kwerenda.setString(3, przepis.getSkladniki());
             kwerenda.setString(4, przepis.getSposobPrzygotowania());
-            kwerenda.setString(5, przepis.getNazwa());
+            kwerenda.setString(5, nazwaStaregoPrzepisu);
             int liczbaZmienionychWierszy = kwerenda.executeUpdate();
             zamknijPolczenie();
             return liczbaZmienionychWierszy;

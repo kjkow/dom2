@@ -3,8 +3,6 @@ package github.kjkow.kontrolery.jedzenie.proces;
 import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.kontrolery.jedzenie.DodajPrzepisKontroler;
-import github.kjkow.kontrolery.jedzenie.JedzenieGlownyKontroler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -73,7 +71,7 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
-        otworzNowaFormatke(new Krok2Kontroler());
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/proces/Krok2.fxml");
     }
 
     private void zapiszNoweDatyObiadow(){
@@ -86,7 +84,7 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
             try {
                 Przepis przepis = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
                 przepis.setDataOstatniegoPrzygotowania(konwertujStringNaLocalDate(tablicaDni[i].getText()));
-                jedzenieDAO.modyfikujPrzepis(przepis);
+                jedzenieDAO.modyfikujPrzepis(przepis, przepis.getNazwa());
             } catch (SQLException e) {
                 obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
                 return;
@@ -107,7 +105,7 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
      * @param actionEvent
      */
     public void akcja_zakoncz(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+          //todo:przycisk do wywalenia
     }
 
     /**
@@ -115,7 +113,7 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
      * @param actionEvent
      */
     public void akcja_dodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new DodajPrzepisKontroler());
+        //todo:przycisk do wywalenia?
     }
 
     private void ustawDaty(){
@@ -217,7 +215,7 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok1.fxml");
+       // zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok1.fxml");
     }
 
     @Override
@@ -225,8 +223,5 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
         PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 
-    @Override
-    protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new JedzenieGlownyKontroler());
-    }
+
 }

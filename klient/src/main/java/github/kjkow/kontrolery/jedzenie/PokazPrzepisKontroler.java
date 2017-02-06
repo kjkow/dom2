@@ -40,7 +40,7 @@ public class PokazPrzepisKontroler extends BazowyKontroler implements Initializa
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 
     @Override
@@ -50,7 +50,7 @@ public class PokazPrzepisKontroler extends BazowyKontroler implements Initializa
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/PokazPrzepis.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/PokazPrzepis.fxml");
     }
 
     @Override

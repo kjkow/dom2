@@ -22,7 +22,7 @@ public class DodajCzynnoscKontroler extends BazowyKontroler {
      * @param actionEvent
      */
     public void powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
 
     /**
@@ -75,7 +75,8 @@ public class DodajCzynnoscKontroler extends BazowyKontroler {
         walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "dodane");
         zapiszWykonanieWDzienniku("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową czynność.");
-        wrocDoPoprzedniejFormatki();
+
+        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
 
     @Override
@@ -85,7 +86,7 @@ public class DodajCzynnoscKontroler extends BazowyKontroler {
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
     }
 
     @Override

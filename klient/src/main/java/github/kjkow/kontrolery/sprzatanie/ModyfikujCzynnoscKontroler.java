@@ -42,7 +42,7 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
      * @param actionEvent
      */
     public void powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
 
     /**
@@ -96,7 +96,8 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
         walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "zmodyfikowane");
         zapiszWykonanieWDzienniku("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
-        wrocDoPoprzedniejFormatki();
+
+        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
 
     @Override
@@ -106,7 +107,7 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
+      //  zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
     }
 
     @Override

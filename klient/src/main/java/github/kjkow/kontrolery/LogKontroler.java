@@ -38,7 +38,6 @@ public class LogKontroler extends BazowyKontroler implements Initializable {
             }
         } catch (FileNotFoundException e) {
             obsluzBlad("Nie udało się wczytać logu aplikacji.", e);
-            wrocDoPoprzedniejFormatki();
         }
     }
 
@@ -47,7 +46,7 @@ public class LogKontroler extends BazowyKontroler implements Initializable {
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        //todo:przycisk do wywalenia
     }
 
     @Override
@@ -57,7 +56,7 @@ public class LogKontroler extends BazowyKontroler implements Initializable {
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/Log.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/Log.fxml");
     }
 
     @Override

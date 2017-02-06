@@ -25,12 +25,14 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
     public TextField nazwa;
 
     private Przepis przepis;
+    private String staraNazwa;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             przepis = (Przepis) PrzechowywaczDanych.pobierzObiekt();
             inicjujPola();
+            staraNazwa = przepis.getNazwa();
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
@@ -70,7 +72,7 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
         int liczbaZmienionychWierszy;
 
         try {
-            liczbaZmienionychWierszy = jedzenieDAO.modyfikujPrzepis(przepis);
+            liczbaZmienionychWierszy = jedzenieDAO.modyfikujPrzepis(przepis, staraNazwa);
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
             return;
@@ -81,7 +83,8 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
         walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "zmodyfikowane");
         zapiszWykonanieWDzienniku("Zmodyfikowano przepis " + przepis.getNazwa());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano przepis.");
-        wrocDoPoprzedniejFormatki();
+
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 
     /**
@@ -89,7 +92,7 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 
     @Override
@@ -99,7 +102,7 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/ModyfikujPrzepis.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/ModyfikujPrzepis.fxml");
     }
 
     @Override

@@ -3,8 +3,6 @@ package github.kjkow.kontrolery.jedzenie.proces;
 import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.kontrolery.jedzenie.DodajPrzepisKontroler;
-import github.kjkow.kontrolery.jedzenie.JedzenieGlownyKontroler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +40,7 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok2.fxml");
+       // zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok2.fxml");
     }
 
     @Override
@@ -57,7 +55,7 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
     public void dalej(ActionEvent actionEvent) {
         try{
             zapiszSkladniki();
-            otworzNowaFormatke(new Krok3Kontroler());
+            otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/proces/Krok3.fxml");
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
@@ -91,7 +89,7 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
      * @param actionEvent
      */
     public void zakoncz(ActionEvent actionEvent) {
-        otworzNowaFormatke(new JedzenieGlownyKontroler());
+        //todo:zamkniecie formatki
     }
 
     /**
@@ -135,7 +133,7 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
      * @param actionEvent
      */
     public void dodajPrzepis(ActionEvent actionEvent) {
-        otworzNowaFormatke(new DodajPrzepisKontroler());
+        //todo:przycisk do wywalenia?
     }
 
     private void zaladujListePrzepisow(){

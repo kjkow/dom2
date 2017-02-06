@@ -7,8 +7,6 @@ import github.kjkow.bazowe.ObslugaBledu;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAO;
 import github.kjkow.implementacja.uroczystosc.UroczystoscDAOImpl;
-import github.kjkow.kontrolery.jedzenie.JedzenieGlownyKontroler;
-import github.kjkow.kontrolery.sprzatanie.SprzatanieEkranGlownyKontroler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +22,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
+//todo:cala klasa chyba do wywalenia
 public class EkranGlownyKontroler extends BazowyKontroler implements Initializable {
 //TODO: zmiana co roku dat urodzin i imienin
     @FXML public Label uroczystosci;//TODO: Zamienic na powiadomienia i dodac info o lokatach
@@ -40,7 +39,7 @@ public class EkranGlownyKontroler extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaLog(ActionEvent actionEvent) {
-        otworzNowaFormatke(new LogKontroler());
+        //otworzNowaFormatke(new LogKontroler());
     }
 
     /**
@@ -57,7 +56,7 @@ public class EkranGlownyKontroler extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaJedzenie(ActionEvent actionEvent) {
-        otworzNowaFormatke(new JedzenieGlownyKontroler());
+        //otworzNowaFormatke(new JedzenieGlownyKontroler());
     }
 
     /**
@@ -65,7 +64,7 @@ public class EkranGlownyKontroler extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaSprzatanie(ActionEvent actionEvent) {
-        otworzNowaFormatke(new SprzatanieEkranGlownyKontroler());
+        //otworzNowaFormatke(new SprzatanieEkranGlownyKontroler());
     }
 
     /**
@@ -73,7 +72,7 @@ public class EkranGlownyKontroler extends BazowyKontroler implements Initializab
      * @param actionEvent
      */
     public void obslugaNarzedziaExcel(ActionEvent actionEvent) {
-        otworzNowaFormatke(new AutomatExcelKontroler());
+        //otworzNowaFormatke(new AutomatExcelKontroler());
     }
 
     private void inicjujUroczystosci(){
@@ -122,7 +121,7 @@ public class EkranGlownyKontroler extends BazowyKontroler implements Initializab
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/StartProgramu.fxml");
+       // zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/StartProgramu.fxml");
     }
 
     @Override

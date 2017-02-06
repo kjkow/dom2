@@ -44,7 +44,7 @@ public class PokazCzynnoscKontroler extends BazowyKontroler implements Initializ
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/PokazCzynnosc.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/PokazCzynnosc.fxml");
     }
 
     @Override
@@ -57,6 +57,6 @@ public class PokazCzynnoscKontroler extends BazowyKontroler implements Initializ
      * @param actionEvent
      */
     public void powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+       //todo: powrot do listy czynnosci
     }
 }

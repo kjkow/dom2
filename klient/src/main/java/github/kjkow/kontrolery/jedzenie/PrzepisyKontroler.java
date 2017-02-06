@@ -86,7 +86,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
         }
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
-        otworzNowaFormatke(new ModyfikujPrzepisKontroler());
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/ModyfikujPrzepis.fxml");
     }
 
     /**
@@ -94,7 +94,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
      * @param actionEvent
      */
     public void akcja_powrot(ActionEvent actionEvent) {
-        wrocDoPoprzedniejFormatki();
+        //todo:przycisk do wywalenia
     }
 
     /**
@@ -102,7 +102,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
      * @param actionEvent
      */
     public void akcja_dodaj(ActionEvent actionEvent) {
-        otworzNowaFormatke(new DodajPrzepisKontroler());
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/DodajPrzepis.fxml");
     }
 
     /**
@@ -133,7 +133,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
         }
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
-        otworzNowaFormatke(new PokazPrzepisKontroler());
+        otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/PokazPrzepis.fxml");
     }
 
     /**
@@ -206,7 +206,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
 
     @Override
     protected void ustawZrodloFormatki() {
-        zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
+        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
 
     @Override
@@ -214,8 +214,5 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
         PrzechowywaczDanych.zapamietajWyjscie(this);
     }
 
-    @Override
-    protected void wrocDoPoprzedniejFormatki(){
-        otworzNowaFormatke(new JedzenieGlownyKontroler());
-    }
+
 }
