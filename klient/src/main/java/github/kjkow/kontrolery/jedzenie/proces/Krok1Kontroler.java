@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
  */
 public class Krok1Kontroler extends BazowyKontroler implements Initializable {
 
-
     public Label pon;
     public Label wt;
     public Label sr;
@@ -98,22 +97,6 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
     private LocalDate konwertujStringNaLocalDate(String dataDoKonwersji){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(dataDoKonwersji, formatter);
-    }
-
-    /**
-     * Button zakoncz proces
-     * @param actionEvent
-     */
-    public void akcja_zakoncz(ActionEvent actionEvent) {
-          //todo:przycisk do wywalenia
-    }
-
-    /**
-     * Button dodaj nowy przepis
-     * @param actionEvent
-     */
-    public void akcja_dodaj(ActionEvent actionEvent) {
-        //todo:przycisk do wywalenia?
     }
 
     private void ustawDaty(){
@@ -207,21 +190,4 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
         nazwy[5] = sobota;
         nazwy[6] = niedziela;
     }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)pon.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-       // zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok1.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-
 }

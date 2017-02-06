@@ -11,11 +11,7 @@ import javafx.stage.Stage;
 
 public class StartProgramu extends Application {
 
-    private static BorderPane root = new BorderPane();
 
-    public static BorderPane getRoot(){
-        return root;
-    }
 
     public static void main( String[] args )
     {
@@ -24,18 +20,29 @@ public class StartProgramu extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        VBox drzewko = FXMLLoader.load(getClass().getClassLoader().getResource("github/kjkow/kontrolery/DrzewkoMenu.fxml"));
-        AnchorPane ekranPodwladny = FXMLLoader.load(getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEkranGlowny.fxml"));
-        HBox powiadomienia = FXMLLoader.load(getClass().getClassLoader().getResource("github/kjkow/kontrolery/ObszarPowiadomien.fxml"));
 
-        root.setLeft(drzewko);
-        root.setCenter(ekranPodwladny);
-        root.setBottom(powiadomienia);
+        VBox drzewko;
+        AnchorPane ekranFormatek;
+        HBox powiadomienia;
 
-        Scene scena = new Scene(root);
+        //wczytaj pliki formatek
+        try {
+            drzewko = FXMLLoader.load(getClass().getClassLoader().getResource("github/kjkow/kontrolery/DrzewkoMenu.fxml"));
+            ekranFormatek = FXMLLoader.load(getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEkranGlowny.fxml"));
+            powiadomienia = FXMLLoader.load(getClass().getClassLoader().getResource("github/kjkow/kontrolery/ObszarPowiadomien.fxml"));
+        }catch (NullPointerException e){
+            ObslugaBledu.obsluzBlad("Brak plików dla formatek", e);
+            return;
+        }
+
+        //ustaw elementy na oknie głównym aplikacji
+        KontekstAplikacji.pobierzKorzenFormatek().setLeft(drzewko);
+        KontekstAplikacji.pobierzKorzenFormatek().setCenter(ekranFormatek);
+        KontekstAplikacji.pobierzKorzenFormatek().setBottom(powiadomienia);
+
+        //pokaż scenę
+        Scene scena = new Scene(KontekstAplikacji.pobierzKorzenFormatek());
         primaryStage.setScene(scena);
         primaryStage.show();
-
-        //todo:przeniesc caly bajzel do eleganckiej postaci
     }
 }

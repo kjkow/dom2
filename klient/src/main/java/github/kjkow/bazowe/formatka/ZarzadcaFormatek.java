@@ -1,5 +1,7 @@
 package github.kjkow.bazowe.formatka;
 
+import github.kjkow.bazowe.KontekstAplikacji;
+import github.kjkow.bazowe.ObslugaBledu;
 import github.kjkow.bazowe.StartProgramu;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -22,11 +24,10 @@ public class ZarzadcaFormatek implements IZarzadcaFormatek {
         try {
             URL sprzatanieUrl = getClass().getClassLoader().getResource(sciezkaDoFormatki);
             AnchorPane nowaFormatka = FXMLLoader.load(sprzatanieUrl);
-            BorderPane borderPane = StartProgramu.getRoot();
+            BorderPane borderPane = KontekstAplikacji.pobierzKorzenFormatek();
             borderPane.setCenter(nowaFormatka);
         } catch (IOException e) {
-            e.printStackTrace();
-            //todo: obsluga
+            ObslugaBledu.obsluzBlad("Wystąpił błąd podczas otwierania nowej formatki", e);
         }
     }
 

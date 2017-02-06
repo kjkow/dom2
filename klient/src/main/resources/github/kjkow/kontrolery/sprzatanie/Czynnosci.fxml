@@ -8,15 +8,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.CzynnosciKontroler">
+<AnchorPane prefHeight="652.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.CzynnosciKontroler">
    <children>
-      <Button fx:id="usun_czynnosc" disable="true" layoutX="406.0" layoutY="635.0" mnemonicParsing="false" onAction="#akcja_usun_czynnosc" prefHeight="25.0" prefWidth="125.0" text="Usuń" />
-      <ListView fx:id="lista_czynnosci" layoutX="15.0" layoutY="60.0" onMouseClicked="#akcja_lista" prefHeight="562.0" prefWidth="650.0" />
-      <Label layoutX="14.0" layoutY="24.0" text="Lista czynności" />
-      <Button fx:id="modyfikacja" disable="true" layoutX="540.0" layoutY="635.0" mnemonicParsing="false" onAction="#akcjaModyfikacja" prefHeight="25.0" prefWidth="125.0" text="Modyfikuj" />
-      <Button fx:id="dodaj" layoutX="135.0" layoutY="635.0" mnemonicParsing="false" onAction="#akcjaDodaj" prefHeight="25.0" prefWidth="125.0" text="Dodaj nową" />
-      <Button fx:id="pokaz" disable="true" layoutX="270.0" layoutY="635.0" mnemonicParsing="false" onAction="#akcjaPokazCzynnosc" prefHeight="25.0" prefWidth="125.0" text="Pokaż czynność" />
-      <Separator layoutX="15.0" layoutY="45.0" prefWidth="200.0" />
+      <Button fx:id="usun_czynnosc" disable="true" layoutX="408.0" layoutY="602.0" mnemonicParsing="false" onAction="#akcja_usun_czynnosc" prefHeight="25.0" prefWidth="125.0" text="Usuń" />
+      <ListView fx:id="lista_czynnosci" layoutX="15.0" layoutY="27.0" onMouseClicked="#akcja_lista" prefHeight="562.0" prefWidth="649.0" />
+      <Label layoutX="14.0" layoutY="10.0" text="Lista czynności" />
+      <Button fx:id="modyfikacja" disable="true" layoutX="541.0" layoutY="602.0" mnemonicParsing="false" onAction="#akcjaModyfikacja" prefHeight="25.0" prefWidth="125.0" text="Modyfikuj" />
+      <Button fx:id="dodaj" layoutX="138.0" layoutY="602.0" mnemonicParsing="false" onAction="#akcjaDodaj" prefHeight="25.0" prefWidth="125.0" text="Dodaj nową" />
+      <Button fx:id="pokaz" disable="true" layoutX="277.0" layoutY="602.0" mnemonicParsing="false" onAction="#akcjaPokazCzynnosc" prefHeight="25.0" prefWidth="125.0" text="Pokaż czynność" />
    </children>
    <opaqueInsets>
       <Insets />

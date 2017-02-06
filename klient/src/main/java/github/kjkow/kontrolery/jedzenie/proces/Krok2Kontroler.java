@@ -33,21 +33,6 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
         }
     }
 
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)obiady.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-       // zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok2.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
     /**
      * Button dalej
      * @param actionEvent
@@ -85,14 +70,6 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
     }
 
     /**
-     * Button zakoncz proces
-     * @param actionEvent
-     */
-    public void zakoncz(ActionEvent actionEvent) {
-        //todo:zamkniecie formatki
-    }
-
-    /**
      * Button dodaj do listy
      * @param actionEvent
      */
@@ -126,14 +103,6 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
         String obiad = wybraneObiady.getSelectionModel().getSelectedItem().toString();
         if(obiad !=null) wybraneObiadyLista.remove(obiad);
         wybraneObiady.setItems(wybraneObiadyLista);
-    }
-
-    /**
-     * Button dodaj przepis
-     * @param actionEvent
-     */
-    public void dodajPrzepis(ActionEvent actionEvent) {
-        //todo:przycisk do wywalenia?
     }
 
     private void zaladujListePrzepisow(){

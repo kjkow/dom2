@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
  */
-public abstract class BazowyKontroler {
+public class BazowyKontroler {
 
     protected IZarzadcaFormatek zarzadcaFormatek;
     protected IAutomatDoExcela automatDoExcela;
@@ -38,7 +38,6 @@ public abstract class BazowyKontroler {
 
     public BazowyKontroler(){
         inicjujNarzedzia();
-        ustawZrodloFormatki();
     }
 
     private void inicjujNarzedzia(){
@@ -59,7 +58,6 @@ public abstract class BazowyKontroler {
 
     protected void otworzNowaFormatke(String sciezka){
         try {
-            zapametajPowrot();
             zarzadcaFormatek.wyswietlNowaFormatke(sciezka);
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
@@ -103,15 +101,4 @@ public abstract class BazowyKontroler {
             zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało " + nicNieZostalo);
         }
     }
-
-
-
-
-    /**
-     * ***********potrzebne do zmiany formatki*************
-     */
-    protected abstract Stage zwrocSceneFormatki();
-    protected abstract void ustawZrodloFormatki();
-    protected abstract void zapametajPowrot();
-    //todo:te metody chyba sa juz niepotrzebne, usunac z glowa
 }

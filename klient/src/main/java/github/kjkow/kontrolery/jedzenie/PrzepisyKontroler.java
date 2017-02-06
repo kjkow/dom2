@@ -93,14 +93,6 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
      * Button
      * @param actionEvent
      */
-    public void akcja_powrot(ActionEvent actionEvent) {
-        //todo:przycisk do wywalenia
-    }
-
-    /**
-     * Button
-     * @param actionEvent
-     */
     public void akcja_dodaj(ActionEvent actionEvent) {
         otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/DodajPrzepis.fxml");
     }
@@ -141,7 +133,6 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
      * @param event
      */
     public void akcja_przepisy(Event event) {
-        //TODO: przypisanie wybranego przepisu(jeśli potrzebne)
         odblokujEdytowalnoscPrzyciskow();
     }
 
@@ -198,21 +189,4 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
         zaladujListePrzepisow();
         zablokujEdytowalnoscPrzyciskow();
     }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)przepisy.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-
 }

@@ -42,7 +42,7 @@ public interface JedzenieDAO {
      * @throws ClassNotFoundException
      */
     int modyfikujPrzepis(Przepis przepis, String nazwaStaregoPrzepisu) throws SQLException, ClassNotFoundException;
-                                           //todo:^ to samo z czynnosciami
+
     void zapiszSciezkeDoExcelaZProduktami(String sciezka) throws SQLException, ClassNotFoundException;
     String pobierzSciezkeDoExcelaZProduktami() throws SQLException, ClassNotFoundException;
 }

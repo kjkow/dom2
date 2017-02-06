@@ -50,21 +50,6 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
         }
     }
 
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)skladniki.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/proces/Krok3.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
     /**
      * Button dalej
      * @param actionEvent
@@ -73,7 +58,7 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
         try {
             przejdzDoZakonczeniaProcesu();
             System.exit(0);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             obsluzBlad("Nie udało się otworzyć excela z produktami.", e);
         }
     }
@@ -81,14 +66,6 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
     private void przejdzDoZakonczeniaProcesu() throws MalformedURLException {
         ZarzadcaZwenetrznychPlikow zarzadcaZwenetrznychPlikow = new ZarzadcaZwenetrznychPlikow();
         zarzadcaZwenetrznychPlikow.otworzZewnetrzne(sciezkaDoExcela);
-    }
-
-    /**
-     * Button zakoncz
-     * @param actionEvent
-     */
-    public void zakoncz(ActionEvent actionEvent) {
-        //todo:zamkniecie formatki
     }
 
     /**
@@ -105,7 +82,6 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
 
     private void zmienSciezkeDoExcela(){
         sciezkaDoExcela = "";
-        //TODO: przeniesc do bazowki - wybieranie pliku i inne sciezki dac tez na baze, moze osobne dao na to
         FileChooser fileChooser = new FileChooser();
         File wybranyPlik = fileChooser.showOpenDialog(null);
 

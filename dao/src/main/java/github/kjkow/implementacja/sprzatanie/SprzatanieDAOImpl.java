@@ -90,7 +90,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
     }
 
     @Override
-    public int modyfikujCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException {
+    public int modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci) throws SQLException, ClassNotFoundException {
         otworzPolaczenie();
         if(polaczenie !=null){
             PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE SPRZATANIE_CZYNNOSCI SET NAZWA=?, DATA_OSTATNIEGO_SPRZATANIA=?, DATA_NASTEPNEGO_SPRZATANIA=?, CZESTOTLIWOSC=? WHERE NAZWA=?");
@@ -98,7 +98,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
             kwerenda.setDate(2, Date.valueOf(czynnosc.getDataOstatniegoSprzatania()));
             kwerenda.setDate(3, Date.valueOf(czynnosc.getDataNastepnegoSprzatania()));
             kwerenda.setInt(4, czynnosc.getDniCzestotliwosci());
-            kwerenda.setString(5, czynnosc.getNazwaCzynnosci());
+            kwerenda.setString(5, nazwaStarejCzynnosci);
             int liczbaZmienionychWierszy = kwerenda.executeUpdate();
             zamknijPolczenie();
             return liczbaZmienionychWierszy;

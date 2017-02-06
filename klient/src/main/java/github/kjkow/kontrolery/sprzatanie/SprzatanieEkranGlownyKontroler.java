@@ -81,6 +81,7 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
             return;
         }
         ustawDatyCzynnosci();
+
     }
 
     /**
@@ -179,6 +180,7 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
         }
 
         ustawDatyCzynnosci();
+        czynnosc.getSelectionModel().select(wybranaCzynnosc.getNazwaCzynnosci());
     }
 
     /**
@@ -279,21 +281,4 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
         }
         czynnosc.setItems(listaCzynnosciPrezentacja);
     }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)czynnosc.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-       // zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/SprzatanieEkranGlowny.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-
 }

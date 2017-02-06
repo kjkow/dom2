@@ -94,21 +94,4 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
     public void akcja_powrot(ActionEvent actionEvent) {
         otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/Przepisy.fxml");
     }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)data.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/jedzenie/ModyfikujPrzepis.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-
 }

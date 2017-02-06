@@ -28,7 +28,7 @@ public class DrzewkoMenuKontroler extends BazowyKontroler implements Initializab
         fake.getChildren().addAll(sprzatanie, jedzenie, log);
         menu.setShowRoot(false);
 
-        sprzatanie.getChildren().add(new TreeItem<>("Ekran główny"));
+        sprzatanie.getChildren().add(new TreeItem<>("Najbliższe sprzątania"));
         sprzatanie.getChildren().add(new TreeItem<>("Zarządzanie"));
 
         jedzenie.getChildren().add(new TreeItem<>("Przepisy"));
@@ -36,12 +36,10 @@ public class DrzewkoMenuKontroler extends BazowyKontroler implements Initializab
     }
 
     public void obslugaKliknieciaElementuDrzewka(Event event) {
-         //todo: przeniesc to moze do jakiegos zewnetrzengo mechanizmu
-
         String nazwaWybranegoElementu = String.valueOf(menu.getSelectionModel().getSelectedItem());
         TreeItem wybranyElement = menu.getSelectionModel().getSelectedItem();
 
-        if(nazwaWybranegoElementu.contains("Ekran główny") && wybranyElement.getParent().getValue().toString().contains("Sprzątanie")){
+        if(nazwaWybranegoElementu.contains("Najbliższe sprzątania") && wybranyElement.getParent().getValue().toString().contains("Sprzątanie")){
             otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/SprzatanieEkranGlowny.fxml");
         }
 
@@ -60,21 +58,5 @@ public class DrzewkoMenuKontroler extends BazowyKontroler implements Initializab
         if(nazwaWybranegoElementu.contains("Dziennik aplikacji")){
             otworzNowaFormatke("github/kjkow/kontrolery/Log.fxml");
         }
-
-    }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return null;
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-
     }
 }

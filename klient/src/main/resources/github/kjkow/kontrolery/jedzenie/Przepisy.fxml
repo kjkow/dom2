@@ -6,9 +6,7 @@
 
 <AnchorPane minHeight="300.0" prefHeight="680.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.jedzenie.PrzepisyKontroler">
    <children>
-
-      <Button fx:id="powrot" layoutX="15.0" layoutY="644.0" mnemonicParsing="false" onAction="#akcja_powrot" prefHeight="25.0" prefWidth="100.0" text="Powrót" />
-      <ListView fx:id="przepisy" layoutX="14.0" layoutY="67.0" onMouseClicked="#akcja_przepisy" prefHeight="555.0" prefWidth="651.0" />
+      <ListView fx:id="przepisy" layoutX="14.0" layoutY="67.0" onMouseClicked="#akcja_przepisy" prefHeight="565.0" prefWidth="651.0" />
       <Label layoutX="15.0" layoutY="30.0" text="Przepisy:" />
       <Button fx:id="dodaj" layoutX="231.0" layoutY="644.0" mnemonicParsing="false" onAction="#akcja_dodaj" prefHeight="25.0" prefWidth="100.0" text="Dodaj nowy" />
       <Button fx:id="szczegoly" disable="true" layoutX="340.0" layoutY="644.0" mnemonicParsing="false" onAction="#akcja_szczegoly" prefHeight="25.0" prefWidth="100.0" text="Pokaż przepis" />

@@ -146,23 +146,6 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
         lista_czynnosci.setItems(listaCzynnosciPrezentacja);
     }
 
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)lista_czynnosci.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
-
-
-
     /**
      * ListView czynnosci
      * @param event

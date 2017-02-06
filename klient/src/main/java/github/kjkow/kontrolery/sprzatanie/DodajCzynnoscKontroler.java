@@ -78,19 +78,4 @@ public class DodajCzynnoscKontroler extends BazowyKontroler {
 
         otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
-
-    @Override
-    protected Stage zwrocSceneFormatki() {
-        return (Stage)czestotliwosc.getScene().getWindow();
-    }
-
-    @Override
-    protected void ustawZrodloFormatki() {
-        //zrodloFormatki = getClass().getClassLoader().getResource("github/kjkow/kontrolery/sprzatanie/DodajCzynnosc.fxml");
-    }
-
-    @Override
-    protected void zapametajPowrot() {
-        PrzechowywaczDanych.zapamietajWyjscie(this);
-    }
 }
