@@ -11,9 +11,9 @@ import github.kjkow.implementacja.jedzenie.JedzenieDAO;
 import github.kjkow.implementacja.jedzenie.JedzenieDAOImpl;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAO;
 import github.kjkow.implementacja.sprzatanie.SprzatanieDAOImpl;
-import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-13.
@@ -48,7 +48,11 @@ public class BazowyKontroler {
             automatDoExcela = new AutomatDoExcela();
         }
         if(dziennik == null){
-            dziennik = new Dziennik();
+            try {
+                dziennik = new Dziennik();
+            } catch (SQLException | IOException | ClassNotFoundException e) {
+                obsluzBlad("Błąd podczas inicjowania dziennika aplikacji", e);
+            }
         }
     }
 

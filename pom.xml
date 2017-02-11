@@ -43,5 +43,6 @@
   klient -> model
   klient -> narzedzia
   dao -> model
+  narzedzie -> dao (pobieranie konfiguracji)
 -->
 </project>

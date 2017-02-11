@@ -1,11 +1,14 @@
 package github.kjkow.dziennik;
 
+import github.kjkow.implementacja.konfiguracja.KonfiguracjaDAO;
+import github.kjkow.implementacja.konfiguracja.KonfiguracjaDAOImpl;
 import github.kjkow.pliki.IPlik;
 import github.kjkow.pliki.Plik;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,37 +21,42 @@ public class Dziennik implements IDziennik {
 
     private IPlik plik;
     private ArrayList<String> liniePliku;
-    private final String SCIEZKA_DZIENNIKA_APLIKACJI = "dziennik.log";
+    private  String sciezkaDziennika = "";
     private DateFormat formatDaty;
     private Date data;
 
-    public Dziennik(){
+    public Dziennik() throws SQLException, IOException, ClassNotFoundException {
+        przypiszSciezkeDziennika();
         plik = new Plik();
         liniePliku = new ArrayList<>();
         formatDaty = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         data = new Date();
     }
 
+    private void przypiszSciezkeDziennika() throws IOException, SQLException, ClassNotFoundException {
+        KonfiguracjaDAO konfiguracjaDAO = new KonfiguracjaDAOImpl();
+        sciezkaDziennika = konfiguracjaDAO.pobierzSciezkeDziennikaAplikacji();
+    }
+
     @Override
     public void zapiszInformacje(String tresc) throws IOException {
         liniePliku.add(formatDaty.format(data) + " " + tresc);
-        plik.zapiszDoPliku(SCIEZKA_DZIENNIKA_APLIKACJI, liniePliku);
+        plik.zapiszDoPliku(sciezkaDziennika, liniePliku);
     }
 
     @Override
     public void zapiszBlad(String tresc, Exception e) throws IOException {
-
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
 
         liniePliku.add(formatDaty.format(data) + " " + tresc);
         liniePliku.add(errors.toString());
-        plik.zapiszDoPliku(SCIEZKA_DZIENNIKA_APLIKACJI, liniePliku);
+        plik.zapiszDoPliku(sciezkaDziennika, liniePliku);
     }
 
     @Override
     public String zwrocDziennik() throws IOException {
-        liniePliku = plik.czytajZPliku(SCIEZKA_DZIENNIKA_APLIKACJI);
+        liniePliku = plik.czytajZPliku(sciezkaDziennika);
         String dziennik = "";
         for(String linia: liniePliku){
             dziennik += linia + "\n";

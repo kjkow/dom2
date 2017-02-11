@@ -22,10 +22,8 @@ import java.util.ResourceBundle;
 public class Krok3Kontroler extends BazowyKontroler implements Initializable{
 
     public TextArea skladniki;
-    public Label sciezka;
 
     private String sciezkaDoExcela;
-    private final String OPIS_SCIEZKI = "Ścieżka do excela z produktami:";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,7 +40,6 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
         if(jedzenieDAO == null) return;
         try {
             sciezkaDoExcela = jedzenieDAO.pobierzSciezkeDoExcelaZProduktami();
-            sciezka.setText(OPIS_SCIEZKI + " " + sciezkaDoExcela);
         } catch (SQLException e) {
             obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
         } catch (ClassNotFoundException e) {
@@ -67,39 +64,4 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
         ZarzadcaZwenetrznychPlikow zarzadcaZwenetrznychPlikow = new ZarzadcaZwenetrznychPlikow();
         zarzadcaZwenetrznychPlikow.otworzZewnetrzne(sciezkaDoExcela);
     }
-
-    /**
-     * Button zmien sciezke
-     * @param actionEvent
-     */
-    public void zmienSciezke(ActionEvent actionEvent) {
-        try{
-            zmienSciezkeDoExcela();
-        }catch (Exception e){
-            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
-        }
-    }
-
-    private void zmienSciezkeDoExcela(){
-        sciezkaDoExcela = "";
-        FileChooser fileChooser = new FileChooser();
-        File wybranyPlik = fileChooser.showOpenDialog(null);
-
-        if(wybranyPlik != null){
-            inicjujJedzenieDAO();
-            if(jedzenieDAO == null) return;
-            try {
-                jedzenieDAO.zapiszSciezkeDoExcelaZProduktami(wybranyPlik.getAbsolutePath());
-            } catch (SQLException e) {
-                obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-                return;
-            } catch (ClassNotFoundException e) {
-                obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-                return;
-            }
-            sciezka.setText(OPIS_SCIEZKI + " " + wybranyPlik.getAbsolutePath());
-            sciezkaDoExcela = wybranyPlik.getAbsolutePath();
-        }
-    }
-
 }

@@ -16,7 +16,5 @@
       <TextArea fx:id="skladniki" layoutX="15.0" layoutY="87.0" prefHeight="483.0" prefWidth="648.0" />
       <Label layoutX="15.0" layoutY="70.0" text="Składniki do obiadów:" />
       <Separator layoutX="15.0" layoutY="45.0" prefWidth="200.0" />
-      <Label fx:id="sciezka" layoutX="15.0" layoutY="597.0" prefHeight="17.0" prefWidth="534.0" textAlignment="RIGHT" underline="true" />
-      <Button fx:id="zmien" layoutX="566.0" layoutY="593.0" mnemonicParsing="false" onAction="#zmienSciezke" prefHeight="25.0" prefWidth="100.0" text="Zmień ścieżkę" />
    </children>
 </AnchorPane>
