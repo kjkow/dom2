@@ -11,20 +11,19 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.SprzatanieEkranGlownyKontroler">
    <children>
-      <ComboBox fx:id="czynnosc" layoutX="69.0" layoutY="48.0" onAction="#akcja_czynnosc" prefHeight="25.0" prefWidth="227.0" />
-      <Label layoutX="320.0" layoutY="80.0" text="Następne sprzątanie" />
-      <Label layoutX="320.0" layoutY="121.0" text="Zmień datę wykonania" />
-      <TextField fx:id="data_nastepnego_sprzatania" editable="false" layoutX="462.0" layoutY="76.0" prefHeight="25.0" prefWidth="167.0" />
-      <DatePicker fx:id="data_wykonania" layoutX="462.0" layoutY="117.0" prefHeight="25.0" prefWidth="167.0" />
-      <Button fx:id="wykonano" layoutX="530.0" layoutY="151.0" mnemonicParsing="false" onAction="#akcja_wykonano" prefHeight="25.0" prefWidth="100.0" text="Wykonaj" />
+      <ComboBox fx:id="czynnosc" layoutX="403.0" layoutY="45.0" onAction="#akcja_czynnosc" prefHeight="25.0" prefWidth="227.0" />
+      <Label layoutX="15.0" layoutY="80.0" text="Następne sprzątanie" />
+      <Label layoutX="15.0" layoutY="120.0" text="Zmień datę wykonania" />
+      <TextField fx:id="data_nastepnego_sprzatania" editable="false" layoutX="142.0" layoutY="80.0" prefHeight="25.0" prefWidth="160.0" />
+      <DatePicker fx:id="data_wykonania" layoutX="142.0" layoutY="120.0" prefHeight="25.0" prefWidth="160.0" />
+      <Button fx:id="wykonano" layoutX="15.0" layoutY="158.0" mnemonicParsing="false" onAction="#akcja_wykonano" prefHeight="25.0" prefWidth="100.0" text="Wykonaj" />
       <Label layoutX="17.0" layoutY="233.0" text="Co i kiedy najszybciej sprzątać" />
       <ListView fx:id="najblizsze_sprzatania" layoutX="17.0" layoutY="253.0" onMouseClicked="#akcja_najblizsze_sprzatania" prefHeight="308.0" prefWidth="646.0" />
-      <Button fx:id="odloz" layoutX="530.0" layoutY="190.0" mnemonicParsing="false" onAction="#akcja_odloz" prefHeight="25.0" prefWidth="100.0" text="Odłóż" />
-      <Label layoutX="320.0" layoutY="52.0" text="Ostatnie sprzątanie" />
-      <TextField fx:id="data_ostatniego_sprzatania" layoutX="462.0" layoutY="48.0" prefHeight="25.0" prefWidth="167.0" />
-      <Label layoutX="380.0" layoutY="194.0" text="Odłóż sprzątanie o tydzień" />
+      <Button fx:id="odloz" layoutX="15.0" layoutY="192.0" mnemonicParsing="false" onAction="#akcja_odloz" prefHeight="25.0" prefWidth="100.0" text="Odłóż" />
+      <Label layoutX="15.0" layoutY="45.0" text="Ostatnie sprzątanie" />
+      <TextField fx:id="data_ostatniego_sprzatania" layoutX="142.0" layoutY="45.0" prefHeight="25.0" prefWidth="160.0" />
       <Label layoutX="10.0" layoutY="21.0" text="Wybrana czynność" />
-      <Label layoutX="15.0" layoutY="52.0" text="Nazwa" />
+      <Label layoutX="357.0" layoutY="45.0" text="Nazwa" />
       <Separator layoutX="9.0" layoutY="37.0" prefWidth="620.0" />
       <Separator layoutX="10.0" layoutY="110.0" prefWidth="620.0" />
    </children>
