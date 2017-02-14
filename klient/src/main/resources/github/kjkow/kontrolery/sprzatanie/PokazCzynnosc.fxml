@@ -10,7 +10,7 @@
       <Insets />
    </opaqueInsets>
    <children>
-      <Button layoutX="15.0" layoutY="315.0" mnemonicParsing="false" onAction="#powrot" prefHeight="25.0" prefWidth="100.0" text="Anuluj" />
+      <Button layoutX="15.0" layoutY="315.0" mnemonicParsing="false" onAction="#powrot" prefHeight="25.0" prefWidth="100.0" text="Powrót" />
       <TextField fx:id="nazwa" editable="false" layoutX="164.0" layoutY="62.0" prefHeight="31.0" prefWidth="427.0" />
       <TextField fx:id="czestotliwosc" editable="false" layoutX="164.0" layoutY="102.0" prefHeight="31.0" prefWidth="50.0" />
       <Label layoutX="15.0" layoutY="67.0" prefHeight="21.0" prefWidth="60.0" text="Nazwa" />

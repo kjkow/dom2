@@ -43,13 +43,13 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
      */
     public void akcjaModyfikacja(ActionEvent actionEvent) {
         try{
-            przejdzDalejZWybranaCzynnoscia(new ModyfikujCzynnoscKontroler());
+            przejdzDalejZWybranaCzynnoscia(true);
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
     }
 
-    private void przejdzDalejZWybranaCzynnoscia(BazowyKontroler pKontroler){
+    private void przejdzDalejZWybranaCzynnoscia(boolean czyDoModyfikacji){
         inicjujSprzatanieDAO();
         if(sprzatanieDAO == null) return;
 
@@ -65,7 +65,11 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
             return;
         }
         PrzechowywaczDanych.zapiszObiekt(czynnosc);
-        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
+        if(czyDoModyfikacji) {
+            otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
+        }else{
+            otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/PokazCzynnosc.fxml");
+        }
     }
 
     /**
@@ -162,7 +166,7 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
      */
     public void akcjaPokazCzynnosc(ActionEvent actionEvent) {
         try {
-            przejdzDalejZWybranaCzynnoscia(new PokazCzynnoscKontroler());
+            przejdzDalejZWybranaCzynnoscia(false);
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
