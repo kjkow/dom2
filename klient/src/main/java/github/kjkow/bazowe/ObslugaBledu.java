@@ -5,22 +5,22 @@ import github.kjkow.bazowe.formatka.ZarzadcaFormatek;
 import github.kjkow.dziennik.Dziennik;
 import github.kjkow.dziennik.IDziennik;
 
-import java.io.IOException;
-
 /**
  * Created by Kamil.Kowalczyk on 2016-12-23.
  */
 public final class ObslugaBledu {
 
     private static IZarzadcaFormatek zarzadcaFormatek = new ZarzadcaFormatek();
-    private static IDziennik dziennik = new Dziennik();
 
     public static void obsluzBlad(String tresc, Exception e){
+
         try {
+            IDziennik dziennik = new Dziennik();
             dziennik.zapiszBlad(tresc, e);
-        } catch (IOException e1) {
+        } catch (Exception e1) {
             tresc += "\nBłąd aplikacji: \n" + e.getLocalizedMessage() +
-                     "\nDodatkowo wystąpił problem z zapisaniem błędu do dziennika. Błąd zapisu do dziennika: \n" + e1.getLocalizedMessage();
+                    "\nDodatkowo wystąpił problem z zapisaniem błędu do dziennika. Błąd zapisu do dziennika: \n" +
+                    e1.getLocalizedMessage();
         }
         zarzadcaFormatek.wyswietlOknoBledu(tresc);
     }
