@@ -30,7 +30,6 @@ public class Dziennik implements IDziennik {
         plik = new Plik();
         liniePliku = new ArrayList<>();
         formatDaty = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        data = new Date();
     }
 
     private void przypiszSciezkeDziennika() throws IOException, SQLException, ClassNotFoundException {
@@ -40,12 +39,14 @@ public class Dziennik implements IDziennik {
 
     @Override
     public void zapiszInformacje(String tresc) throws IOException {
+        data = new Date();
         liniePliku.add(formatDaty.format(data) + " " + tresc);
         plik.zapiszDoPliku(sciezkaDziennika, liniePliku);
     }
 
     @Override
     public void zapiszBlad(String tresc, Exception e) throws IOException {
+        data = new Date();
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
 
