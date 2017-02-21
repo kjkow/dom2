@@ -1,7 +1,7 @@
 package github.kjkow.automaty.excel;
 
 
-import github.kjkow.kontekst.KontekstZwracany;
+import github.kjkow.KontekstZwracany;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-07.

@@ -5,15 +5,10 @@ import github.kjkow.bazowe.PrzechowywaczDanych;
 import github.kjkow.bazowe.ZarzadcaZwenetrznychPlikow;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -36,15 +31,12 @@ public class Krok3Kontroler extends BazowyKontroler implements Initializable{
     }
 
     private void pobierzSciezkeZBazy(){
-        inicjujJedzenieDAO();
-        if(jedzenieDAO == null) return;
-        try {
-            sciezkaDoExcela = jedzenieDAO.pobierzSciezkeDoExcelaZProduktami();
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanyKonfiguracjaDAO = konfiguracjaDAO.pobierzSciezkeDoExcelaZProduktami();
+        if(!kontekstZwracanyKonfiguracjaDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyKonfiguracjaDAO.getLog(), kontekstZwracanyKonfiguracjaDAO.getBlad());
+            return;
         }
+        sciezkaDoExcela = kontekstZwracanyKonfiguracjaDAO.getSciezkaKonfiguracji();
     }
 
     /**

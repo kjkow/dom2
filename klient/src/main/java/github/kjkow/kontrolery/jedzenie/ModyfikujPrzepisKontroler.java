@@ -8,10 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -58,29 +56,17 @@ public class ModyfikujPrzepisKontroler extends BazowyKontroler implements Initia
     }
 
     private void zapiszPrzepis(){
-        inicjujJedzenieDAO();
-
-        if(jedzenieDAO == null){
-            return;
-        }
-
         przepis.setNazwa(nazwa.getText());
         przepis.setDataOstatniegoPrzygotowania(data.getValue());
         przepis.setSposobPrzygotowania(przygotowanie.getText());
         przepis.setSkladniki(skladniki.getText());
 
-        int liczbaZmienionychWierszy;
-
-        try {
-            liczbaZmienionychWierszy = jedzenieDAO.modyfikujPrzepis(przepis, staraNazwa);
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanyJedzenieDAO =  jedzenieDAO.modyfikujPrzepis(przepis, staraNazwa);
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
         }
-        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "zmodyfikowane");
+
         zapiszWykonanieWDzienniku("Zmodyfikowano przepis " + przepis.getNazwa());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano przepis.");
 

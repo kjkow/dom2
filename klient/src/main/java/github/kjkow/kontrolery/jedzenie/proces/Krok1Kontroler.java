@@ -2,7 +2,6 @@ package github.kjkow.kontrolery.jedzenie.proces;
 
 import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,10 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -76,21 +73,24 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
     private void zapiszNoweDatyObiadow(){
         int j = 0;
         for(int i = pierwszyDzien; i <= ostatniDzien; i++){
-            String nazwaPrzepisu = nazwy[j].getValue();
-            inicjujJedzenieDAO();
+            if(nazwy[j].getValue() != null){
+                String nazwaPrzepisu = nazwy[j].getValue();
 
-            if(jedzenieDAO == null) return;
-            try {
-                Przepis przepis = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
+                kontekstZwracanyJedzenieDAO = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
+                if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+                    obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
+                    return;
+                }
+                Przepis przepis = kontekstZwracanyJedzenieDAO.getPrzepis();
                 przepis.setDataOstatniegoPrzygotowania(konwertujStringNaLocalDate(tablicaDni[i].getText()));
-                jedzenieDAO.modyfikujPrzepis(przepis, przepis.getNazwa());
-            } catch (SQLException e) {
-                obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-                return;
-            } catch (ClassNotFoundException e) {
-                obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-                return;
+
+                kontekstZwracanyJedzenieDAO = jedzenieDAO.modyfikujPrzepis(przepis, przepis.getNazwa());//nazwy mogą być takie same bo tu jest pewność że nie jest edytowana nazwa
+                if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+                    obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
+                    return;
+                }
             }
+
             j++;
         }
     }
@@ -159,20 +159,14 @@ public class Krok1Kontroler extends BazowyKontroler implements Initializable {
     }
 
     private void ustawPolaCombo(){
-
-        inicjujJedzenieDAO();
-        if(jedzenieDAO == null) return;
-
-        try {
-            for(String nazwaPrzepisu: jedzenieDAO.pobierzListePrzepisow()){
-                przepisyPrezentacja.add(nazwaPrzepisu);
-            }
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+        kontekstZwracanyJedzenieDAO = jedzenieDAO.pobierzListePrzepisow();
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
+        }
+
+        for(String nazwaPrzepisu: kontekstZwracanyJedzenieDAO.getLista()){
+            przepisyPrezentacja.add(nazwaPrzepisu);
         }
 
         for(ComboBox<String> c: nazwy){

@@ -7,10 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -61,12 +59,6 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
     }
 
     private void zapiszZmodyfikowanaCzynnosc(){
-        inicjujSprzatanieDAO();
-
-        if(sprzatanieDAO == null){
-            return;
-        }
-
         czynnosc.setNazwaCzynnosci(nazwa.getText());
         try{
             czynnosc.setDniCzestotliwosci(Integer.parseInt(czestotliwosc.getText()));
@@ -83,20 +75,12 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
             return;
         }
 
-        int liczbaZmienionychWierszy;
-
-        try {
-            liczbaZmienionychWierszy = sprzatanieDAO.modyfikujCzynnosc(czynnosc, pierwotnaNazwaCzynnosci);
-
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.modyfikujCzynnosc(czynnosc, pierwotnaNazwaCzynnosci);
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
             return;
         }
 
-        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "zmodyfikowane");
         zapiszWykonanieWDzienniku("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
 

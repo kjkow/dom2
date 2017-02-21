@@ -8,10 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -47,21 +45,17 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
     }
 
     private void zapiszSkladniki(){
-        inicjujJedzenieDAO();
-        if(jedzenieDAO == null) return;
-
         String listaSkladnikow = "";
         for(String nazwaPrzepisu: wybraneObiadyLista){
             Przepis przepis;
-            try {
-                przepis = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
-            } catch (SQLException e) {
-                obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-                break;
-            } catch (ClassNotFoundException e) {
-                obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-                break;
+
+            kontekstZwracanyJedzenieDAO = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
+            if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+                obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
+                return;
             }
+            przepis = kontekstZwracanyJedzenieDAO.getPrzepis();
+
             listaSkladnikow += przepis.getNazwa() +"\n";
             listaSkladnikow += przepis.getSkladniki() +"\n";
             listaSkladnikow += "-----------------------" + "\n\n";
@@ -107,19 +101,15 @@ public class Krok2Kontroler extends BazowyKontroler implements Initializable{
 
     private void zaladujListePrzepisow(){
         listaPrzepisowPrezentacja.clear();
-        inicjujJedzenieDAO();
-        if(jedzenieDAO == null) return;
 
-        try {
-            for(String nazwaPrzepisu: jedzenieDAO.pobierzListePrzepisowDoProcesu()){
-                listaPrzepisowPrezentacja.add(nazwaPrzepisu);
-            }
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+        kontekstZwracanyJedzenieDAO = jedzenieDAO.pobierzListePrzepisowDoProcesu();
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
+        }
+
+        for(String nazwaPrzepisu: kontekstZwracanyJedzenieDAO.getLista()){
+            listaPrzepisowPrezentacja.add(nazwaPrzepisu);
         }
 
         obiady.setItems(listaPrzepisowPrezentacja);

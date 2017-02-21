@@ -11,10 +11,8 @@ import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -50,20 +48,15 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
     }
 
     private void przejdzDalejZWybranaCzynnoscia(boolean czyDoModyfikacji){
-        inicjujSprzatanieDAO();
-        if(sprzatanieDAO == null) return;
-
         Czynnosc czynnosc;
 
-        try {
-            czynnosc = sprzatanieDAO.pobierzDaneCzynnosci(lista_czynnosci.getSelectionModel().getSelectedItem());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.pobierzDaneCzynnosci(lista_czynnosci.getSelectionModel().getSelectedItem());
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
             return;
         }
+
+        czynnosc = kontekstZwracanySprzatanieDAO.getCzynnosc();
         PrzechowywaczDanych.zapiszObiekt(czynnosc);
         if(czyDoModyfikacji) {
             otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
@@ -93,38 +86,19 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
     }
 
     private void usunCzynnosc(){
-        inicjujSprzatanieDAO();
-
-        if(sprzatanieDAO == null){
-            return;
-        }
-
         String nazwaCzynnosci = lista_czynnosci.getSelectionModel().getSelectedItem();
         if(nazwaCzynnosci == null) return;
 
-        int liczbaZmienionychWierszy;
-
-        try {
-            liczbaZmienionychWierszy = sprzatanieDAO.usunCzynnosc(nazwaCzynnosci);
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
-        }
-
-        if(liczbaZmienionychWierszy > 1){
-            zarzadcaFormatek.wyswietlOknoBledu("Z bazy usunął się więcej niż jeden rekord.");
-            return;
-        }else if(liczbaZmienionychWierszy == 0){
-            zarzadcaFormatek.wyswietlOknoInformacji("Nic nie zostało usunięte");
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.usunCzynnosc(nazwaCzynnosci);
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
             return;
         }
 
         zapiszWykonanieWDzienniku("Usunięto czynność " + nazwaCzynnosci);
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto czynność");
         zaladujListeCzynnosci();
+
         modyfikacja.setDisable(true);
         usun_czynnosc.setDisable(true);
         pokaz.setDisable(true);
@@ -132,21 +106,16 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
 
     private void zaladujListeCzynnosci(){
         listaCzynnosciPrezentacja.clear();
-        inicjujSprzatanieDAO();
-        if(sprzatanieDAO == null){
+
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.pobierzNazwyCzynnosci();
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
             return;
         }
-        try {
-            for(String nazwaCzynnosci: sprzatanieDAO.pobierzNazwyCzynnosci()){
-                listaCzynnosciPrezentacja.add(nazwaCzynnosci);
-            }
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
+        for(String nazwaCzynnosci: kontekstZwracanySprzatanieDAO.getNazwyCzynnosci()){
+            listaCzynnosciPrezentacja.add(nazwaCzynnosci);
         }
+
         lista_czynnosci.setItems(listaCzynnosciPrezentacja);
     }
 

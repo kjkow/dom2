@@ -1,4 +1,4 @@
-package github.kjkow.pliki;
+package github.kjkow;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -9,23 +9,20 @@ import java.util.ArrayList;
 /**
  * Created by Kamil.Kowalczyk on 2016-12-07.
  */
-public class Plik implements IPlik {
+public class Plik {
 
-    @Override
-    public HSSFWorkbook wczytajArkuszExcela(String sciezkaDoPliku) throws IOException {
+    public static HSSFWorkbook wczytajArkuszExcela(String sciezkaDoPliku) throws IOException {
         File plikArkusza = new File(sciezkaDoPliku);
         return new HSSFWorkbook(new FileInputStream(plikArkusza));
     }
 
-    @Override
-    public void zapiszArkuszExcela(HSSFWorkbook arkusz, String sciezkaDoPliku) throws IOException {
+    public static void zapiszArkuszExcela(HSSFWorkbook arkusz, String sciezkaDoPliku) throws IOException {
         FileOutputStream outputStream = new FileOutputStream(new File(sciezkaDoPliku));
         arkusz.write(outputStream);
         outputStream.close();
     }
 
-    @Override
-    public void kopiujPlik(String sciezkaDoPlikuZrodlowego, String sciezkaDoPlikuDocelowego) throws IOException {
+    public static void kopiujPlik(String sciezkaDoPlikuZrodlowego, String sciezkaDoPlikuDocelowego) throws IOException {
         File plikZrodlowy = new File(sciezkaDoPlikuZrodlowego);
         File plikDocelowy = new File(sciezkaDoPlikuDocelowego);
 
@@ -37,8 +34,7 @@ public class Plik implements IPlik {
         outputChannel.close();
     }
 
-    @Override
-    public ArrayList<String> czytajZPliku(String sciezkaDoPliku) throws IOException {
+    public static ArrayList<String> czytajZPliku(String sciezkaDoPliku) throws IOException {
         ArrayList<String> liniePliku = new ArrayList<>();
         BufferedReader bufor = new BufferedReader(new FileReader(sciezkaDoPliku));
         String liniaZPliku;
@@ -52,8 +48,7 @@ public class Plik implements IPlik {
         return liniePliku;
     }
 
-    @Override
-    public void zapiszDoPliku(String sciezkaDoPliku, ArrayList<String> linieDoZapisania) throws IOException {
+    public static void zapiszDoPliku(String sciezkaDoPliku, ArrayList<String> linieDoZapisania) throws IOException {
         FileWriter zapisywaczPliku =  new FileWriter(sciezkaDoPliku, true);
         BufferedWriter buforZapisu = new BufferedWriter(zapisywaczPliku);
         PrintWriter zapisywacz = new PrintWriter(buforZapisu);

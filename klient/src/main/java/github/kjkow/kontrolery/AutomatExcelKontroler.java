@@ -1,17 +1,17 @@
 package github.kjkow.kontrolery;
 
 
+import github.kjkow.DziennikAplikacji;
 import github.kjkow.automaty.excel.AutomatDoExcela;
 import github.kjkow.automaty.excel.IAutomatDoExcela;
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.bazowe.PrzechowywaczDanych;
-import github.kjkow.kontekst.KontekstZwracany;
+import github.kjkow.KontekstZwracany;
+import github.kjkow.bazowe.KontekstAplikacji;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
      * @param actionEvent
      */
     public void akcjaPowrot(ActionEvent actionEvent) {
-        //todo:przycisk do wywalenia
+
     }
 
     /**
@@ -64,7 +64,7 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
             pKontekst = automat.utworzArkuszNaNowyRok(sciezka.getText());
             log.setText(pKontekst.getLog());
             try {
-                dziennik.zapiszInformacje("Wykonano migrator tworzenia nowego arkusza." + "\n" + pKontekst.getLog());
+                DziennikAplikacji.zapiszInformacje(KontekstAplikacji.pobierzSciezkeDziennikaAplikacji(), "Wykonano migrator tworzenia nowego arkusza." + "\n" + pKontekst.getLog());
             } catch (IOException e) {
                 zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             }
@@ -88,7 +88,7 @@ public class AutomatExcelKontroler extends BazowyKontroler implements Initializa
             pKontekst = automat.migrujZakresy(sciezka.getText());
             log.setText(pKontekst.getLog());
             try {
-                dziennik.zapiszInformacje("Wykonano migrator przesuwania zakresów." + "\n" + pKontekst.getLog());
+                DziennikAplikacji.zapiszInformacje(KontekstAplikacji.pobierzSciezkeDziennikaAplikacji(), "Wykonano migrator przesuwania zakresów." + "\n" + pKontekst.getLog());
             } catch (IOException e) {
                 zarzadcaFormatek.wyswietlOknoBledu(KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
             }

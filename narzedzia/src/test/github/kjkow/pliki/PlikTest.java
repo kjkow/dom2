@@ -1,5 +1,6 @@
 package github.kjkow.pliki;
 
+import github.kjkow.Plik;
 import org.junit.Before;
 import org.junit.Test;
 

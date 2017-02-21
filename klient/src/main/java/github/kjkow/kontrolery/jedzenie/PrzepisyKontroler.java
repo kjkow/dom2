@@ -10,10 +10,8 @@ import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -41,26 +39,22 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
 
     private void zaladujListePrzepisow(){
         listaPrzepisowPrezentacja.clear();
-        inicjujJedzenieDAO();
-        if(jedzenieDAO == null) return;
 
-        try {
-            for(String nazwaPrzepisu: jedzenieDAO.pobierzListePrzepisow()){
-                listaPrzepisowPrezentacja.add(nazwaPrzepisu);
-            }
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
+        kontekstZwracanyJedzenieDAO = jedzenieDAO.pobierzListePrzepisow();
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
+        }
+
+        for(String nazwaPrzepisu: kontekstZwracanyJedzenieDAO.getLista()){
+            listaPrzepisowPrezentacja.add(nazwaPrzepisu);
         }
 
         przepisy.setItems(listaPrzepisowPrezentacja);
     }
 
     /**
-     * Button
+     * Button modyfikuj
      * @param actionEvent
      */
     public void akcja_modyfikuj(ActionEvent actionEvent) {
@@ -72,25 +66,22 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
     }
 
     private void przejdzDoModyfikacji(){
-        inicjujJedzenieDAO();
-        if(jedzenieDAO == null) return;
+        String nazwaPrzepisu = przepisy.getSelectionModel().getSelectedItem();
+        if(nazwaPrzepisu == null) return;
 
-        try {
-            przepis = jedzenieDAO.pobierzDanePrzepisu(przepisy.getSelectionModel().getSelectedItem());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanyJedzenieDAO = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
         }
+        przepis = kontekstZwracanyJedzenieDAO.getPrzepis();
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
         otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/ModyfikujPrzepis.fxml");
     }
 
     /**
-     * Button
+     * Button dodaj
      * @param actionEvent
      */
     public void akcja_dodaj(ActionEvent actionEvent) {
@@ -98,7 +89,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
     }
 
     /**
-     * Button
+     * Button Pokaż
      * @param actionEvent
      */
     public void akcja_szczegoly(ActionEvent actionEvent) {
@@ -110,19 +101,15 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
     }
 
     private void pokazSzczegolyPrzepisu(){
-        inicjujJedzenieDAO();
+        String nazwaPrzepisu = przepisy.getSelectionModel().getSelectedItem();
+        if(nazwaPrzepisu == null) return;
 
-        if(jedzenieDAO == null) return;
-
-        try {
-            przepis = jedzenieDAO.pobierzDanePrzepisu(przepisy.getSelectionModel().getSelectedItem());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanyJedzenieDAO = jedzenieDAO.pobierzDanePrzepisu(nazwaPrzepisu);
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
         }
+        przepis = kontekstZwracanyJedzenieDAO.getPrzepis();
 
         PrzechowywaczDanych.zapiszObiekt(przepis);
         otworzNowaFormatke("github/kjkow/kontrolery/jedzenie/PokazPrzepis.fxml");
@@ -133,7 +120,9 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
      * @param event
      */
     public void akcja_przepisy(Event event) {
-        odblokujEdytowalnoscPrzyciskow();
+        if(przepisy.getSelectionModel().getSelectedItem()!= null) {
+            odblokujEdytowalnoscPrzyciskow();
+        }
     }
 
     //w obydwu ponizszych metodach chodzi o przyciski zwiazane z wyborem elementu z listy
@@ -150,7 +139,7 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
     }
 
     /**
-     * Button
+     * Button  Usuń
      * @param actionEvent
      */
     public void akcja_usun(ActionEvent actionEvent) {
@@ -162,28 +151,15 @@ public class PrzepisyKontroler extends BazowyKontroler implements Initializable 
     }
 
     private void usunPrzepis(){
-        inicjujJedzenieDAO();
-
-        if(jedzenieDAO == null){
-            return;
-        }
-
         String nazwaPrzepisu = przepisy.getSelectionModel().getSelectedItem();
         if(nazwaPrzepisu == null) return;
 
-        int liczbaZmienionychWierszy;
-
-        try {
-            liczbaZmienionychWierszy = jedzenieDAO.usunPrzepis(nazwaPrzepisu);
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanyJedzenieDAO = jedzenieDAO.usunPrzepis(nazwaPrzepisu);
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
         }
 
-        walidujZwroconaLiczbeWierszy(liczbaZmienionychWierszy, "usunięte");
         zapiszWykonanieWDzienniku("Usunięto przepis " + nazwaPrzepisu);
         zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie usunięto przepis");
         zaladujListePrzepisow();

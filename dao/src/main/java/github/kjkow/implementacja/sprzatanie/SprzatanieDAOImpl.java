@@ -1,53 +1,67 @@
 package github.kjkow.implementacja.sprzatanie;
 
-import github.kjkow.implementacja.BazowyDAO;
 import github.kjkow.Czynnosc;
+import github.kjkow.implementacja.BazowyDAO;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-21.
  */
 public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
 
-    public SprzatanieDAOImpl() throws IOException {}
+    private KontekstZwracanySprzatanieDAO kontekst;
 
     @Override
-    public void wykonajCzynnosc(String nazwaCzynnosci, Date dataWykonania) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
+    public KontekstZwracanySprzatanieDAO wykonajCzynnosc(String nazwaCzynnosci, Date dataWykonania){
+        kontekst = new KontekstZwracanySprzatanieDAO();
 
-        if(polaczenie != null){
+        try{
+            otworzPolaczenie();
+
             PreparedStatement kwerenda = polaczenie.prepareCall("CALL WYKONAJ_CZYNNOSC(?,?)");
             kwerenda.setString(1, nazwaCzynnosci);
             kwerenda.setDate(2, dataWykonania);
+
             kwerenda.executeQuery();
             zamknijPolczenie();
+        }catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
+
+        return kontekst;
     }
 
     @Override
-    public void odlozCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
+    public KontekstZwracanySprzatanieDAO odlozCzynnosc(String nazwaCzynnosci) {
+        kontekst = new KontekstZwracanySprzatanieDAO();
 
-        if(polaczenie != null){
+        try{
+            otworzPolaczenie();
+
             PreparedStatement kwerenda = polaczenie.prepareCall("CALL ODLOZ_CZYNNOSC(?)");
             kwerenda.setString(1, nazwaCzynnosci);
+
             kwerenda.executeQuery();
             zamknijPolczenie();
+        }catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
+
+        return kontekst;
     }
 
     @Override
-    public List<Czynnosc> pobierzNajblizszeSprzatania() throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
+    public KontekstZwracanySprzatanieDAO pobierzNajblizszeSprzatania(){
+        kontekst = new KontekstZwracanySprzatanieDAO();
+
         ArrayList<Czynnosc> czynnosci = new ArrayList<>();
-        if(polaczenie != null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSCI ORDER BY DATA_NASTEPNEGO_SPRZATANIA ASC limit 10");
+        try{
+            otworzPolaczenie();
+
+            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSCI ORDER BY DATA_NASTEPNEGO_SPRZATANIA ASC");
             wynikKwerendy = kwerenda.executeQuery();
 
             while (wynikKwerendy.next()){
@@ -58,91 +72,132 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
                 nowa.setDniCzestotliwosci(wynikKwerendy.getInt("CZESTOTLIWOSC"));
                 czynnosci.add(nowa);
             }
+
+            zamknijPolczenie();
+        }catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return czynnosci;
+
+        kontekst.setListaCzynnosci(czynnosci);
+        return kontekst;
     }
 
     @Override
-    public int dodajCzynnosc(Czynnosc czynnosc) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie != null){
+    public KontekstZwracanySprzatanieDAO dodajCzynnosc(Czynnosc czynnosc){
+        kontekst = new KontekstZwracanySprzatanieDAO();
+
+        try{
+            otworzPolaczenie();
+
             PreparedStatement kwerenda = polaczenie.prepareStatement("INSERT INTO SPRZATANIE_CZYNNOSCI(NAZWA, DATA_OSTATNIEGO_SPRZATANIA, DATA_NASTEPNEGO_SPRZATANIA, CZESTOTLIWOSC) VALUES (?, CURDATE(), CURDATE(), ?)");
             kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
             kwerenda.setInt(2, czynnosc.getDniCzestotliwosci());
-            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
+
+            kwerenda.executeUpdate();
             zamknijPolczenie();
-            return liczbaZmienionychWierszy;
+        }catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return -1;
+
+        return kontekst;
     }
 
     @Override
-    public int usunCzynnosc(String nazwaCzynnosci) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie != null){
+    public KontekstZwracanySprzatanieDAO usunCzynnosc(String nazwaCzynnosci){
+        kontekst = new KontekstZwracanySprzatanieDAO();
+
+        try{
+            otworzPolaczenie();
+
             PreparedStatement kwerenda = polaczenie.prepareStatement("DELETE FROM SPRZATANIE_CZYNNOSCI WHERE NAZWA=?");
             kwerenda.setString(1, nazwaCzynnosci);
-            int liczbaZmienionychWierszy =  kwerenda.executeUpdate();
+
+            kwerenda.executeUpdate();
             zamknijPolczenie();
-            return liczbaZmienionychWierszy;
+        } catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return -1;
+
+        return kontekst;
     }
 
     @Override
-    public int modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie !=null){
+    public KontekstZwracanySprzatanieDAO modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci){
+        kontekst = new KontekstZwracanySprzatanieDAO();
+
+        try{
+            otworzPolaczenie();
+
             PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE SPRZATANIE_CZYNNOSCI SET NAZWA=?, DATA_OSTATNIEGO_SPRZATANIA=?, DATA_NASTEPNEGO_SPRZATANIA=?, CZESTOTLIWOSC=? WHERE NAZWA=?");
             kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
             kwerenda.setDate(2, Date.valueOf(czynnosc.getDataOstatniegoSprzatania()));
             kwerenda.setDate(3, Date.valueOf(czynnosc.getDataNastepnegoSprzatania()));
             kwerenda.setInt(4, czynnosc.getDniCzestotliwosci());
             kwerenda.setString(5, nazwaStarejCzynnosci);
-            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
+
+            kwerenda.executeUpdate();
             zamknijPolczenie();
-            return liczbaZmienionychWierszy;
+        } catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return -1;
+
+        return kontekst;
     }
 
     @Override
-    public List<String> pobierzNazwyCzynnosci() throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        ArrayList<String> czynnosci = new ArrayList<>();
+    public KontekstZwracanySprzatanieDAO pobierzNazwyCzynnosci(){
+        kontekst = new KontekstZwracanySprzatanieDAO();
 
-        if(polaczenie != null){
+        ArrayList<String> czynnosci = new ArrayList<>();
+        try{
+            otworzPolaczenie();
+
             PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT NAZWA FROM SPRZATANIE_CZYNNOSCI");
             wynikKwerendy = kwerenda.executeQuery();
 
             while (wynikKwerendy.next()){
                 czynnosci.add(wynikKwerendy.getString("NAZWA"));
             }
+
             zamknijPolczenie();
+        } catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
 
-        return czynnosci;
+        kontekst.setNazwyCzynnosci(czynnosci);
+        return kontekst;
     }
 
     @Override
-    public Czynnosc pobierzDaneCzynnosci(String nazwaCzynnosci) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        Czynnosc czynnosc = new Czynnosc();
-        czynnosc.setNazwaCzynnosci(nazwaCzynnosci);
+    public KontekstZwracanySprzatanieDAO pobierzDaneCzynnosci(String nazwaCzynnosci){
+        kontekst = new KontekstZwracanySprzatanieDAO();
 
-        if(polaczenie != null){
+        try{
+            otworzPolaczenie();
+
             PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM SPRZATANIE_CZYNNOSCI WHERE NAZWA = ?");
             kwerenda.setString(1, nazwaCzynnosci);
             wynikKwerendy = kwerenda.executeQuery();
+
             if(wynikKwerendy.next()){
+                Czynnosc czynnosc = new Czynnosc();
+                czynnosc.setNazwaCzynnosci(nazwaCzynnosci);
                 czynnosc.setDataOstatniegoSprzatania(wynikKwerendy.getDate("DATA_OSTATNIEGO_SPRZATANIA").toLocalDate());
                 czynnosc.setDataNastepnegoSprzatania(wynikKwerendy.getDate("DATA_NASTEPNEGO_SPRZATANIA").toLocalDate());
                 czynnosc.setDniCzestotliwosci(wynikKwerendy.getInt("CZESTOTLIWOSC"));
+                kontekst.setCzynnosc(czynnosc);
+            }else{
+                kontekst.setCzyBrakBledow(false);
+                kontekst.setBlad(new NullPointerException());
+                kontekst.setCzynnosc(null);
+                kontekst.dodajDoLogu("Nie znaleziono czynności: " + nazwaCzynnosci);
             }
+
+            zamknijPolczenie();
+        } catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
 
-        return czynnosc;
+        return kontekst;
     }
-
-
 }

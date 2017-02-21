@@ -3,10 +3,8 @@ package github.kjkow.implementacja.jedzenie;
 import github.kjkow.Przepis;
 import github.kjkow.implementacja.BazowyDAO;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,74 +14,98 @@ import java.util.List;
  */
 public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
 
-    public JedzenieDAOImpl() throws IOException {
-    }
+    private KontekstZwracanyJedzenieDAO kontekst;
 
     @Override
-    public Przepis pobierzDanePrzepisu(String nazwaPrzepisu) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
+    public KontekstZwracanyJedzenieDAO pobierzDanePrzepisu(String nazwaPrzepisu) {
+        kontekst = new KontekstZwracanyJedzenieDAO();
+
         Przepis przepis = new Przepis();
-        if(polaczenie != null){
+        try{
+            otworzPolaczenie();
             PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT * FROM JEDZENIE_PRZEPISY WHERE NAZWA=?");
             kwerenda.setString(1, nazwaPrzepisu);
 
             wynikKwerendy = kwerenda.executeQuery();
-            if(!wynikKwerendy.next()) return przepis;
+            if(!wynikKwerendy.next()) throw new NullPointerException("Nie znaleziono przepisu");
             przepis.setNazwa(wynikKwerendy.getString("NAZWA"));
             przepis.setDataOstatniegoPrzygotowania(wynikKwerendy.getDate("DATA_OSTATNIEGO_PRZYGOTOWANIA").toLocalDate());
             przepis.setSkladniki(wynikKwerendy.getString("SKLADNIKI"));
             przepis.setSposobPrzygotowania(wynikKwerendy.getString("SPOSOB_PRZYGOTOWANIA"));
+            zamknijPolczenie();
+        }catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return przepis;
+
+        kontekst.setPrzepis(przepis);
+        return kontekst;
     }
 
     @Override
-    public int usunPrzepis(String nazwaPrzepisu) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie != null){
+    public KontekstZwracanyJedzenieDAO usunPrzepis(String nazwaPrzepisu)  {
+        kontekst = new KontekstZwracanyJedzenieDAO();
+
+        try {
+            otworzPolaczenie();
             PreparedStatement kwerenda = polaczenie.prepareStatement("DELETE FROM JEDZENIE_PRZEPISY WHERE NAZWA = ?");
             kwerenda.setString(1, nazwaPrzepisu);
-            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
+            kwerenda.executeUpdate();
             zamknijPolczenie();
-            return liczbaZmienionychWierszy;
+        } catch (Exception e) {
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return -1;
+
+        return kontekst;
     }
 
     @Override
-    public List<String> pobierzListePrzepisow() throws SQLException, ClassNotFoundException {
+    public KontekstZwracanyJedzenieDAO pobierzListePrzepisow(){
+        kontekst = new KontekstZwracanyJedzenieDAO();
+
         List<String> przepisy = new ArrayList<>();
-        otworzPolaczenie();
-        if(polaczenie != null){
+        try {
+            otworzPolaczenie();
             PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT NAZWA FROM JEDZENIE_PRZEPISY");
             wynikKwerendy = kwerenda.executeQuery();
             while (wynikKwerendy.next()){
                 przepisy.add(wynikKwerendy.getString("NAZWA"));
             }
             zamknijPolczenie();
+        } catch (Exception e) {
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return przepisy;
+
+        kontekst.setLista(przepisy);
+        return kontekst;
     }
 
     @Override
-    public List<String> pobierzListePrzepisowDoProcesu() throws SQLException, ClassNotFoundException {
+    public KontekstZwracanyJedzenieDAO pobierzListePrzepisowDoProcesu(){
+        kontekst = new KontekstZwracanyJedzenieDAO();
+
         List<String> przepisy = new ArrayList<>();
-        otworzPolaczenie();
-        if(polaczenie != null){
+        try {
+            otworzPolaczenie();
             PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT NAZWA FROM JEDZENIE_PRZEPISY ORDER BY DATA_OSTATNIEGO_PRZYGOTOWANIA ASC");
             wynikKwerendy = kwerenda.executeQuery();
             while (wynikKwerendy.next()){
                 przepisy.add(wynikKwerendy.getString("NAZWA"));
             }
             zamknijPolczenie();
+        } catch (Exception e) {
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return przepisy;
+
+        kontekst.setLista(przepisy);
+        return kontekst;
     }
 
     @Override
-    public int dodajPrzepis(Przepis przepis) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie != null){
+    public KontekstZwracanyJedzenieDAO dodajPrzepis(Przepis przepis){
+        kontekst = new KontekstZwracanyJedzenieDAO();
+
+        try{
+            otworzPolaczenie();
             PreparedStatement kwerenda = polaczenie.prepareStatement("INSERT INTO JEDZENIE_PRZEPISY(NAZWA, DATA_OSTATNIEGO_PRZYGOTOWANIA, SKLADNIKI, SPOSOB_PRZYGOTOWANIA) VALUES(?, ?, ?, ?)");
 
             if (przepis.getNazwa() != null) {
@@ -109,55 +131,33 @@ public class JedzenieDAOImpl extends BazowyDAO implements JedzenieDAO {
             }else{
                 kwerenda.setString(4, "nie wpisano sposobu przygotowania");
             }
-
-            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
-
+            kwerenda.executeUpdate();
             zamknijPolczenie();
-            return liczbaZmienionychWierszy;
+        }catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-        return -1;
+        return kontekst;
     }
 
     @Override
-    public int modyfikujPrzepis(Przepis przepis, String nazwaStaregoPrzepisu) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie !=null){
+    public KontekstZwracanyJedzenieDAO modyfikujPrzepis(Przepis przepis, String nazwaStaregoPrzepisu) {
+        kontekst = new KontekstZwracanyJedzenieDAO();
+
+        try{
+            otworzPolaczenie();
             PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE JEDZENIE_PRZEPISY SET NAZWA=?, DATA_OSTATNIEGO_PRZYGOTOWANIA=?, SKLADNIKI=?, SPOSOB_PRZYGOTOWANIA=? WHERE NAZWA=?");
             kwerenda.setString(1, przepis.getNazwa());
             kwerenda.setDate(2, Date.valueOf(przepis.getDataOstatniegoPrzygotowania()));
             kwerenda.setString(3, przepis.getSkladniki());
             kwerenda.setString(4, przepis.getSposobPrzygotowania());
             kwerenda.setString(5, nazwaStaregoPrzepisu);
-            int liczbaZmienionychWierszy = kwerenda.executeUpdate();
-            zamknijPolczenie();
-            return liczbaZmienionychWierszy;
-        }
-        return -1;
-    }
 
-    @Override
-    public void zapiszSciezkeDoExcelaZProduktami(String sciezka) throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie !=null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE KONFIGURACJA_DOM SET SCIEZKA=? WHERE NAZWA_SCIEZKI=?");
-            kwerenda.setString(1, sciezka);
-            kwerenda.setString(2, "excel_produkty");
             kwerenda.executeUpdate();
             zamknijPolczenie();
+        }catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
         }
-    }
 
-    @Override
-    public String pobierzSciezkeDoExcelaZProduktami() throws SQLException, ClassNotFoundException {
-        otworzPolaczenie();
-        if(polaczenie !=null){
-            PreparedStatement kwerenda = polaczenie.prepareStatement("SELECT SCIEZKA FROM KONFIGURACJA_DOM WHERE NAZWA_SCIEZKI=?");
-            kwerenda.setString(1, "excel_produkty");
-            wynikKwerendy = kwerenda.executeQuery();
-            if(wynikKwerendy.next()){
-                return wynikKwerendy.getString("SCIEZKA");
-            }
-        }
-        return "Nie znaleziono ściezki";
+        return kontekst;
     }
 }

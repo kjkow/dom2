@@ -1,4 +1,4 @@
-package github.kjkow.kontekst;
+package github.kjkow;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-20.
@@ -7,6 +7,7 @@ public class KontekstZwracany {
 
     private boolean czyBrakBledow;
     private String log;
+    private Exception blad;
 
     public KontekstZwracany(){
         czyBrakBledow = true;
@@ -31,5 +32,13 @@ public class KontekstZwracany {
             return;
         }
         log += dodatek + "\n";
+    }
+
+    public Exception getBlad() {
+        return blad;
+    }
+
+    public void setBlad(Exception blad) {
+        this.blad = blad;
     }
 }

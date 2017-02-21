@@ -1,13 +1,12 @@
 package github.kjkow.automaty.excel;
 
-import github.kjkow.automaty.excel.migrator_arkusza_nowy_rok.MigratorCzyszczeniaKomorek;
+import github.kjkow.KontekstZwracany;
+import github.kjkow.Plik;
 import github.kjkow.automaty.excel.migrator_arkusza_nowy_rok.MigratorArkuszaNowyRok;
+import github.kjkow.automaty.excel.migrator_arkusza_nowy_rok.MigratorCzyszczeniaKomorek;
 import github.kjkow.automaty.excel.migrator_arkusza_nowy_rok.MigratorNazwArkuszy;
 import github.kjkow.automaty.excel.migrator_arkusza_nowy_rok.MigratorPrzepisywaniaWartosci;
 import github.kjkow.automaty.excel.migrator_zakresow.MigratorZakresow;
-import github.kjkow.kontekst.KontekstZwracany;
-import github.kjkow.pliki.IPlik;
-import github.kjkow.pliki.Plik;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.IOException;
@@ -26,11 +25,10 @@ public class AutomatDoExcela implements IAutomatDoExcela {
     public KontekstZwracany migrujZakresy(String sciezkaDoArkusza) {
         kontekstAutomatu = new KontekstZwracany();
         HSSFWorkbook arkusz;
-        IPlik plik = new Plik();
 
         //wczytaj plik
         try {
-            arkusz = plik.wczytajArkuszExcela(sciezkaDoArkusza);
+            arkusz = Plik.wczytajArkuszExcela(sciezkaDoArkusza);
         } catch (IOException e) {
             kontekstAutomatu.dodajDoLogu("Nie udało się wczytać pliku " + sciezkaDoArkusza + "\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);
@@ -57,7 +55,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
         //zapisz plik
         try {
-            plik.zapiszArkuszExcela(arkusz, sciezkaDoArkusza);
+            Plik.zapiszArkuszExcela(arkusz, sciezkaDoArkusza);
         } catch (IOException e) {
             kontekstAutomatu.dodajDoLogu("Nie udało sie zapisać pliku " + sciezkaDoArkusza + "\n" + e);
             return kontekstAutomatu;
@@ -72,7 +70,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
         kontekstAutomatu = new KontekstZwracany();
         HSSFWorkbook staryArkusz;
         HSSFWorkbook nowyArkusz;
-        IPlik pPlik = new Plik();
+
         if(obecnyMiesiac != 12 && obecnyMiesiac != 1){
             kontekstAutomatu.dodajDoLogu("Ten migrator można puszczać tylko w grudniu lub styczniu.");
             kontekstAutomatu.setCzyBrakBledow(false);
@@ -86,7 +84,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
         //wczytaj stary arkusz
         try {
-            staryArkusz = pPlik.wczytajArkuszExcela(sciezkaDoArkusza);
+            staryArkusz = Plik.wczytajArkuszExcela(sciezkaDoArkusza);
         } catch (IOException e) {
             kontekstAutomatu.dodajDoLogu("Błąd przy wczytywaniu arkusza.\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);
@@ -99,7 +97,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
         if(!kontekstZmianyRoku.isCzyBrakBledow()) return kontekstAutomatu;
         //zapisz stary arkusz
         try {
-            pPlik.zapiszArkuszExcela(staryArkusz, sciezkaDoArkusza);
+            Plik.zapiszArkuszExcela(staryArkusz, sciezkaDoArkusza);
         } catch (IOException e) {
             kontekstAutomatu.dodajDoLogu("Błąd przy zapisywaniu arkusza.\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);
@@ -110,8 +108,8 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
         //skopiuj stary na nowy i wczytaj nowy
         try {
-            pPlik.kopiujPlik(sciezkaDoArkusza, sciezkaDoArkuszaNaNowyRok);
-            nowyArkusz = pPlik.wczytajArkuszExcela(sciezkaDoArkuszaNaNowyRok);
+            Plik.kopiujPlik(sciezkaDoArkusza, sciezkaDoArkuszaNaNowyRok);
+            nowyArkusz = Plik.wczytajArkuszExcela(sciezkaDoArkuszaNaNowyRok);
         } catch (IOException e) {
             kontekstAutomatu.dodajDoLogu("Błąd przy wczytywaniu arkusza.\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);
@@ -149,7 +147,7 @@ public class AutomatDoExcela implements IAutomatDoExcela {
 
         //zapisz nowy nowyArkusz
         try {
-            pPlik.zapiszArkuszExcela(nowyArkusz, sciezkaDoArkuszaNaNowyRok);
+            Plik.zapiszArkuszExcela(nowyArkusz, sciezkaDoArkuszaNaNowyRok);
         } catch (IOException e) {
             kontekstAutomatu.dodajDoLogu("Błąd przy zapisywaniu arkusza.\n" + e);
             kontekstAutomatu.setCzyBrakBledow(false);

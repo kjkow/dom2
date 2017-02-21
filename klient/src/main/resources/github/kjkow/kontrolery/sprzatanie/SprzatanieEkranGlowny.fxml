@@ -11,7 +11,6 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="github.kjkow.kontrolery.sprzatanie.SprzatanieEkranGlownyKontroler">
    <children>
-      <ComboBox fx:id="czynnosc" layoutX="403.0" layoutY="45.0" onAction="#akcja_czynnosc" prefHeight="25.0" prefWidth="227.0" />
       <Label layoutX="15.0" layoutY="80.0" text="Następne sprzątanie" />
       <Label layoutX="15.0" layoutY="120.0" text="Zmień datę wykonania" />
       <TextField fx:id="data_nastepnego_sprzatania" editable="false" layoutX="142.0" layoutY="80.0" prefHeight="25.0" prefWidth="160.0" />
@@ -23,7 +22,6 @@
       <Label layoutX="15.0" layoutY="45.0" text="Ostatnie sprzątanie" />
       <TextField fx:id="data_ostatniego_sprzatania" layoutX="142.0" layoutY="45.0" prefHeight="25.0" prefWidth="160.0" />
       <Label layoutX="10.0" layoutY="21.0" text="Wybrana czynność" />
-      <Label layoutX="357.0" layoutY="45.0" text="Nazwa" />
       <Separator layoutX="9.0" layoutY="37.0" prefWidth="620.0" />
       <Separator layoutX="10.0" layoutY="110.0" prefWidth="620.0" />
    </children>

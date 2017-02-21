@@ -1,8 +1,8 @@
 package github.kjkow.kontrolery;
 
+import github.kjkow.DziennikAplikacji;
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.dziennik.Dziennik;
-import github.kjkow.dziennik.IDziennik;
+import github.kjkow.bazowe.KontekstAplikacji;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -29,7 +29,6 @@ public class LogKontroler extends BazowyKontroler implements Initializable {
     }
 
     private void inicjujOknoLogu() throws SQLException, IOException, ClassNotFoundException {
-        IDziennik dziennik = new Dziennik();
-        obszar_logu.appendText(dziennik.zwrocDziennik());
+        obszar_logu.appendText(DziennikAplikacji.zwrocDziennik(KontekstAplikacji.pobierzSciezkeDziennikaAplikacji()));
     }
 }

@@ -1,6 +1,6 @@
 package github.kjkow.automaty.excel.migrator_zakresow;
 
-import github.kjkow.kontekst.KontekstZwracany;
+import github.kjkow.KontekstZwracany;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

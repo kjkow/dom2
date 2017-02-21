@@ -2,24 +2,22 @@ package github.kjkow.kontrolery.sprzatanie;
 
 
 import github.kjkow.Czynnosc;
+import github.kjkow.DziennikAplikacji;
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.bazowe.PrzechowywaczDanych;
+import github.kjkow.bazowe.KontekstAplikacji;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -29,7 +27,6 @@ import java.util.ResourceBundle;
 public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements Initializable {
 
 
-    @FXML public ComboBox<String> czynnosc;
     @FXML public TextField data_nastepnego_sprzatania;
     @FXML public TextField data_ostatniego_sprzatania;
     @FXML public DatePicker data_wykonania;
@@ -44,45 +41,17 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
         try{
             zaladujListeNajblizszychSprzatan();
             ustawDateWykonaniaNaDzis();
-            zaladujComboCzynnosci();
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
 
     }
 
-    /**
-     * Combobox czynnosc
-     * klikniecie w element z listy combo
-     * @param actionEvent
-     */
-    public void akcja_czynnosc(ActionEvent actionEvent) {
-        try{
-            pobierzDaneCzynnosci();
-        }catch (Exception e){
-            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
-        }
-    }
+    private void przypiszDoWybranejCzynnosci(String nazwa){
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.pobierzDaneCzynnosci(nazwa);
 
-    private void pobierzDaneCzynnosci(){
-        inicjujSprzatanieDAO();
-
-        if(sprzatanieDAO == null){
-            return;
-        }
-
-        try {
-            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(czynnosc.getValue());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
-        }
-        ustawDatyCzynnosci();
-
-    }
+        wybranaCzynnosc = kontekstZwracanySprzatanieDAO.getCzynnosc();
+    }//todo: binding?
 
     /**
      * Button wykonano
@@ -106,25 +75,16 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
             return;
         }
 
-        inicjujSprzatanieDAO();
-
-        if(sprzatanieDAO == null){
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.wykonajCzynnosc(wybranaCzynnosc.getNazwaCzynnosci(), konwerujLocalDateNaSqlDate(data_wykonania.getValue()));
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
             return;
         }
 
-        try {
-            sprzatanieDAO.wykonajCzynnosc(wybranaCzynnosc.getNazwaCzynnosci(), konwerujLocalDateNaSqlDate(data_wykonania.getValue()));
-            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(wybranaCzynnosc.getNazwaCzynnosci()); //przepisanie do zmiennej dla ustawienia dat czynnosci
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
-        }
+        przypiszDoWybranejCzynnosci(wybranaCzynnosc.getNazwaCzynnosci());//przepisanie do zmiennej dla ustawienia dat czynnosci
 
         try {
-            dziennik.zapiszInformacje("Wykonano czynność " + wybranaCzynnosc.getNazwaCzynnosci());
+            DziennikAplikacji.zapiszInformacje(KontekstAplikacji.pobierzSciezkeDziennikaAplikacji(), "Wykonano czynność " + wybranaCzynnosc.getNazwaCzynnosci());
         } catch (IOException e) {
             zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
                     KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
@@ -158,29 +118,14 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
     private void pobierzDaneCzynnosciZListyNajblizszychSprzatan(){
         String nazwaCzynnosci = najblizsze_sprzatania.getSelectionModel().getSelectedItem();
 
-        inicjujSprzatanieDAO();
-
-        if(sprzatanieDAO == null){
-            return;
-        }
-
         if(nazwaCzynnosci == null){
             zarzadcaFormatek.wyswietlOknoInformacji("Nie zidentyfikowano czynności.");
             return;
         }
 
-        try {
-            wybranaCzynnosc = sprzatanieDAO.pobierzDaneCzynnosci(nazwaCzynnosci.substring(10,nazwaCzynnosci.length()).trim());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
-        }
+        przypiszDoWybranejCzynnosci(nazwaCzynnosci.substring(10,nazwaCzynnosci.length()).trim());
 
         ustawDatyCzynnosci();
-        czynnosc.getSelectionModel().select(wybranaCzynnosc.getNazwaCzynnosci());
     }
 
     /**
@@ -197,26 +142,30 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
     }
 
     private void odlozCzynnosc(){
+        if(najblizsze_sprzatania.getSelectionModel().getSelectedItem() != null){
+            przypiszDoWybranejCzynnosci(najblizsze_sprzatania.getSelectionModel().getSelectedItem().substring(10, najblizsze_sprzatania.getSelectionModel().getSelectedItem().length()).trim());
+            if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+                obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
+                return;
+            }
+        }else{
+            zarzadcaFormatek.wyswietlOknoBledu("Nie wybrano czynności.");
+            return;
+        }
+
         if(wybranaCzynnosc == null){
             zarzadcaFormatek.wyswietlOknoInformacji("Nie wybrano czynności.");
             return;
         }
 
-        inicjujSprzatanieDAO();
-        if(sprzatanieDAO == null) return;
-
-        try {
-            sprzatanieDAO.odlozCzynnosc(wybranaCzynnosc.getNazwaCzynnosci());
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.odlozCzynnosc(wybranaCzynnosc.getNazwaCzynnosci());
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
             return;
         }
 
         try {
-            dziennik.zapiszInformacje("Odłożono czynność " + wybranaCzynnosc.getNazwaCzynnosci());
+            DziennikAplikacji.zapiszInformacje(KontekstAplikacji.pobierzSciezkeDziennikaAplikacji(), "Odłożono czynność " + wybranaCzynnosc.getNazwaCzynnosci());
         } catch (IOException e) {
             zarzadcaFormatek.wyswietlOknoInformacji(KOMUNIKAT_AMBIWALENCJI_DZIENNIKA + "\n" +
                     KOMUNIKAT_BLEDU_IO + "\n" + e.getLocalizedMessage());
@@ -230,21 +179,17 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
 
     private void zaladujListeNajblizszychSprzatan(){
         najblizszeSprzatania.clear();
-        inicjujSprzatanieDAO();
 
-        if(sprzatanieDAO == null){
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.pobierzNajblizszeSprzatania();
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
             return;
         }
 
-        try {
-            for(Czynnosc czynnosc: sprzatanieDAO.pobierzNajblizszeSprzatania()){
-                najblizszeSprzatania.add(czynnosc.getDataNastepnegoSprzatania().toString() + "\t" + czynnosc.getNazwaCzynnosci());
-            }
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
+        for(Czynnosc czynnosc: kontekstZwracanySprzatanieDAO.getListaCzynnosci()){
+            najblizszeSprzatania.add(czynnosc.getDataNastepnegoSprzatania().toString() + "\t" + czynnosc.getNazwaCzynnosci());
         }
+
         najblizsze_sprzatania.setItems(najblizszeSprzatania);
     }
 
@@ -259,26 +204,5 @@ public class SprzatanieEkranGlownyKontroler extends BazowyKontroler implements I
 
     private void ustawDateWykonaniaNaDzis(){
         data_wykonania.setValue(LocalDate.now());
-    }
-
-    private void zaladujComboCzynnosci(){
-        inicjujSprzatanieDAO();
-
-        if(sprzatanieDAO == null){
-            return;
-        }
-
-        try {
-            for(String nazwaCzynnosci: sprzatanieDAO.pobierzNazwyCzynnosci()){
-                listaCzynnosciPrezentacja.add(nazwaCzynnosci);
-            }
-        } catch (SQLException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_SQL, e);
-            return;
-        } catch (ClassNotFoundException e) {
-            obsluzBlad(KOMUNIKAT_BLEDU_KONEKTORA_JDBC, e);
-            return;
-        }
-        czynnosc.setItems(listaCzynnosciPrezentacja);
     }
 }

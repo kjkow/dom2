@@ -2,7 +2,6 @@ package github.kjkow.bazowe.formatka;
 
 import github.kjkow.bazowe.KontekstAplikacji;
 import github.kjkow.bazowe.ObslugaBledu;
-import github.kjkow.bazowe.StartProgramu;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -22,8 +21,8 @@ public class ZarzadcaFormatek implements IZarzadcaFormatek {
     @Override
     public void wyswietlNowaFormatke(String sciezkaDoFormatki) {
         try {
-            URL sprzatanieUrl = getClass().getClassLoader().getResource(sciezkaDoFormatki);
-            AnchorPane nowaFormatka = FXMLLoader.load(sprzatanieUrl);
+            URL nowaFormatkaUrl = getClass().getClassLoader().getResource(sciezkaDoFormatki);
+            AnchorPane nowaFormatka = FXMLLoader.load(nowaFormatkaUrl);
             BorderPane borderPane = KontekstAplikacji.pobierzKorzenFormatek();
             borderPane.setCenter(nowaFormatka);
         } catch (IOException e) {

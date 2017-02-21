@@ -2,14 +2,10 @@ package github.kjkow.kontrolery.jedzenie;
 
 import github.kjkow.Przepis;
 import github.kjkow.bazowe.BazowyKontroler;
-import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.event.ActionEvent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
-import java.sql.SQLException;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-29.
@@ -51,16 +47,9 @@ public class DodajPrzepisKontroler extends BazowyKontroler {
             return;
         }
 
-        inicjujJedzenieDAO();
-
-        if(jedzenieDAO == null){
-            return;
-        }
-
-        try {
-            jedzenieDAO.dodajPrzepis(nowyPrzepis);
-        } catch (Exception e) {
-            obsluzBlad("Błąd na bazie danych", e);
+        kontekstZwracanyJedzenieDAO = jedzenieDAO.dodajPrzepis(nowyPrzepis);
+        if(!kontekstZwracanyJedzenieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanyJedzenieDAO.getLog(), kontekstZwracanyJedzenieDAO.getBlad());
             return;
         }
 
