@@ -3,15 +3,21 @@ package github.kjkow.kontrolery.sprzatanie;
 import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Created by Kamil.Kowalczyk on 2016-12-27.
  */
-public class DodajCzynnoscKontroler extends BazowyKontroler {
+public class DodajCzynnoscKontroler extends BazowyKontroler implements Initializable {
 
     public TextField nazwa;
     public TextField czestotliwosc;
+
+    private Czynnosc czynnosc;
 
     /**
      * Button anuluj
@@ -27,38 +33,33 @@ public class DodajCzynnoscKontroler extends BazowyKontroler {
      */
     public void zapiszCzynnosc(ActionEvent actionEvent) {
         try{
-            zapiszCzynnosc();
+            kontekstZwracanySprzatanieDAO = sprzatanieDAO.dodajCzynnosc(czynnosc);
+            if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+                obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
+                return;
+            }
+
+            zapiszWykonanieWDzienniku("Dodano nową czynność " + czynnosc.getNazwaCzynnosci());
+            zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową czynność.");
+
+            otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
     }
 
-    private void zapiszCzynnosc(){
-        Czynnosc nowaCzynnosc = new Czynnosc();
-
-        if(nazwa.getText().compareTo("") != 0){
-            nowaCzynnosc.setNazwaCzynnosci(nazwa.getText());
-        }else{
-            zarzadcaFormatek.wyswietlOknoInformacji("Nie wprowadzono nazwy czynnosci.");
-            return;
-        }
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         try{
-            nowaCzynnosc.setDniCzestotliwosci(Integer.parseInt(czestotliwosc.getText()));
-        }catch (NumberFormatException e){
-            obsluzBlad("Niepoprawnie wprowadzona liczba", e);
-            return;
+            bindujPola();
+        }catch (Exception e){
+            obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
+    }
 
-        kontekstZwracanySprzatanieDAO = sprzatanieDAO.dodajCzynnosc(nowaCzynnosc);
-        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
-            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
-            return;
-        }
-
-        zapiszWykonanieWDzienniku("Dodano nową czynność " + nowaCzynnosc.getNazwaCzynnosci());
-        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie dodano nową czynność.");
-
-        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
+    private void bindujPola(){
+        czynnosc = new Czynnosc();
+        nazwa.textProperty().bindBidirectional(czynnosc.nazwaCzynnosciProperty());
+        czestotliwosc.textProperty().bindBidirectional(czynnosc.dniCzestotliwosciProperty());
     }
 }

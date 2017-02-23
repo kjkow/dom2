@@ -27,14 +27,28 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            czynnosc = (Czynnosc) PrzechowywaczDanych.pobierzObiekt();
-            nazwa.setText(czynnosc.getNazwaCzynnosci());
-            czestotliwosc.setText(String.valueOf(czynnosc.getDniCzestotliwosci()));
-            dataNastepnegoSprzatania.setValue(czynnosc.getDataNastepnegoSprzatania());
-            dataOstatniegoSprzatania.setValue(czynnosc.getDataOstatniegoSprzatania());
-            pierwotnaNazwaCzynnosci = czynnosc.getNazwaCzynnosci();
+            pobierzCzynnosc();
+            bindujPola();
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void pobierzCzynnosc(){
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.pobierzDaneCzynnosci((String)PrzechowywaczDanych.pobierzObiekt());
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
+        }
+        czynnosc = kontekstZwracanySprzatanieDAO.getCzynnosc();
+    }
+
+    private void bindujPola(){
+        if(czynnosc != null) {
+            nazwa.textProperty().bindBidirectional(czynnosc.nazwaCzynnosciProperty());
+            dataNastepnegoSprzatania.valueProperty().bindBidirectional(czynnosc.dataNastepnegoSprzataniaProperty());
+            dataOstatniegoSprzatania.valueProperty().bindBidirectional(czynnosc.dataOstatniegoSprzataniaProperty());
+            czestotliwosc.textProperty().bindBidirectional(czynnosc.dniCzestotliwosciProperty());
+            pierwotnaNazwaCzynnosci = czynnosc.getNazwaCzynnosci();
         }
     }
 
@@ -52,38 +66,17 @@ public class ModyfikujCzynnoscKontroler extends BazowyKontroler implements Initi
      */
     public void zapiszCzynnosc(ActionEvent actionEvent) {
         try {
-            zapiszZmodyfikowanaCzynnosc();
+            kontekstZwracanySprzatanieDAO = sprzatanieDAO.modyfikujCzynnosc(czynnosc, pierwotnaNazwaCzynnosci);
+            if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+                obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
+                return;
+            }
+
+            zapiszWykonanieWDzienniku("Zmodyfikowano czynność: " + czynnosc.getNazwaCzynnosci());
+            zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
+            otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
         }
-    }
-
-    private void zapiszZmodyfikowanaCzynnosc(){
-        czynnosc.setNazwaCzynnosci(nazwa.getText());
-        try{
-            czynnosc.setDniCzestotliwosci(Integer.parseInt(czestotliwosc.getText()));
-        }catch (NumberFormatException e){
-            obsluzBlad("Niepoprawnie wprowadzona liczba", e);
-            return;
-        }
-
-        try {
-            czynnosc.setDataNastepnegoSprzatania(dataNastepnegoSprzatania.getValue());
-            czynnosc.setDataOstatniegoSprzatania(dataOstatniegoSprzatania.getValue());
-        }catch (NullPointerException e){
-            obsluzBlad("Brak daty.", e);
-            return;
-        }
-
-        kontekstZwracanySprzatanieDAO = sprzatanieDAO.modyfikujCzynnosc(czynnosc, pierwotnaNazwaCzynnosci);
-        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
-            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
-            return;
-        }
-
-        zapiszWykonanieWDzienniku("Zmodyfikowano czynność " + czynnosc.getNazwaCzynnosci());
-        zarzadcaFormatek.wyswietlOknoInformacji("Pomyślnie zmodyfikowano czynność.");
-
-        otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/Czynnosci.fxml");
     }
 }

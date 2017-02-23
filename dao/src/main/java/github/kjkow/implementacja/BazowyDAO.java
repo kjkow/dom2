@@ -44,7 +44,7 @@ public class BazowyDAO {
 
     protected void przepakujBladDoKontekstu(String blad, Exception e, KontekstZwracany kontekst){
         kontekst.setCzyBrakBledow(false);
-        kontekst.dodajDoLogu(blad);
+        kontekst.dodajDoLogu(blad + "\n" + e.getLocalizedMessage());
         kontekst.setBlad(e);
     }
 }

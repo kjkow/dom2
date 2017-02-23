@@ -17,8 +17,8 @@
       <Label layoutX="15.0" layoutY="107.0" text="Częstotliwość" />
       <Label layoutX="15.0" layoutY="157.0" text="Ostatnie sprzątanie" />
       <Label layoutX="15.0" layoutY="207.0" text="Następne sprzątanie" />
-      <TextField fx:id="dataNastepnegoSprzatania" editable="false" layoutX="164.0" layoutY="202.0" />
-      <TextField fx:id="dataOstatniegoSprzatania" editable="false" layoutX="164.0" layoutY="152.0" />
+      <DatePicker fx:id="dataNastepnegoSprzatania" editable="false" layoutX="164.0" layoutY="202.0" />
+      <DatePicker fx:id="dataOstatniegoSprzatania" editable="false" layoutX="164.0" layoutY="152.0" />
       <Label layoutX="15.0" layoutY="30.0" text="Pokaż szczegóły czynności" />
       <Separator layoutX="15.0" layoutY="45.0" prefWidth="200.0" />
    </children>

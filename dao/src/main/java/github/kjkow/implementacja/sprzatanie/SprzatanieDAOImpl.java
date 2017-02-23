@@ -69,7 +69,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
                 nowa.setNazwaCzynnosci(wynikKwerendy.getString("NAZWA"));
                 nowa.setDataNastepnegoSprzatania(wynikKwerendy.getDate("DATA_NASTEPNEGO_SPRZATANIA").toLocalDate());
                 nowa.setDataOstatniegoSprzatania(wynikKwerendy.getDate("DATA_OSTATNIEGO_SPRZATANIA").toLocalDate());
-                nowa.setDniCzestotliwosci(wynikKwerendy.getInt("CZESTOTLIWOSC"));
+                nowa.setDniCzestotliwosci(String.valueOf(wynikKwerendy.getInt("CZESTOTLIWOSC")));
                 czynnosci.add(nowa);
             }
 
@@ -91,7 +91,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
 
             PreparedStatement kwerenda = polaczenie.prepareStatement("INSERT INTO SPRZATANIE_CZYNNOSCI(NAZWA, DATA_OSTATNIEGO_SPRZATANIA, DATA_NASTEPNEGO_SPRZATANIA, CZESTOTLIWOSC) VALUES (?, CURDATE(), CURDATE(), ?)");
             kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
-            kwerenda.setInt(2, czynnosc.getDniCzestotliwosci());
+            kwerenda.setInt(2, Integer.parseInt(czynnosc.getDniCzestotliwosci()));
 
             kwerenda.executeUpdate();
             zamknijPolczenie();
@@ -111,29 +111,6 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
 
             PreparedStatement kwerenda = polaczenie.prepareStatement("DELETE FROM SPRZATANIE_CZYNNOSCI WHERE NAZWA=?");
             kwerenda.setString(1, nazwaCzynnosci);
-
-            kwerenda.executeUpdate();
-            zamknijPolczenie();
-        } catch (Exception e){
-            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
-        }
-
-        return kontekst;
-    }
-
-    @Override
-    public KontekstZwracanySprzatanieDAO modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci){
-        kontekst = new KontekstZwracanySprzatanieDAO();
-
-        try{
-            otworzPolaczenie();
-
-            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE SPRZATANIE_CZYNNOSCI SET NAZWA=?, DATA_OSTATNIEGO_SPRZATANIA=?, DATA_NASTEPNEGO_SPRZATANIA=?, CZESTOTLIWOSC=? WHERE NAZWA=?");
-            kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
-            kwerenda.setDate(2, Date.valueOf(czynnosc.getDataOstatniegoSprzatania()));
-            kwerenda.setDate(3, Date.valueOf(czynnosc.getDataNastepnegoSprzatania()));
-            kwerenda.setInt(4, czynnosc.getDniCzestotliwosci());
-            kwerenda.setString(5, nazwaStarejCzynnosci);
 
             kwerenda.executeUpdate();
             zamknijPolczenie();
@@ -184,7 +161,7 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
                 czynnosc.setNazwaCzynnosci(nazwaCzynnosci);
                 czynnosc.setDataOstatniegoSprzatania(wynikKwerendy.getDate("DATA_OSTATNIEGO_SPRZATANIA").toLocalDate());
                 czynnosc.setDataNastepnegoSprzatania(wynikKwerendy.getDate("DATA_NASTEPNEGO_SPRZATANIA").toLocalDate());
-                czynnosc.setDniCzestotliwosci(wynikKwerendy.getInt("CZESTOTLIWOSC"));
+                czynnosc.setDniCzestotliwosci(String.valueOf(wynikKwerendy.getInt("CZESTOTLIWOSC")));
                 kontekst.setCzynnosc(czynnosc);
             }else{
                 kontekst.setCzyBrakBledow(false);
@@ -193,6 +170,29 @@ public class SprzatanieDAOImpl extends BazowyDAO implements SprzatanieDAO {
                 kontekst.dodajDoLogu("Nie znaleziono czynności: " + nazwaCzynnosci);
             }
 
+            zamknijPolczenie();
+        } catch (Exception e){
+            przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);
+        }
+
+        return kontekst;
+    }
+
+    @Override
+    public KontekstZwracanySprzatanieDAO modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci) {
+        kontekst = new KontekstZwracanySprzatanieDAO();
+
+        try{
+            otworzPolaczenie();
+
+            PreparedStatement kwerenda = polaczenie.prepareStatement("UPDATE SPRZATANIE_CZYNNOSCI SET NAZWA=?, DATA_OSTATNIEGO_SPRZATANIA=?, DATA_NASTEPNEGO_SPRZATANIA=?, CZESTOTLIWOSC=? WHERE NAZWA=?");
+            kwerenda.setString(1, czynnosc.getNazwaCzynnosci());
+            kwerenda.setDate(2, Date.valueOf(czynnosc.getDataOstatniegoSprzatania()));
+            kwerenda.setDate(3, Date.valueOf(czynnosc.getDataNastepnegoSprzatania()));
+            kwerenda.setInt(4, Integer.parseInt(czynnosc.getDniCzestotliwosci()));
+            kwerenda.setString(5, nazwaStarejCzynnosci);
+
+            kwerenda.executeUpdate();
             zamknijPolczenie();
         } catch (Exception e){
             przepakujBladDoKontekstu(KOMUNIKAT_BLEDU_TRANSAKCJI, e, kontekst);

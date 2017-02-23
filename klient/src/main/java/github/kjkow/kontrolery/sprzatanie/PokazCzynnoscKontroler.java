@@ -5,8 +5,8 @@ import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,21 +19,36 @@ public class PokazCzynnoscKontroler extends BazowyKontroler implements Initializ
 
     public TextField nazwa;
     public TextField czestotliwosc;
-    public TextField dataOstatniegoSprzatania;
-    public TextField dataNastepnegoSprzatania;
+    public DatePicker dataOstatniegoSprzatania;
+    public DatePicker dataNastepnegoSprzatania;
 
     private Czynnosc czynnosc;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            czynnosc = (Czynnosc) PrzechowywaczDanych.pobierzObiekt();
-            nazwa.setText(czynnosc.getNazwaCzynnosci());
-            czestotliwosc.setText(String.valueOf(czynnosc.getDniCzestotliwosci()));
-            dataNastepnegoSprzatania.setText(czynnosc.getDataNastepnegoSprzatania().toString());
-            dataOstatniegoSprzatania.setText(czynnosc.getDataOstatniegoSprzatania().toString());
+            pobierzCzynnosc();
+            bindujPola();
         }catch (Exception e){
             obsluzBlad(KOMUNIKAT_NIEOCZEKIWANY, e);
+        }
+    }
+
+    private void pobierzCzynnosc(){
+        kontekstZwracanySprzatanieDAO = sprzatanieDAO.pobierzDaneCzynnosci((String) PrzechowywaczDanych.pobierzObiekt());
+        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
+            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
+        }
+        czynnosc = kontekstZwracanySprzatanieDAO.getCzynnosc();
+    }
+
+    private void bindujPola(){
+        if(czynnosc != null) {
+            nazwa.textProperty().bindBidirectional(czynnosc.nazwaCzynnosciProperty());
+            dataNastepnegoSprzatania.valueProperty().bindBidirectional(czynnosc.dataNastepnegoSprzataniaProperty());
+            dataOstatniegoSprzatania.valueProperty().bindBidirectional(czynnosc.dataOstatniegoSprzataniaProperty());
+            czestotliwosc.textProperty().bindBidirectional(czynnosc.dniCzestotliwosciProperty());
         }
     }
 

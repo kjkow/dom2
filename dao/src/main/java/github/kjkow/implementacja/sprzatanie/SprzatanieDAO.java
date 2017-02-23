@@ -14,7 +14,7 @@ public interface SprzatanieDAO {
     KontekstZwracanySprzatanieDAO pobierzNajblizszeSprzatania();
     KontekstZwracanySprzatanieDAO dodajCzynnosc(Czynnosc czynnosc);
     KontekstZwracanySprzatanieDAO usunCzynnosc(String nazwaCzynnosci);
-    KontekstZwracanySprzatanieDAO modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci);
     KontekstZwracanySprzatanieDAO pobierzNazwyCzynnosci();
     KontekstZwracanySprzatanieDAO pobierzDaneCzynnosci(String nazwaCzynnosci);
+    KontekstZwracanySprzatanieDAO modyfikujCzynnosc(Czynnosc czynnosc, String nazwaStarejCzynnosci);
 }

@@ -1,7 +1,6 @@
 package github.kjkow.kontrolery.sprzatanie;
 
 
-import github.kjkow.Czynnosc;
 import github.kjkow.bazowe.BazowyKontroler;
 import github.kjkow.bazowe.PrzechowywaczDanych;
 import javafx.collections.FXCollections;
@@ -48,20 +47,15 @@ public class CzynnosciKontroler extends BazowyKontroler implements Initializable
     }
 
     private void przejdzDalejZWybranaCzynnoscia(boolean czyDoModyfikacji){
-        Czynnosc czynnosc;
+        String nazwaCzynnosci = lista_czynnosci.getSelectionModel().getSelectedItem();
+        if(nazwaCzynnosci != null){
+            PrzechowywaczDanych.zapiszObiekt(nazwaCzynnosci);
 
-        kontekstZwracanySprzatanieDAO = sprzatanieDAO.pobierzDaneCzynnosci(lista_czynnosci.getSelectionModel().getSelectedItem());
-        if(!kontekstZwracanySprzatanieDAO.isCzyBrakBledow()){
-            obsluzBlad(kontekstZwracanySprzatanieDAO.getLog(), kontekstZwracanySprzatanieDAO.getBlad());
-            return;
-        }
-
-        czynnosc = kontekstZwracanySprzatanieDAO.getCzynnosc();
-        PrzechowywaczDanych.zapiszObiekt(czynnosc);
-        if(czyDoModyfikacji) {
-            otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
-        }else{
-            otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/PokazCzynnosc.fxml");
+            if(czyDoModyfikacji) {
+                otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/ModyfikujCzynnosc.fxml");
+            }else{
+                otworzNowaFormatke("github/kjkow/kontrolery/sprzatanie/PokazCzynnosc.fxml");
+            }
         }
     }
 
