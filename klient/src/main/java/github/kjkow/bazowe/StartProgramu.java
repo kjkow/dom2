@@ -43,6 +43,7 @@ public class StartProgramu extends Application {
         //pokaż scenę
         Scene scena = new Scene(KontekstAplikacji.pobierzKorzenFormatek());
         primaryStage.setScene(scena);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 }
