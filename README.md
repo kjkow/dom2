@@ -16,6 +16,7 @@ Aplikacja desktopowa wykorzystywana w codziennych zadaniach domowych, obejmuje o
 # Wykorzystane biblioteki:
 - org.apache.poi - do pracy z arkuszami excela
 - mysql-connector-java - połączenie z bazą danych
+- junit - testy jednostkowe
 
 # Inne:
 - dziennik aplikacji
